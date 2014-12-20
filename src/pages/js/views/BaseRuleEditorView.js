@@ -40,15 +40,29 @@ var BaseRuleEditorView = Backbone.View.extend({
   },
 
   saveRule: function() {
-    var ts = this.model.getTimestamp();
+    var ts = this.model.getTimestamp(),
+      ruleName = this.model.getName();
 
     // Set Creation date if not exists
     if (!this.model.hasCreationDate()) {
       this.model.setCreationDate(ts);
     }
 
+    if (!ruleName) {
+      Backbone.trigger('notification', {
+        className: 'rq-error',
+        message: 'Error: Rule Name can not be empty'
+      });
+
+      return false;
+    }
+
     this.model.save({ callback: function() {
       RQ.router.navigate('', { trigger: true });
+      Backbone.trigger('notification', {
+        className: 'rq-success',
+        message: ruleName + ' has been saved successfully!!'
+      });
     }});
   }
 });

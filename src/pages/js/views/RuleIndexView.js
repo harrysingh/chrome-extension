@@ -44,7 +44,9 @@ var RuleIndexView = Backbone.View.extend({
 
   toggleStatus: function(event) {
     var $ruleItemRow = $(event.target).parents('.rule-item-row'),
-      ruleModel = this.rulesCollection.get($ruleItemRow.data('id'));
+      ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
+      ruleName = ruleModel.getName(),
+      ruleStatus;
 
     if (ruleModel.getStatus() === RQ.RULE_STATUS.ACTIVE) {
       ruleModel.setStatus(RQ.RULE_STATUS.INACTIVE);
@@ -52,18 +54,35 @@ var RuleIndexView = Backbone.View.extend({
       ruleModel.setStatus(RQ.RULE_STATUS.ACTIVE);
     }
 
-    ruleModel.save();
+    ruleStatus = ruleModel.getStatus();
+
+    ruleModel.save({
+      callback: function() {
+        Backbone.trigger('notification', {
+          className: 'rq-info',
+          message: ruleName + ' is now ' + ruleStatus
+        });
+      }
+    });
     return false;
   },
 
   deleteRule: function(event) {
     var $ruleItemRow = $(event.target).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
+      ruleName = ruleModel.getName(),
       that = this;
 
     if (window.confirm(RQ.MESSAGES.DELETE_RULE)) {
       that.rulesCollection.remove(ruleModel);
-      ruleModel.remove();
+      ruleModel.remove({
+        callback: function() {
+          Backbone.trigger('notification', {
+            className: 'rq-success',
+            message: ruleName + ' has been deleted successfully!!'
+          });
+        }
+      });
     }
 
     return false;

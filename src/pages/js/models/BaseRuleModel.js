@@ -82,7 +82,7 @@ var BaseRuleModel = Backbone.Model.extend({
 
     options = options || {};
     options.callback = options.callback || function() {
-      console.log('object saved');
+      console.log('Object saved');
     };
 
     storageService.saveRecord(storageObject, options.callback);
@@ -93,7 +93,7 @@ var BaseRuleModel = Backbone.Model.extend({
 
     options = options || {};
     options.callback = options.callback || function() {
-      console.log('object removed');
+      console.log('Object removed');
     };
 
     BG.StorageService.removeRecord(id, options.callback);
