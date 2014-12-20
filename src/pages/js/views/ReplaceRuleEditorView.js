@@ -1,48 +1,18 @@
-var ReplaceRuleEditorView = Backbone.View.extend({
+var ReplaceRuleEditorView = BaseRuleEditorView.extend({
 
   Model: ReplaceRuleModel,
 
-  Template: function() {
+  getTemplate: function() {
     return RQ.Templates.REPLACE_RULE_EDITOR_TEMPLATE;
   },
 
   className: 'replace-rule-editor',
 
-  events: {
-    'keyup .rule-name-input': 'updateRuleName',
-    'change .rule-status-select': 'updateRuleStatus',
-    'keyup .rule-description': 'updateRuleDescription',
+  events: _.extend(BaseRuleEditorView.prototype.events, {
     'click .add-pair': 'addPair',
     'click .delete-pair': 'deletePair',
-    'keyup .pair-container input': 'updateRulePair',
-    'click .save-button': 'saveRule'
-  },
-
-  initialize: function(options) {
-    options = options || {};
-    this.model = new (options && options.model || this.Model);
-  },
-
-  render: function(options) {
-    if (options && options.model && options.model instanceof Backbone.Model) {
-      this.model = options.model;
-    }
-
-    var markup = _.template(this.Template(), { rule: this.model });
-    $(this.el).html(markup);
-  },
-
-  updateRuleName: function(event) {
-    this.model.setName(event.target.value);
-  },
-
-  updateRuleStatus: function(event) {
-    this.model.setStatus(event.target.selectedOptions[0].value);
-  },
-
-  updateRuleDescription: function(event) {
-    this.model.setDescription(event.target.value);
-  },
+    'keyup .pair-container input': 'updateRulePair'
+  }),
 
   addPair: function(event) {
     var newPair = this.model.getDefaultPair(),
@@ -68,18 +38,5 @@ var ReplaceRuleEditorView = Backbone.View.extend({
       pairs = this.model.getPairs();
 
     pairs[index][key] = event.target.value;
-  },
-
-  saveRule: function() {
-    var ts = this.model.getTimestamp();
-
-    // Set Creation date if not exists
-    if (!this.model.hasCreationDate()) {
-      this.model.setCreationDate(ts);
-    }
-
-    this.model.save({ callback: function() {
-      RQ.router.navigate('', { trigger: true });
-    }});
   }
 });

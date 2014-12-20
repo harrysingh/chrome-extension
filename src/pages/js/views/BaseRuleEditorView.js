@@ -13,11 +13,17 @@ var BaseRuleEditorView = Backbone.View.extend({
   },
 
   render: function(options) {
-    if (options && options.model && options.model instanceof Backbone.Model) {
+    options = options || {};
+
+    if (options.model && options.model instanceof Backbone.Model) {
       this.model = options.model;
     }
 
-    var markup = _.template(options.template, { rule: this.model });
+    /* If template is not passed as option,
+    every editor view has to provide its own template by getTemplate method */
+    this.template = options.template || this.getTemplate();
+
+    var markup = _.template(this.template, { rule: this.model });
     $(this.el).html(markup);
   },
 
@@ -31,21 +37,6 @@ var BaseRuleEditorView = Backbone.View.extend({
 
   updateRuleDescription: function(event) {
     this.model.setDescription(event.target.value);
-  },
-
-  updateRuleOperator: function(event) {
-    this.model.setSourceOperator(event.target.selectedOptions[0].value);
-  },
-
-  updateRuleSourceUrl: function(event) {
-    var index = $(event.target).attr('data-index'),
-      value = event.target.value;
-
-    this.model.setSourceValue(value, Number(index));
-  },
-
-  updateRuleDestinationUrl: function(event) {
-    this.model.setDestination(event.target.value);
   },
 
   saveRule: function() {
