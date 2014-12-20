@@ -1,3 +1,6 @@
+/**
+ * Usage: Backbone.trigger('notification', { className: 'rq-success', message: 'Some message' });
+ */
 (function($) {
   var $notificationDiv = $('<div></div>').attr({id: 'rq-notifier'})
     .prependTo('body')
