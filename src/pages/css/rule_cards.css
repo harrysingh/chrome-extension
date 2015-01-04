@@ -2,11 +2,13 @@
   width: 360px;
   display: inline-block;
   margin: 10px;
+  border-radius: 0;
 }
 
 .panel > .panel-heading {
   color: #fff;
   padding: 10px;
+  border-radius: 0;
 }
 
 .panel-redirect-rule {
@@ -33,6 +35,15 @@
 .panel-replace-rule > .panel-heading {
   background-color: #2A95E7;
   border-color: #2A95E7;
+}
+
+.panel-modifyHeaders-rule {
+  border-color: #dd9d12;
+}
+
+.panel-modifyHeaders-rule > .panel-heading {
+  background-color: #dd9d12;
+  border-color: #dd9d12;
 }
 
 .select-icon {
