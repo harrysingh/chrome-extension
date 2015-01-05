@@ -5,7 +5,8 @@ RQ.VERSION = '2.2.1';
 RQ.RULE_TYPES = {
   REDIRECT: 'Redirect',
   CANCEL: 'Cancel',
-  REPLACE: 'Replace'
+  REPLACE: 'Replace',
+  HEADERS: 'Headers'
 };
 
 RQ.RULE_STATUS = {
@@ -21,6 +22,17 @@ RQ.RULE_KEYS = {
 RQ.RULE_OPERATORS = {
   EQUALS: 'Equals',
   CONTAINS: 'Contains'
+};
+
+RQ.MODIFICATION_TYPES = {
+  ADD: 'Add',
+  REMOVE: 'Remove',
+  MODIFY: 'Modify'
+};
+
+RQ.HEADERS_TARGET = {
+  REQUEST: 'Request',
+  RESPONSE: 'Response'
 };
 
 RQ.RESPONSE_CODES = {

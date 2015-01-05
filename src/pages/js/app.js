@@ -6,7 +6,8 @@ RQ.Templates = {
   RULE_CARDS_TEMPLATE: $('#rule-cards-template').html(),
   REDIRECT_RULE_EDITOR_TEMPLATE: $('#redirect-rule-editor-template').html(),
   CANCEL_RULE_EDITOR_TEMPLATE: $('#cancel-rule-editor-template').html(),
-  REPLACE_RULE_EDITOR_TEMPLATE: $('#replace-rule-editor-template').html()
+  REPLACE_RULE_EDITOR_TEMPLATE: $('#replace-rule-editor-template').html(),
+  HEADERS_EDITOR_TEMPLATE: $('#headers-editor-template').html()
 };
 
 RQ.init = function(options) {

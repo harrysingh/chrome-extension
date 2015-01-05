@@ -1,0 +1,35 @@
+.headers-rule-editor .rule-header {
+  background-color: #dd9d12;
+  border-color: #dd9d12;
+}
+
+.headers-rule-editor hr {
+  border-top: 1px solid #ddd;
+}
+
+.headers-rule-editor .save-button {
+  background-color: #dd9d12;
+  border-color: #dd9d12;
+  color: white;
+}
+
+.header-modification-type-container {
+  display: inline-block;
+  padding: 2px 5px;
+}
+
+.modification-type-select {
+  padding: 6px 3px;
+}
+
+.header-target-container{
+  display: inline-block;
+  padding: 2px 5px;
+}
+
+.header-target-container .title {
+  padding: 5px;
+  width: 55px;
+  display: inline-block;
+  text-align: center;
+}

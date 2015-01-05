@@ -83,9 +83,6 @@ BG.Methods.registerListeners = function() {
               return { redirectUrl: resultingUrl };
             }
             break;
-
-          default:
-            console.log('Unknown rule type in rule:', rule);
         }
       }
     },

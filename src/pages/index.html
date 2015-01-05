@@ -8,6 +8,7 @@
     <link href="/src/pages/css/redirect_rule.css" rel="stylesheet">
     <link href="/src/pages/css/cancel_rule.css" rel="stylesheet">
     <link href="/src/pages/css/replace_rule.css" rel="stylesheet">
+    <link href="/src/pages/css/headers_rule.css" rel="stylesheet">
     <link href="/src/pages/css/rule_cards.css" rel="stylesheet">
   </head>
   <body>
@@ -263,6 +264,114 @@
     </script>
     <!----------------------End of Replace Rule Editor Template------------------------------------------------>
 
+    <!-------------------------------- Headers Rule Editor Template ------------------------------------->
+    <script type="text/template" id="headers-editor-template">
+      <nav class="rule-header">
+        <span>Modify Headers in HTTP Request and Response</span>
+      </nav>
+      <section class="rule-body">
+        <div class="input-group name-container">
+          <span class="input-group-addon">Rule Name</span>
+          <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">
+        </div>
+
+        <% var status = rule.getStatus() %>
+        <div class="rule-status-container">
+          <span class="title">Status</span>
+          <span class="dropdown-container">
+            <select class="rule-status-select">
+              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" "<% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %>">
+              Active
+              </option>
+              <option value="<%= RQ.RULE_STATUS.INACTIVE %>" <% if(status === RQ.RULE_STATUS.INACTIVE) { %> selected <% } %> >
+              Inactive
+              </option>
+            </select>
+          </span>
+        </div>
+
+        <div class="description-container">
+          <div class="title">Rule Description (Optional)</div>
+          <textarea class="rule-description"
+            placeholder="e.g. Modifying Headers to accept cross domain resources"><%=rule.getDescription()%></textarea>
+        </div>
+
+        <div class="pairs-container">
+          <div class="title">
+            <span class="left">Headers Modification Rules</span>
+            <button class="right btn add-pair">
+              <span class="glyphicon glyphicon-plus-sign action-icon"></span>
+              <span>New</span>
+            </button>
+          </div>
+          <div class="well well-sm">
+            <% var pairs = rule.getPairs();
+            _.each(pairs, function(pair, index) {
+            var type = pair.type,
+              target = pair.target,
+              header = pair.header,
+              value = pair.value; %>
+
+            <% if (index > 0) { %> <hr /> <% } %>
+
+            <div class="pair-container" data-index="<%=index%>">
+              <div class="header-modification-type-container">
+                <span class="title">Select Modification Type</span>
+                <span class="dropdown-container">
+                  <select class="modification-type-select" data-key="type">
+                    <option value="<%= RQ.MODIFICATION_TYPES.ADD %>"
+                      <% if (type === RQ.MODIFICATION_TYPES.ADD) { %> selected <% } %>>Add New Header</option>
+                    <option value="<%= RQ.MODIFICATION_TYPES.REMOVE %>"
+                      <% if (type === RQ.MODIFICATION_TYPES.REMOVE) { %> selected <% } %>>Remove Header</option>
+                    <option value="<%= RQ.MODIFICATION_TYPES.MODIFY %>"
+                    <% if (type === RQ.MODIFICATION_TYPES.MODIFY) { %> selected <% } %>>Modify Header (If Exists)</option>
+                  </select>
+                </span>
+              </div>
+
+              <div class="header-target-container">
+                <span class="title">
+                  <% if (type === RQ.MODIFICATION_TYPES.ADD) { %> to <% } %>
+                  <% if (type === RQ.MODIFICATION_TYPES.REMOVE) { %> from <% } %>
+                  <% if (type === RQ.MODIFICATION_TYPES.MODIFY) { %> in <% } %>
+                </span>
+
+                <span class="dropdown-container">
+                  <select class="header-target-select" data-key="target">
+                    <option value="<%= RQ.HEADERS_TARGET.REQUEST %>"
+                    <% if (target === RQ.HEADERS_TARGET.REQUEST) { %> selected <% } %>>Request Headers</option>
+                    <option value="<%= RQ.HEADERS_TARGET.RESPONSE %>"
+                    <% if (target === RQ.HEADERS_TARGET.RESPONSE) { %> selected <% } %>>Response Headers</option>
+                  </select>
+                </span>
+              </div>
+
+              <div class="input-group">
+                <span class="input-group-addon">Header</span>
+                <input type="text" class="form-control header-input" data-key="header"
+                   placeholder="Header Name" value="<%=header%>">
+              </div>
+              <div class="input-group">
+                <span class="input-group-addon">Value</span>
+                <input type="text" class="form-control value-input" data-key="value"
+                  placeholder="Header Value" value="<%=value%>"
+                  <% if (type === RQ.MODIFICATION_TYPES.REMOVE) { %> disabled <% } %> />
+              </div>
+              <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
+            </div>
+
+            <% }); %>
+          </div>
+        </div>
+
+        <div class="buttons-container">
+          <a class="btn save-button save-rule">Save</a>
+          <a href="#" class="btn btn-default">Cancel</a>
+        </div>
+      </section>
+    </script>
+    <!----------------------End of Headers Rule Editor Template------------------------------------------------>
+
     <script type="text/template" id="rule-cards-template">
       <nav class="rule-header rq-dimgrey">
         <span>Select Rule</span>
@@ -305,7 +414,7 @@
           </div>
         </div>
 
-        <div class="panel panel-modifyHeaders-rule" data-target="#new/modifyHeaders">
+        <div class="panel panel-headers-rule" data-target="#new/headers">
           <div class="panel-heading">
             <h3 class="panel-title">
               <span>Modify Headers</span>
@@ -347,6 +456,7 @@
     <script type="text/javascript" src="/src/pages/js/models/RedirectRuleModel.js"></script>
     <script type="text/javascript" src="/src/pages/js/models/CancelRuleModel.js"></script>
     <script type="text/javascript" src="/src/pages/js/models/ReplaceRuleModel.js"></script>
+    <script type="text/javascript" src="/src/pages/js/models/HeadersRuleModel.js"></script>
 
     <!-- Backbone Collections -->
     <script type="text/javascript" src="/src/pages/js/collections/RulesCollection.js"></script>
@@ -356,6 +466,7 @@
     <script type="text/javascript" src="/src/pages/js/views/RedirectRuleEditorView.js"></script>
     <script type="text/javascript" src="/src/pages/js/views/CancelRuleEditorView.js"></script>
     <script type="text/javascript" src="/src/pages/js/views/ReplaceRuleEditorView.js"></script>
+    <script type="text/javascript" src="/src/pages/js/views/HeadersEditorView.js"></script>
     <script type="text/javascript" src="/src/pages/js/views/RuleIndexView.js"></script>
     <script type="text/javascript" src="/src/pages/js/views/RuleCardsView.js"></script>
 
