@@ -65,6 +65,10 @@ table tr:hover td {
   border-left: 10px solid #2A95E7;
 }
 
+.headers.rule-item-row {
+  border-left: 10px solid #dd9d12;
+}
+
 .redirect .toggle-status-icon.redirect.active {
   color: #5B9027;
 }
@@ -75,6 +79,10 @@ table tr:hover td {
 
 .replace .toggle-status-icon.replace.active {
   color: #2A95E7;
+}
+
+.headers .toggle-status-icon.headers.active {
+  color: #dd9d12;
 }
 
 .toggle-status-icon.inactive {
