@@ -2,6 +2,7 @@
  - Requirements
  - Json Api
  - Similar Chrome Extensions
+ - Notes
 
 #### Requirements
 1. User should be able to modify headers in Request as well as Response.
@@ -34,3 +35,8 @@
 1. [Modify Headers for Google Chrome](https://chrome.google.com/webstore/detail/modify-headers-for-google/innpjfdalfhpcoinfnehdnbkglpmogdi)
 2. [ModHeader](https://chrome.google.com/webstore/detail/modheader/idgpnmonknjnojddfkpgkljpfnnfcklj?hl=en)
 3. [HeaderEditor](https://chrome.google.com/webstore/detail/header-editor/pkokmcnklmgbepioackopoknkdlhefjl?hl=en)
+
+#### Notes
+1. Chrome Dev Tools is unable to show modifications in response headers.
+  - StackOverflow Link: http://stackoverflow.com/questions/18102082/modifying-response-headers-in-chrome
+  - Chromium Bug: https://code.google.com/p/chromium/issues/detail?id=258064
