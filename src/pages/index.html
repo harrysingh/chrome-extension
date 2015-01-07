@@ -270,6 +270,13 @@
         <span>Modify Headers in HTTP Request and Response</span>
       </nav>
       <section class="rule-body">
+        <div class="alert alert-dismissable alert-warning message">
+          <button type="button" class="close hide-message" data-dismiss="alert">x</button>
+          <p>Modifications in Response Headers are not visible in Dev tools.
+            <a href="https://code.google.com/p/chromium/issues/detail?id=258064" class="alert-link" target="_blank">Chromium Bug Link</a>
+          </p>
+        </div>
+
         <div class="input-group name-container">
           <span class="input-group-addon">Rule Name</span>
           <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">

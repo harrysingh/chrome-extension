@@ -12,7 +12,8 @@ var HeadersEditorView = BaseRuleEditorView.extend({
     'click .add-pair': 'addPair',
     'click .delete-pair': 'deletePair',
     'keyup .pair-container input': 'updateRulePair',
-    'change .pair-container select': 'updateRulePair'
+    'change .pair-container select': 'updateRulePair',
+    'click .hide-message': 'hideMessage'
   }),
 
   addPair: function(event) {
@@ -46,5 +47,9 @@ var HeadersEditorView = BaseRuleEditorView.extend({
       pairs[index][key] = event.target.selectedOptions[0].value;
       this.render();
     }
+  },
+
+  hideMessage: function() {
+    $(this.el).find('.message').hide();
   }
 });
