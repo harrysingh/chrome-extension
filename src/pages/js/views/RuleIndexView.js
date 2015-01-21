@@ -62,6 +62,11 @@ var RuleIndexView = Backbone.View.extend({
           className: 'rq-info',
           message: ruleName + ' is now ' + ruleStatus
         });
+
+        // #34: User needs to refresh the page whenever rule status is changed
+        setTimeout(function() {
+          window.location.reload();
+        }, 2000 );
       }
     });
     return false;

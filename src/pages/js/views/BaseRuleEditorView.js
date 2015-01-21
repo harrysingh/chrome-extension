@@ -63,6 +63,11 @@ var BaseRuleEditorView = Backbone.View.extend({
         className: 'rq-success',
         message: ruleName + ' has been saved successfully!!'
       });
+
+      // #34: User needs to refresh the page whenever rule status is changed
+      setTimeout(function() {
+        window.location.reload();
+      }, 2000 );
     }});
   }
 });
