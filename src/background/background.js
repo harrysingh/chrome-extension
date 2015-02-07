@@ -42,7 +42,6 @@ BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
     from = matchRegExp ? new RegExp(matchRegExp[1], matchRegExp[2]) : pair.from;
 
     if (url.match(from)) {
-      console.log('matched');
       resultingUrl = url.replace(from, pair.to);
       break;
     }
