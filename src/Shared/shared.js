@@ -21,7 +21,8 @@ RQ.RULE_KEYS = {
 
 RQ.RULE_OPERATORS = {
   EQUALS: 'Equals',
-  CONTAINS: 'Contains'
+  CONTAINS: 'Contains',
+  MATCHES: 'Matches'
 };
 
 RQ.MODIFICATION_TYPES = {

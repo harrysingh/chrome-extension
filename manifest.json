@@ -8,6 +8,7 @@
   "background": {
     "scripts": [
       "src/Shared/shared.js",
+      "src/Shared/utils.js",
       "src/background/storageService.js",
       "src/background/background.js"
     ]

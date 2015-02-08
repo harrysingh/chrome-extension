@@ -21,6 +21,32 @@ BG.Methods.matchUrlWithRule = function(rule, url) {
     if (operator === RQ.RULE_OPERATORS.CONTAINS && url.indexOf(value) !== -1) {
       return true;
     }
+
+    if (operator === RQ.RULE_OPERATORS.MATCHES) {
+      var regex = RQ.Utils.toRegex(value),
+        matches,
+        destinationUrl = rule.destination;
+
+      // Do not redirect when regex is invalid or regex does not match with Url
+      if (!regex || url.search(regex) === -1) {
+        return false;
+      }
+
+      matches = regex.exec(url) || [];
+
+      matches.forEach(function(matchValue, index) {
+        // First match is the full string followed by parentheses/group values
+        if (index === 0 || !matchValue) {
+          return;
+        }
+
+        // Replace all $index values in destinationUrl with the matched groups
+        destinationUrl = destinationUrl.replace(new RegExp('[\$]' + index, 'g'), matchValue);
+      });
+
+      rule.destination = destinationUrl;
+      return true;
+    }
   }
 
   return false;
@@ -29,7 +55,6 @@ BG.Methods.matchUrlWithRule = function(rule, url) {
 BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
   var pairs = rule.pairs,
     pair = null,
-    matchRegExp = null,
     from = null,
     resultingUrl = null;
 
@@ -38,8 +63,7 @@ BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
     pair.from = pair.from || '';
 
     // When string pair.from looks like a RegExp, create a RegExp object from it
-    matchRegExp = pair.from.match(/^\/(.+)\/(|i|g|ig|gi)$/);
-    from = matchRegExp ? new RegExp(matchRegExp[1], matchRegExp[2]) : pair.from;
+    from = RQ.Utils.toRegex(pair.from) || pair.from;
 
     if (url.match(from)) {
       resultingUrl = url.replace(from, pair.to);

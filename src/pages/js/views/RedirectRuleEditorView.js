@@ -14,6 +14,7 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
 
   updateRuleOperator: function(event) {
     this.model.setSourceOperator(event.target.selectedOptions[0].value);
+    this.render();
   },
 
   updateRuleSourceUrl: function(event) {
