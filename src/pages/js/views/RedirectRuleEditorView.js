@@ -26,5 +26,21 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
 
   updateRuleDestinationUrl: function(event) {
     this.model.setDestination(event.target.value);
+  },
+
+  alsoValidate: function() {
+    var source = this.model.getSource(),
+      operator = source.operator,
+      value = source.values[0];
+
+    if (operator === RQ.RULE_OPERATORS.MATCHES && !RQ.Utils.isValidRegex(value)) {
+      Backbone.trigger('notification', {
+        className: 'rq-error',
+        message: 'Error: "' + value + '" is not a valid regular expression'
+      });
+      return false;
+    }
+
+    return true;
   }
 });

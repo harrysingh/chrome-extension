@@ -39,6 +39,25 @@ var BaseRuleEditorView = Backbone.View.extend({
     this.model.setDescription(event.target.value);
   },
 
+  // No-Op
+  // To be over-ridden by inherited editor to support any additional validation
+  alsoValidate: function() { return true; },
+
+  validateRule: function() {
+    var ruleName = this.model.getName();
+
+    if (!ruleName) {
+      Backbone.trigger('notification', {
+        className: 'rq-error',
+        message: 'Error: Rule Name can not be empty'
+      });
+
+      return false;
+    }
+
+    return this.alsoValidate();
+  },
+
   saveRule: function() {
     var ts = this.model.getTimestamp(),
       ruleName = this.model.getName();
@@ -48,12 +67,7 @@ var BaseRuleEditorView = Backbone.View.extend({
       this.model.setCreationDate(ts);
     }
 
-    if (!ruleName) {
-      Backbone.trigger('notification', {
-        className: 'rq-error',
-        message: 'Error: Rule Name can not be empty'
-      });
-
+    if (!this.validateRule()) {
       return false;
     }
 
