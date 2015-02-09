@@ -9,27 +9,28 @@ BG.Methods.setupRules = function() {
 BG.Methods.matchUrlWithRule = function(rule, url) {
   var source = rule.source,
     operator = source.operator,
+    destinationUrl = rule.destination,
     value;
 
   for (var i = 0; i < source.values.length; i++) {
     value = source.values[i];
 
     if (operator === RQ.RULE_OPERATORS.EQUALS && value === url) {
-      return true;
+      return destinationUrl;
     }
 
     if (operator === RQ.RULE_OPERATORS.CONTAINS && url.indexOf(value) !== -1) {
-      return true;
+      return destinationUrl;
     }
 
     if (operator === RQ.RULE_OPERATORS.MATCHES) {
       var regex = RQ.Utils.toRegex(value),
-        matches,
-        destinationUrl = rule.destination;
+        destinationUrl = rule.destination,
+        matches;
 
       // Do not redirect when regex is invalid or regex does not match with Url
       if (!regex || url.search(regex) === -1) {
-        return false;
+        return null;
       }
 
       matches = regex.exec(url) || [];
@@ -44,12 +45,11 @@ BG.Methods.matchUrlWithRule = function(rule, url) {
         destinationUrl = destinationUrl.replace(new RegExp('[\$]' + index, 'g'), matchValue);
       });
 
-      rule.destination = destinationUrl;
-      return true;
+      return destinationUrl;
     }
   }
 
-  return false;
+  return null;
 };
 
 BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
@@ -144,8 +144,9 @@ BG.Methods.modifyUrl = function(details) {
 
     switch(rule.ruleType) {
       case RQ.RULE_TYPES.REDIRECT:
-        if (BG.Methods.matchUrlWithRule(rule, details.url)) {
-          return { redirectUrl: rule.destination };
+        var resultingUrl = BG.Methods.matchUrlWithRule(rule, details.url);
+        if (resultingUrl !== null) {
+          return { redirectUrl: resultingUrl };
         }
         break;
 
