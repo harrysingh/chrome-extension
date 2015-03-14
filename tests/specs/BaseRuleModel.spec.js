@@ -1,10 +1,8 @@
 describe('Base Rule Model', function() {
-  var baseRuleModel,
-    StorageService = BG.StorageService;
+  var baseRuleModel;
 
   beforeEach(function() {
     baseRuleModel = new BaseRuleModel();
-    StorageService.clearDB();
   });
 
   it ('should have default active status', function() {
