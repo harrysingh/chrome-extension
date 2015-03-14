@@ -6,16 +6,21 @@ module.exports = function(config) {
     frameworks: ['jasmine'],
 
     files: [
-      'test/**/*.spec.js'
+      /* Libraries and Helper files */
+      'tests/helpers/utils.js',
+      'tests/helpers/chromeApiHelper.js',
+
+      /* Code files */
+      'src/background/storageService.js',
+      'src/background/background.js',
+
+      /* Spec files */
+      'tests/**/*.spec.js'
     ],
 
-    exclude: [
-      
-    ],
+    exclude: [],
 
-    preprocessors: {
-    
-    },
+    preprocessors: {},
 
     reporters: ['progress'],
 
