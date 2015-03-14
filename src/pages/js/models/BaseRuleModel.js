@@ -68,6 +68,10 @@ var BaseRuleModel = Backbone.Model.extend({
     return this.get('ruleType');
   },
 
+  setRuleType: function(ruleType) {
+    this.set('ruleType', ruleType);
+  },
+
   getStatus: function() {
     return this.get('status');
   },
