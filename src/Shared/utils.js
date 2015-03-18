@@ -18,3 +18,7 @@ RQ.Utils.toRegex = function(regexStr) {
 
   return new RegExp(matchRegExp[1], matchRegExp[2]);
 };
+
+RQ.Utils.isValidUrl = function(url) {
+  return url.search(/^http:|https:|ftp:/) === 0;
+};
