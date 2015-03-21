@@ -14,11 +14,13 @@ module.exports = function(config) {
       'tests/helpers/chromeApiHelper.js',
 
       /* Code files */
+      'src/pages/js/app.js',
       'src/Shared/utils.js',
       'src/Shared/shared.js',
       'src/background/storageService.js',
       'src/background/background.js',
       'src/pages/js/models/BaseRuleModel.js',
+      'src/pages/js/mixins/InputValidation.js',
       'src/pages/js/views/BaseRuleEditorView.js',
 
       /* Spec files */

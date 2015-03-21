@@ -1,4 +1,10 @@
 chrome = {
+  extension: {
+    getBackgroundPage: function() {
+
+    }
+  },
+
   browserAction: {
     onClicked: {
       addListener: function(listener) {}
