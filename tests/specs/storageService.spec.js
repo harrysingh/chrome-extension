@@ -1,0 +1,3 @@
+describe('Storage Service', function() {
+
+});

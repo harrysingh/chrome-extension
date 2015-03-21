@@ -56,7 +56,7 @@ StorageService.removeRecord = function(key, callback) {
   StorageService.DB.remove(key, callback);
 };
 
-chrome.storage.onChanged.addListener(function(changes, namespace) {
+StorageService.updateRecords = function(changes, namespace) {
   if (StorageService.DB === chrome.storage[namespace]) {
     for (changedObjectkey in changes) {
       var change = changes[changedObjectkey],
@@ -65,8 +65,8 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
         recordKey;
 
       /*
-        StorageService.records are updated on every add/edit/delete operation
-        So that background rules can be updated which are executed when each request URL is intercepted
+       StorageService.records are updated on every add/edit/delete operation
+       So that background rules can be updated which are executed when each request URL is intercepted
        */
 
       /* Add/Edit Rule operation */
@@ -99,4 +99,6 @@ chrome.storage.onChanged.addListener(function(changes, namespace) {
       }
     }
   }
-});
+};
+
+chrome.storage.onChanged.addListener(StorageService.updateRecords);
