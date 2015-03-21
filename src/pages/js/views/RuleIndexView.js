@@ -15,8 +15,9 @@ var RuleIndexView = Backbone.View.extend({
   initialize: function() {
     this.rulesCollection = new RulesCollection();
 
+    // We don't need to listen on add event because rule is always created from editor
+    // And on route change we always fetch the latest rules from DB
     this.listenTo(this.rulesCollection, 'loaded', this.render);
-    this.listenTo(this.rulesCollection, 'add', this.render);
     this.listenTo(this.rulesCollection, 'change', this.render);
     this.listenTo(this.rulesCollection, 'remove', this.render);
   },

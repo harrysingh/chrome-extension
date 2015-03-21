@@ -9,12 +9,9 @@ var RulesCollection = Backbone.Collection.extend({
       forceFetch: true,
       callback: function(rules) {
         that.models.length = 0;
+
         _.each(rules, function(ruleObject) {
           var model = new that.model(ruleObject);
-          if (!model.getId()) {
-            model.generateId();
-            model.save();
-          }
           that.add(model);
         });
 
@@ -25,6 +22,11 @@ var RulesCollection = Backbone.Collection.extend({
         that.trigger('loaded');
       }
     });
-  }
+  },
 
+  comparator: function(model) {
+    // By default rules should be sorted by timestamp in decreasing order
+    // Latest rule should come on top
+    return -1 * model.getTimestampFromId();
+  }
 });

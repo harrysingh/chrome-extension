@@ -52,6 +52,10 @@ var BaseRuleModel = Backbone.Model.extend({
     return Date.now();
   },
 
+  getTimestampFromId: function() {
+    return this.getId().split('_')[1];
+  },
+
   setCreationDate: function(date) {
     this.set('creationDate', date);
   },
