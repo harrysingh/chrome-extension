@@ -1,6 +1,8 @@
 var RQ = RQ || {},
   BG = chrome.extension.getBackgroundPage();
 
+RQ.Mixins = RQ.Mixins || {};
+
 RQ.Templates = {
   RULE_INDEX_TEMPLATE: $('#rule-index-template').html(),
   RULE_CARDS_TEMPLATE: $('#rule-cards-template').html(),

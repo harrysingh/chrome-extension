@@ -7,6 +7,8 @@ var BaseRuleEditorView = Backbone.View.extend({
     'click .save-rule': 'saveRule'
   },
 
+  Mixins: [],
+
   /**
    * loadModel: loads model and binds to the view
    * @param model Backbone Model instance or just a backbone model
@@ -19,9 +21,18 @@ var BaseRuleEditorView = Backbone.View.extend({
     }
   },
 
+  loadMixin: function(mixin) {
+    _.extend(this, mixin);
+  },
+
+  loadMixins: function(mixins) {
+    _.each(mixins, this.loadMixin, this);
+  },
+
   initialize: function(options) {
     options = options || {};
     this.loadModel(options.model);
+    this.loadMixins(this.Mixins);
   },
 
   render: function(options) {

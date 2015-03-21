@@ -12,6 +12,11 @@ BG.Methods.matchUrlWithRule = function(rule, url) {
     destinationUrl = rule.destination,
     value;
 
+  // We need non-empty destinationUrl in case of cancel rule
+  if (rule.ruleType === RQ.RULE_TYPES.CANCEL) {
+    destinationUrl = 'javascript:';
+  }
+
   for (var i = 0; i < source.values.length; i++) {
     value = source.values[i];
 
@@ -25,10 +30,9 @@ BG.Methods.matchUrlWithRule = function(rule, url) {
 
     if (operator === RQ.RULE_OPERATORS.MATCHES) {
       var regex = RQ.Utils.toRegex(value),
-        destinationUrl = rule.destination,
         matches;
 
-      // Do not redirect when regex is invalid or regex does not match with Url
+      // Do not redirect/cancel when regex is invalid or regex does not match with Url
       if (!regex || url.search(regex) === -1) {
         return null;
       }

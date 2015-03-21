@@ -2,6 +2,8 @@ var CancelRuleEditorView = BaseRuleEditorView.extend({
 
   Model: CancelRuleModel,
 
+  Mixins: [ RQ.Mixins.InputValidation ],
+
   getTemplate: function() {
     return RQ.Templates.CANCEL_RULE_EDITOR_TEMPLATE;
   },
@@ -22,5 +24,10 @@ var CancelRuleEditorView = BaseRuleEditorView.extend({
       value = event.target.value;
 
     this.model.setSourceValue(value, Number(index));
+  },
+
+  alsoValidate: function() {
+    var source = this.model.getSource();
+    return this.validateSourceField(source.operator, source.values[0]);
   }
 });

@@ -1,6 +1,8 @@
 var RedirectRuleEditorView = BaseRuleEditorView.extend({
   Model: RedirectRuleModel,
 
+  Mixins: [ RQ.Mixins.InputValidation ],
+
   getTemplate: function() {
     return RQ.Templates.REDIRECT_RULE_EDITOR_TEMPLATE;
   },
@@ -30,35 +32,9 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
 
   alsoValidate: function() {
     var source = this.model.getSource(),
-      operator = source.operator,
-      value = source.values[0],
-      destinationUrl = this.model.getDestination();
+      destinationField = this.model.getDestination();
 
-    if (operator === RQ.RULE_OPERATORS.MATCHES && !RQ.Utils.isValidRegex(value)) {
-      Backbone.trigger('notification', {
-        className: 'rq-error',
-        message: 'Error: "' + value + '" is not a valid regular expression'
-      });
-      return false;
-    }
-
-    if (operator === RQ.RULE_OPERATORS.EQUALS && !RQ.Utils.isValidUrl(value)) {
-      Backbone.trigger('notification', {
-        className: 'rq-error',
-        message: 'Error: Source Url should begin with a valid protocol (http: | https: | ftp:)'
-      });
-      return false;
-    }
-
-    if ([RQ.RULE_OPERATORS.CONTAINS, RQ.RULE_OPERATORS.EQUALS].indexOf(operator) >=0
-      && !RQ.Utils.isValidUrl(destinationUrl)) {
-      Backbone.trigger('notification', {
-        className: 'rq-error',
-        message: 'Error: Destination Url should begin with a valid protocol (http: | https: | ftp:)'
-      });
-      return false;
-    }
-
-    return true;
+    return this.validateSourceField(source.operator, source.values[0]) &&
+        this.validateDestinationField(source.operator, destinationField);
   }
 });

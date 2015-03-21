@@ -22,5 +22,6 @@ describe('Utility functions', function() {
     expect(RQ.Utils.isValidUrl('google.com')).toBe(false);
     expect(RQ.Utils.isValidUrl('http://www.example.com')).toBe(true);
     expect(RQ.Utils.isValidUrl('http.example.com')).toBe(false);
+    expect(RQ.Utils.isValidUrl('javascript:alert("works")')).toBe(true);
   });
 });

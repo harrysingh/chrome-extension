@@ -20,5 +20,5 @@ RQ.Utils.toRegex = function(regexStr) {
 };
 
 RQ.Utils.isValidUrl = function(url) {
-  return url.search(/^http:|https:|ftp:/) === 0;
+  return url.search(/^http:|https:|ftp:|javascript:/) === 0;
 };
