@@ -7,17 +7,26 @@ var BaseRuleEditorView = Backbone.View.extend({
     'click .save-rule': 'saveRule'
   },
 
+  /**
+   * loadModel: loads model and binds to the view
+   * @param model Backbone Model instance or just a backbone model
+   */
+  loadModel: function(model) {
+    if (model) {
+      this.model = (model instanceof Backbone.Model) ? model : new model;
+    } else {
+      this.model = new this.Model;
+    }
+  },
+
   initialize: function(options) {
     options = options || {};
-    this.model = new (options.model || this.Model);
+    this.loadModel(options.model);
   },
 
   render: function(options) {
     options = options || {};
-
-    if (options.model && options.model instanceof Backbone.Model) {
-      this.model = options.model;
-    }
+    this.loadModel(options.model);
 
     /* If template is not passed as option,
     every editor view has to provide its own template by getTemplate method */

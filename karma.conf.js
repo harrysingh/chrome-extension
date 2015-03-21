@@ -19,6 +19,7 @@ module.exports = function(config) {
       'src/background/storageService.js',
       'src/background/background.js',
       'src/pages/js/models/BaseRuleModel.js',
+      'src/pages/js/views/BaseRuleEditorView.js',
 
       /* Spec files */
       'tests/**/*.spec.js'
