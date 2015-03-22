@@ -37,7 +37,11 @@ var BaseRuleEditorView = Backbone.View.extend({
 
   render: function(options) {
     options = options || {};
-    this.loadModel(options.model);
+
+    // Load the passed model and use it to render the view
+    if (options.model) {
+      this.loadModel(options.model);
+    }
 
     /* If template is not passed as option,
     every editor view has to provide its own template by getTemplate method */
