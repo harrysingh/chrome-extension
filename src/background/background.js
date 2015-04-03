@@ -9,13 +9,8 @@ BG.Methods.setupRules = function() {
 BG.Methods.matchUrlWithRule = function(rule, url) {
   var source = rule.source,
     operator = source.operator,
-    destinationUrl = rule.destination,
+    destinationUrl = rule.destination || '', // Destination Url is not present in all rule types
     value;
-
-  // We need non-empty destinationUrl in case of cancel rule
-  if (rule.ruleType === RQ.RULE_TYPES.CANCEL) {
-    destinationUrl = 'javascript:';
-  }
 
   for (var i = 0; i < source.values.length; i++) {
     value = source.values[i];
