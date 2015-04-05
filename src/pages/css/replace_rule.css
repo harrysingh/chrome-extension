@@ -23,7 +23,7 @@
   padding: 10px 5px;
 }
 
-.delete-pair {
+.replace-rule-editor .delete-pair {
   position: relative;
   top: -10px;
 }

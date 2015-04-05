@@ -23,6 +23,12 @@ var RedirectRuleModel = BaseRuleModel.extend({
 
   setSourceValue: function(value, index) {
     var sourceObject = this.getSource();
+
+    // Always over-ride the first value if there is no index passed
+    if (typeof index === 'undefined') {
+      index = 0;
+    }
+
     sourceObject.values[index] = value;
     this.set('source', sourceObject);
   },

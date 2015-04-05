@@ -16,6 +16,15 @@ var BaseRuleModel = Backbone.Model.extend({
     DESTINATION_MATCHES: 'e.g. http://www.new-example.com?queryParam=$1&searchParam=$2'
   },
 
+  initialize: function() {
+    this.transformAttributes();
+  },
+
+  /**
+   * To-be overridden by child
+   */
+  transformAttributes: function() { /* No Op */},
+
   setId: function(id) {
     this.set('id', id, { silent: true });
   },

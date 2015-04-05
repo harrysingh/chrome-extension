@@ -5,6 +5,7 @@
 
 .headers-rule-editor hr {
   border-top: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 
 .headers-rule-editor .save-button {
@@ -27,9 +28,27 @@
   padding: 2px 5px;
 }
 
-.header-target-container .title {
-  padding: 5px;
-  width: 55px;
+.headers-rule-editor .title {
+  padding: 10px;
+}
+
+.headers-rule-editor .pair-container .input-group {
+  width: 240px;
+  padding: 0 5px 0 0;
+  top: 12px;
+}
+
+.headers-rule-editor .pair-container:only-child .input-group {
+  width: 255px;
+}
+
+.headers-rule-editor .source-value-input {
+  width: 550px;
   display: inline-block;
-  text-align: center;
+  margin-left: 5px;
+}
+
+.headers-rule-editor .pair-container:only-child .source-value-input {
+  margin-left: 10px;
+  width: 574px;
 }

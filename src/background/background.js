@@ -10,31 +10,35 @@ BG.Methods.matchUrlWithRule = function(rule, url) {
   var source = rule.source,
     operator = source.operator,
     destinationUrl = rule.destination || '', // Destination Url is not present in all rule types
-    value;
+    value = source.value;
 
-  for (var i = 0; i < source.values.length; i++) {
-    value = source.values[i];
+  /* In Redirect/Cancel Rules, source.values is an array.
+    Later point of time we want to have multiple sources instead of adding multiple values
+    So this needs to be changed.
+   */
+  if (rule.ruleType === RQ.RULE_TYPES.REDIRECT || rule.ruleType === RQ.RULE_TYPES.CANCEL) {
+    value = source.values[0];
+  }
 
-    if (operator === RQ.RULE_OPERATORS.EQUALS && value === url) {
-      return destinationUrl;
-    }
+  switch (operator) {
+    case RQ.RULE_OPERATORS.EQUALS: if (value === url) { return destinationUrl; }
+      break;
 
-    if (operator === RQ.RULE_OPERATORS.CONTAINS && url.indexOf(value) !== -1) {
-      return destinationUrl;
-    }
+    case RQ.RULE_OPERATORS.CONTAINS: if (url.indexOf(value) !== -1) { return destinationUrl; }
+      break;
 
-    if (operator === RQ.RULE_OPERATORS.MATCHES) {
+    case RQ.RULE_OPERATORS.MATCHES: {
       var regex = RQ.Utils.toRegex(value),
         matches;
 
-      // Do not redirect/cancel when regex is invalid or regex does not match with Url
+      // Do not match when regex is invalid or regex does not match with Url
       if (!regex || url.search(regex) === -1) {
         return null;
       }
 
       matches = regex.exec(url) || [];
 
-      matches.forEach(function(matchValue, index) {
+      matches.forEach(function (matchValue, index) {
         // First match is the full string followed by parentheses/group values
         if (index === 0 || !matchValue) {
           return;
@@ -91,10 +95,11 @@ BG.Methods.modifyHeaderIfExists = function(headers, newHeader) {
   }
 };
 
-BG.Methods.modifyHeaders = function(originalHeaders, headersTarget) {
+BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
   var rule,
     headerPairs,
-    modification;
+    modification,
+    url = details.url;
 
   for (var i = 0; i < StorageService.records.length; i++) {
     rule = StorageService.records[i];
@@ -107,6 +112,12 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget) {
 
     for (var headerIndex = 0; headerIndex < headerPairs.length; headerIndex++) {
       modification = headerPairs[headerIndex];
+      modification.source = modification.source || {};
+
+      /* If Source Value does not exist or does not match, proceed with next pair */
+      if (modification.source.value && BG.Methods.matchUrlWithRule(modification, url) === null) {
+        continue;
+      }
 
       if (modification.target !== headersTarget || !modification.header) {
         continue;
@@ -174,14 +185,14 @@ BG.Methods.registerListeners = function() {
   );
 
   chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
-    var modifiedHeaders = BG.Methods.modifyHeaders(details.requestHeaders, RQ.HEADERS_TARGET.REQUEST);
+    var modifiedHeaders = BG.Methods.modifyHeaders(details.requestHeaders, RQ.HEADERS_TARGET.REQUEST, details);
     return { requestHeaders: modifiedHeaders };
   },
   { urls: ['<all_urls>'] },
   ['blocking', 'requestHeaders']);
 
   chrome.webRequest.onHeadersReceived.addListener(function(details) {
-    var modifiedHeaders = BG.Methods.modifyHeaders(details.responseHeaders, RQ.HEADERS_TARGET.RESPONSE);
+    var modifiedHeaders = BG.Methods.modifyHeaders(details.responseHeaders, RQ.HEADERS_TARGET.RESPONSE, details);
     /*
     if (details.url == 'https://developer.chrome.com/extensions/webRequest') {
       console.log('sachin');

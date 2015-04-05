@@ -33,6 +33,27 @@ var HeadersEditorView = BaseRuleEditorView.extend({
     this.render();
   },
 
+  /**
+   * If key is complex, e.g source.operator then drill down to final object and add the value to corresponding key
+   *
+   * @param pair
+   * @param key
+   * @param value
+   * @returns Updated pair
+   */
+  updateFieldInPair: function(pair, key, value) {
+    var nestedKeys = key.split('.'),
+      nestedObject = pair;
+
+    for (var index = 0; index < nestedKeys.length - 1; index++) {
+      nestedObject = pair[nestedKeys[index]];
+    }
+
+    nestedObject[nestedKeys[index]] = value;
+
+    return pair;
+  },
+
   updateRulePair: function(event) {
     var $target = $(event.target),
       index = Number($target.parents('.pair-container').attr('data-index')),
@@ -40,11 +61,11 @@ var HeadersEditorView = BaseRuleEditorView.extend({
       pairs = this.model.getPairs();
 
     if (event.target.tagName === 'INPUT') {
-      pairs[index][key] = event.target.value;
+      this.updateFieldInPair(pairs[index], key, event.target.value);
     }
 
     if (event.target.tagName === 'SELECT') {
-      pairs[index][key] = event.target.selectedOptions[0].value;
+      this.updateFieldInPair(pairs[index], key, event.target.selectedOptions[0].value);
       this.render();
     }
   },

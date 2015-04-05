@@ -323,54 +323,76 @@
             var type = pair.type,
               target = pair.target,
               header = pair.header,
-              value = pair.value; %>
+              value = pair.value,
+              source = pair.source,
+              sourceOperator = source.operator,
+              sourceValue = source.value ; %>
 
             <% if (index > 0) { %> <hr /> <% } %>
 
             <div class="pair-container" data-index="<%=index%>">
-              <div class="header-modification-type-container">
-                <span class="title">Select Modification Type</span>
-                <span class="dropdown-container">
-                  <select class="modification-type-select" data-key="type">
-                    <option value="<%= RQ.MODIFICATION_TYPES.ADD %>"
-                      <% if (type === RQ.MODIFICATION_TYPES.ADD) { %> selected <% } %>>Add New Header</option>
-                    <option value="<%= RQ.MODIFICATION_TYPES.REMOVE %>"
-                      <% if (type === RQ.MODIFICATION_TYPES.REMOVE) { %> selected <% } %>>Remove Header</option>
-                    <option value="<%= RQ.MODIFICATION_TYPES.MODIFY %>"
-                    <% if (type === RQ.MODIFICATION_TYPES.MODIFY) { %> selected <% } %>>Modify Header (If Exists)</option>
+              <div>
+                <div class="header-modification-type-container">
+                  <span class="dropdown-container">
+                    <select class="modification-type-select" data-key="type">
+                      <option value="<%= RQ.MODIFICATION_TYPES.ADD %>"
+                        <% if (type === RQ.MODIFICATION_TYPES.ADD) { %> selected <% } %>>Add</option>
+                      <option value="<%= RQ.MODIFICATION_TYPES.REMOVE %>"
+                        <% if (type === RQ.MODIFICATION_TYPES.REMOVE) { %> selected <% } %>>Remove</option>
+                      <option value="<%= RQ.MODIFICATION_TYPES.MODIFY %>"
+                      <% if (type === RQ.MODIFICATION_TYPES.MODIFY) { %> selected <% } %>>Modify</option>
+                    </select>
+                  </span>
+                </div>
+
+                <div class="header-target-container">
+                  <span class="dropdown-container">
+                    <select class="header-target-select" data-key="target">
+                      <option value="<%= RQ.HEADERS_TARGET.REQUEST %>"
+                      <% if (target === RQ.HEADERS_TARGET.REQUEST) { %> selected <% } %>>Request</option>
+                      <option value="<%= RQ.HEADERS_TARGET.RESPONSE %>"
+                      <% if (target === RQ.HEADERS_TARGET.RESPONSE) { %> selected <% } %>>Response</option>
+                    </select>
+                  </span>
+                </div>
+
+                <div class="input-group">
+                  <span class="input-group-addon">Header</span>
+                  <input type="text" class="form-control header-input" data-key="header"
+                     placeholder="Header Name" value="<%=header%>">
+                </div>
+
+                <% if (type !== RQ.MODIFICATION_TYPES.REMOVE) { %>
+                  <div class="input-group">
+                    <span class="input-group-addon">Value</span>
+                    <input type="text" class="form-control value-input" data-key="value"
+                           placeholder="Header Value" value="<%=value%>"/>
+                  </div>
+                <% } %>
+              </div>
+
+              <div class="source-container">
+                <span class="title">Url</span>
+
+                <div class="dropdown-container">
+                  <select class="source-operator-select" data-key="source.operator">
+                    <option value="<%= RQ.RULE_OPERATORS.EQUALS %>" "<% if (sourceOperator === RQ.RULE_OPERATORS.EQUALS) { %> selected <% } %>">
+                    Equals
+                    </option>
+                    <option value="<%= RQ.RULE_OPERATORS.CONTAINS %>" <% if (sourceOperator === RQ.RULE_OPERATORS.CONTAINS) { %> selected <% } %> >
+                    Contains
+                    </option>
+                    <option value="<%= RQ.RULE_OPERATORS.MATCHES %>" <% if (sourceOperator === RQ.RULE_OPERATORS.MATCHES) { %> selected <% } %> >
+                    Matches
+                    </option>
                   </select>
-                </span>
-              </div>
+                </div>
 
-              <div class="header-target-container">
-                <span class="title">
-                  <% if (type === RQ.MODIFICATION_TYPES.ADD) { %> to <% } %>
-                  <% if (type === RQ.MODIFICATION_TYPES.REMOVE) { %> from <% } %>
-                  <% if (type === RQ.MODIFICATION_TYPES.MODIFY) { %> in <% } %>
-                </span>
+                <input type="text" class="form-control source-value-input" data-key="source.value" value="<%=sourceValue%>"
+                  placeholder="Leave this field Empty to apply above modification to all urls" />
 
-                <span class="dropdown-container">
-                  <select class="header-target-select" data-key="target">
-                    <option value="<%= RQ.HEADERS_TARGET.REQUEST %>"
-                    <% if (target === RQ.HEADERS_TARGET.REQUEST) { %> selected <% } %>>Request Headers</option>
-                    <option value="<%= RQ.HEADERS_TARGET.RESPONSE %>"
-                    <% if (target === RQ.HEADERS_TARGET.RESPONSE) { %> selected <% } %>>Response Headers</option>
-                  </select>
-                </span>
+                <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
               </div>
-
-              <div class="input-group">
-                <span class="input-group-addon">Header</span>
-                <input type="text" class="form-control header-input" data-key="header"
-                   placeholder="Header Name" value="<%=header%>">
-              </div>
-              <div class="input-group">
-                <span class="input-group-addon">Value</span>
-                <input type="text" class="form-control value-input" data-key="value"
-                  placeholder="Header Value" value="<%=value%>"
-                  <% if (type === RQ.MODIFICATION_TYPES.REMOVE) { %> disabled <% } %> />
-              </div>
-              <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
             </div>
 
             <% }); %>

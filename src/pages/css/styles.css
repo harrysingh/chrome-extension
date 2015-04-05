@@ -38,6 +38,7 @@ select {
 
 .dropdown-container {
   padding-bottom: 10px;
+  display: inline-block;
 }
 
 .input-group {
