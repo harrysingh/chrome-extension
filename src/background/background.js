@@ -145,6 +145,8 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
 };
 
 BG.Methods.modifyUrl = function(details) {
+  var resultingUrl;
+
   for (var i = 0; i < StorageService.records.length; i++) {
     var rule = StorageService.records[i];
 
@@ -154,7 +156,7 @@ BG.Methods.modifyUrl = function(details) {
 
     switch(rule.ruleType) {
       case RQ.RULE_TYPES.REDIRECT:
-        var resultingUrl = BG.Methods.matchUrlWithRule(rule, details.url);
+        resultingUrl = BG.Methods.matchUrlWithRule(rule, details.url);
         if (resultingUrl !== null) {
           return { redirectUrl: resultingUrl };
         }
@@ -164,13 +166,14 @@ BG.Methods.modifyUrl = function(details) {
       * In case of Cancel Request, destination url is 'javascript:'
       */
       case RQ.RULE_TYPES.CANCEL:
-        if (BG.Methods.matchUrlWithRule(rule, details.url)) {
+        resultingUrl = BG.Methods.matchUrlWithRule(rule, details.url);
+        if (resultingUrl !== null) {
           return { redirectUrl: 'javascript:' };
         }
         break;
 
       case RQ.RULE_TYPES.REPLACE:
-        var resultingUrl = BG.Methods.matchUrlWithReplaceRulePairs(rule, details.url);
+        resultingUrl = BG.Methods.matchUrlWithReplaceRulePairs(rule, details.url);
         if (resultingUrl !== null) {
           return { redirectUrl: resultingUrl };
         }

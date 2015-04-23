@@ -13,7 +13,8 @@ describe('Requestly Background Service', function() {
   };
 
   var KEYWORDS = {
-    GOOGLE: 'google'
+    GOOGLE: 'google',
+    FACEBOOK: 'facebook'
   };
 
   beforeEach(function() {
@@ -26,7 +27,14 @@ describe('Requestly Background Service', function() {
       },
       destination: URL_SOURCES.YAHOO
     });
-    cancelRule = new CancelRuleModel();
+    cancelRule = new CancelRuleModel({
+      name: 'Cancel Rule',
+      source: {
+        key: RQ.RULE_KEYS.URL,
+        operator: RQ.RULE_OPERATORS.CONTAINS,
+        values: [ KEYWORDS.FACEBOOK ]
+      }
+    });
     headersRule = new HeadersRuleModel();
     replaceRule = new ReplaceRuleModel();
   });
@@ -54,6 +62,11 @@ describe('Requestly Background Service', function() {
         .toBe(URL_SOURCES.REQUESTLY + '?query=TGT-491');
       expect(BG.Methods.matchUrlWithRule(redirectRule.toJSON(), URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-10419'))
         .toBe(URL_SOURCES.REQUESTLY + '?query=TGT-10419');
+    });
+
+    it('should return null when Cancel Rule Source does not match with Url', function() {
+      expect(BG.Methods.matchUrlWithRule(cancelRule.toJSON(), URL_SOURCES.GOOGLE)).toBeNull();
+      expect(BG.Methods.matchUrlWithRule(cancelRule.toJSON(), URL_SOURCES.FACEBOOK)).not.toBeNull();
     });
   });
 });
