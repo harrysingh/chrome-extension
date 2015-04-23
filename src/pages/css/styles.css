@@ -24,13 +24,72 @@ select {
 }
 
 .header {
-  /* background: #4c66a4; */
-  background: #3c3c3c;
+  background: #4c66a4;
   height: 35px;
   line-height: 35px;
   font-size: 14px;
   text-align: center;
   color: #eee;
+}
+
+.page {
+  position: fixed;
+  top: 35px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.content {
+  width: 800px;
+  height: calc(100% - 35px);
+  margin: auto;
+  background: #fff;
+  overflow: auto;
+}
+
+.footer {
+  width: 800px;
+  margin: auto;
+  overflow: hidden;
+  text-align: center;
+  height: 35px;
+  line-height: 35px;
+  background: #3c3c3c;
+  color: #eee;
+}
+
+.footer .rq-blue {
+  margin: 0;
+}
+
+.footer-title {
+  font-weight: bolder;
+  font-size: 16px;
+  color: #fff;
+  background: green;
+  padding: 5px 3px 5px 8px;
+  margin-right: 5px;
+  border-radius: 2px;
+}
+
+.rq-banner {
+  padding: 0 50px 0 10px;
+  color: #fff;
+  font-weight: 700;
+  z-index: 10;
+  margin-left: 10px;
+}
+
+#forkme_banner {
+  background: url('/resources/images/blacktocat.png') #0090ff no-repeat 95% 50%;
+  border-radius: 2px;
+  padding: 10px 50px 10px 10px;
+}
+
+#chromestore_banner {
+  background: url('/resources/images/chrome_icon.png') #53a93f no-repeat 95% 50%;
+  background-size: 30px;
 }
 
 .right {
@@ -93,18 +152,6 @@ select {
 
 .rq-notice {
   background-color: #DF731F;
-}
-
-.content {
-  width: 800px;
-  margin: auto;
-  background: #fff;
-  position: absolute;
-  top: 35px;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overflow: auto;
 }
 
 .rule-header {
