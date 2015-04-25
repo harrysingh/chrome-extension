@@ -6,6 +6,10 @@ body {
   background: #bbb;
 }
 
+a:hover {
+  color: inherit;
+}
+
 select {
   padding: 6px 12px;
   font-size: 14px;
