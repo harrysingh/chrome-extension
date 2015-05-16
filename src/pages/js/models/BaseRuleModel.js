@@ -93,6 +93,15 @@ var BaseRuleModel = Backbone.Model.extend({
     this.set('status', status);
   },
 
+  getPairs: function() {
+    return this.get('pairs');
+  },
+
+  setPair: function(index, pair) {
+    var pairs = this.getPairs();
+    pairs[index] = pair;
+  },
+
   getPlaceholder: function(options) {
     var field = (options.field || '').toUpperCase(),
       operator = (options.operator || '').toUpperCase(),

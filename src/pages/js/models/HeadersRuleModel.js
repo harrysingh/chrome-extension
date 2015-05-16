@@ -46,14 +46,5 @@ var HeadersRuleModel = BaseRuleModel.extend({
 
   transformAttributes: function() {
     this.insertDefaultSourceInPairs();
-  },
-
-  getPairs: function() {
-    return this.get('pairs');
-  },
-
-  setPair: function(index, pair) {
-    var pairs = this.getPairs();
-    pairs[index] = pair;
   }
 });

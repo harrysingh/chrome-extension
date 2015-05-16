@@ -10,14 +10,5 @@ var ReplaceRuleModel = BaseRuleModel.extend({
 
   getDefaultPair: function() {
     return { from: '', to: '', status: RQ.RULE_STATUS.INACTIVE };
-  },
-
-  getPairs: function() {
-    return this.get('pairs');
-  },
-
-  setPair: function(index, pair) {
-    var pairs = this.getPairs();
-    pairs[index] = pair;
   }
 });

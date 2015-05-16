@@ -1,43 +1,49 @@
 var RedirectRuleModel = BaseRuleModel.extend({
   defaults: function() {
     return _.extend(BaseRuleModel.prototype.defaults(), {
-      source: {
-        key: RQ.RULE_KEYS.URL,
-        operator: RQ.RULE_OPERATORS.EQUALS,
-        values: ['']
-      },
-      destination: '',
-      ruleType: RQ.RULE_TYPES.REDIRECT
+      ruleType: RQ.RULE_TYPES.REDIRECT,
+      pairs: [
+        this.getDefaultPair()
+      ]
     });
   },
 
-  getSource: function() {
-    return this.get('source');
-  },
-
-  setSourceOperator: function(operator) {
-    var sourceObject = this.getSource();
-    sourceObject.operator = operator;
-    this.set('source', sourceObject);
-  },
-
-  setSourceValue: function(value, index) {
-    var sourceObject = this.getSource();
-
-    // Always over-ride the first value if there is no index passed
-    if (typeof index === 'undefined') {
-      index = 0;
+  getDefaultPair: function() {
+    return {
+      source: {
+        key: RQ.RULE_KEYS.URL,
+        operator: RQ.RULE_OPERATORS.CONTAINS,
+        value: ''
+      },
+      destination: ''
     }
-
-    sourceObject.values[index] = value;
-    this.set('source', sourceObject);
   },
 
-  getDestination: function() {
-    return this.get('destination');
+  introducePairs: function () {
+    var pairs = this.getPairs(),
+      defaultPair,
+      sourceObject = this.get('source'),
+      destination = this.get('destination');
+
+    // Add Pair if Redirect Rule contains Source and Destination instead of pair
+    if (typeof sourceObject !== 'undefined' && typeof destination !== 'undefined') {
+      defaultPair = this.getDefaultPair();
+      defaultPair['source']['value'] = sourceObject['values'][0];
+      defaultPair['source']['operator'] = sourceObject['operator'];
+      defaultPair['destination'] = destination;
+
+      this.set('pairs', [ defaultPair ]);
+      this.unset('source');
+      this.unset('destination');
+    }
   },
 
-  setDestination: function(destUrl) {
-    this.set('destination', destUrl);
+  /**
+   * Transform Attributes to support multiple entries in Single Redirect Rule
+   * Wiki: https://github.com/blunderboy/requestly/wiki/Format-of-different-Rule-Types
+   */
+  transformAttributes: function() {
+    this.introducePairs();
+    console.log(this.attributes);
   }
 });
