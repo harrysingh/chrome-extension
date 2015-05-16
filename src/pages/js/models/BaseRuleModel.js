@@ -9,13 +9,6 @@ var BaseRuleModel = Backbone.Model.extend({
     }
   },
 
-  placeholders: {
-    SOURCE_EQUALS: 'e.g. http://www.example.com',
-    SOURCE_CONTAINS: 'e.g. example',
-    SOURCE_MATCHES: 'e.g. /example-([0-9]+)/ig',
-    DESTINATION_MATCHES: 'e.g. http://www.new-example.com?queryParam=$1&searchParam=$2'
-  },
-
   initialize: function() {
     this.transformAttributes();
   },
@@ -100,14 +93,6 @@ var BaseRuleModel = Backbone.Model.extend({
   setPair: function(index, pair) {
     var pairs = this.getPairs();
     pairs[index] = pair;
-  },
-
-  getPlaceholder: function(options) {
-    var field = (options.field || '').toUpperCase(),
-      operator = (options.operator || '').toUpperCase(),
-      DEFAULT_PLACEHOLDER = 'e.g. http://www.new-example.com';
-
-    return this.placeholders[field + '_' + operator] || DEFAULT_PLACEHOLDER;
   },
 
   save: function(options) {

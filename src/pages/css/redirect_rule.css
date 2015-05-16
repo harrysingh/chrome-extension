@@ -1,3 +1,12 @@
+#redirect-rule-editor .source-container .source-value-input {
+  display: inline-block;
+  width: 580px;
+}
+
+#redirect-rule-editor .source-container > * {
+  padding-right: 4px;
+}
+
 #save-redirect-rule {
   background-color: #5B9027;
   border-color: #5B9027;

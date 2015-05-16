@@ -9,15 +9,15 @@
   color: white;
 }
 
-.pair-container:first-child:last-child .input-group {
+#replace-rule-editor .pair-container:first-child:last-child .input-group {
   width: 370px;
 }
 
-.pair-container:first-child:last-child .delete-pair {
+#replace-rule-editor .pair-container:first-child:last-child .delete-pair {
   display: none;
 }
 
-.pair-container .input-group {
+#replace-rule-editor .pair-container .input-group {
   width: 350px;
   display: inline-table;
   padding: 10px 5px;

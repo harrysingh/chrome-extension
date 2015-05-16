@@ -35,6 +35,10 @@ var BaseRuleEditorView = Backbone.View.extend({
     this.loadMixins(this.Mixins);
   },
 
+  getMarkup: function(template) {
+    return _.template(template, { rule: this.model });
+  },
+
   render: function(options) {
     options = options || {};
 
@@ -47,7 +51,7 @@ var BaseRuleEditorView = Backbone.View.extend({
     every editor view has to provide its own template by getTemplate method */
     this.template = options.template || this.getTemplate();
 
-    var markup = _.template(this.template, { rule: this.model });
+    var markup = this.getMarkup(this.template);
     $(this.el).html(markup);
   },
 

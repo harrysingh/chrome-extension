@@ -3,8 +3,15 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
 
   Mixins: [ RQ.Mixins.InputValidation ],
 
+  id: 'redirect-rule-editor',
+
   getTemplate: function() {
-    return RQ.Templates.REDIRECT_RULE_EDITOR_TEMPLATE;
+    return RQ.Templates.RedirectRuleEditor;
+  },
+
+  getMarkup: function(template) {
+    var ruleJson = RQ.TemplateHelpers.redirectRuleHelper(this.model.toJSON());
+    return template(ruleJson);
   },
 
   events: _.extend(BaseRuleEditorView.prototype.events, {

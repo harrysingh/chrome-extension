@@ -44,6 +44,5 @@ var RedirectRuleModel = BaseRuleModel.extend({
    */
   transformAttributes: function() {
     this.introducePairs();
-    console.log(this.attributes);
   }
 });

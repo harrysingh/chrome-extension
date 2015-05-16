@@ -2,6 +2,8 @@ var ReplaceRuleEditorView = BaseRuleEditorView.extend({
 
   Model: ReplaceRuleModel,
 
+  id: 'replace-rule-editor',
+
   getTemplate: function() {
     return RQ.Templates.REPLACE_RULE_EDITOR_TEMPLATE;
   },
