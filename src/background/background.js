@@ -95,9 +95,17 @@ BG.Methods.modifyHeaderIfExists = function(headers, newHeader) {
   }
 };
 
+/**
+ *
+ * @param originalHeaders Original Headers present in the HTTP(s) request
+ * @param headersTarget Request/Response (Where Modification is to be done)
+ * @param details (Actual details object)
+ * @returns originalHeaders with modifications if modified else returns {code}null{/code}
+ */
 BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
   var rule,
     headerPairs,
+    isRuleApplied = false,
     modification,
     url = details.url;
 
@@ -110,22 +118,24 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
 
     headerPairs = rule.pairs || [];
 
-    for (var headerIndex = 0; headerIndex < headerPairs.length; headerIndex++) {
-      modification = headerPairs[headerIndex];
+    for (var index = 0; index < headerPairs.length; index++) {
+      modification = headerPairs[index];
       modification.source = modification.source || {};
+
+      if (modification.target !== headersTarget || !modification.header) {
+        continue;
+      }
 
       /* If Source Value does not exist or does not match, proceed with next pair */
       if (modification.source.value && BG.Methods.matchUrlWithRule(modification, url) === null) {
         continue;
       }
 
-      if (modification.target !== headersTarget || !modification.header) {
-        continue;
-      }
+      isRuleApplied = true;
 
       switch (modification.type) {
         case RQ.MODIFICATION_TYPES.ADD:
-          originalHeaders.push({name: modification.header, value: modification.value});
+          originalHeaders.push({ name: modification.header, value: modification.value });
           break;
 
         case RQ.MODIFICATION_TYPES.REMOVE:
@@ -137,11 +147,12 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
             name: modification.header,
             value: modification.value
           });
+          break;
       }
     }
   }
 
-  return originalHeaders;
+  return isRuleApplied ? originalHeaders : null;
 };
 
 BG.Methods.modifyUrl = function(details) {
@@ -189,18 +200,18 @@ BG.Methods.registerListeners = function() {
 
   chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
     var modifiedHeaders = BG.Methods.modifyHeaders(details.requestHeaders, RQ.HEADERS_TARGET.REQUEST, details);
-    return { requestHeaders: modifiedHeaders };
+    if (modifiedHeaders !== null) {
+      return { requestHeaders: modifiedHeaders };
+    }
   },
   { urls: ['<all_urls>'] },
   ['blocking', 'requestHeaders']);
 
   chrome.webRequest.onHeadersReceived.addListener(function(details) {
     var modifiedHeaders = BG.Methods.modifyHeaders(details.responseHeaders, RQ.HEADERS_TARGET.RESPONSE, details);
-    /*
-    if (details.url == 'https://developer.chrome.com/extensions/webRequest') {
-      console.log('sachin');
-    }*/
-    return { responseHeaders: modifiedHeaders };
+    if (modifiedHeaders !== null) {
+      return { responseHeaders: modifiedHeaders };
+    }
   },
   { urls: ['<all_urls>'] },
   ['blocking', 'responseHeaders']);

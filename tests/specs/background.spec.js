@@ -17,29 +17,37 @@ describe('Requestly Background Service', function() {
     FACEBOOK: 'facebook'
   };
 
-  beforeEach(function() {
-    redirectRule = new RedirectRuleModel({
-      name: 'Redirect Test Rule',
-      source: {
-        key: RQ.RULE_KEYS.URL,
-        operator: RQ.RULE_OPERATORS.EQUALS,
-        values: [ URL_SOURCES.GOOGLE ]
-      },
-      destination: URL_SOURCES.YAHOO
-    });
-    cancelRule = new CancelRuleModel({
-      name: 'Cancel Rule',
-      source: {
-        key: RQ.RULE_KEYS.URL,
-        operator: RQ.RULE_OPERATORS.CONTAINS,
-        values: [ KEYWORDS.FACEBOOK ]
-      }
-    });
-    headersRule = new HeadersRuleModel();
-    replaceRule = new ReplaceRuleModel();
+  afterEach(function() {
+    redirectRule = null;
+    cancelRule = null;
   });
 
   describe('Match Request Url method', function() {
+    beforeEach(function() {
+      redirectRule = new RedirectRuleModel({
+        name: 'Redirect Test Rule',
+        source: {
+          key: RQ.RULE_KEYS.URL,
+          operator: RQ.RULE_OPERATORS.EQUALS,
+          values: [ URL_SOURCES.GOOGLE ]
+        },
+        destination: URL_SOURCES.YAHOO
+      });
+      cancelRule = new CancelRuleModel({
+        name: 'Cancel Rule',
+        source: {
+          key: RQ.RULE_KEYS.URL,
+          operator: RQ.RULE_OPERATORS.CONTAINS,
+          values: [ KEYWORDS.FACEBOOK ]
+        }
+      });
+    });
+
+    afterEach(function() {
+      redirectRule = null;
+      cancelRule = null;
+    });
+
     it('should match Redirect Rule Source', function() {
       // Equals Operator
       redirectRule.setDestination(URL_SOURCES.YAHOO);
@@ -67,6 +75,59 @@ describe('Requestly Background Service', function() {
     it('should return null when Cancel Rule Source does not match with Url', function() {
       expect(BG.Methods.matchUrlWithRule(cancelRule.toJSON(), URL_SOURCES.GOOGLE)).toBeNull();
       expect(BG.Methods.matchUrlWithRule(cancelRule.toJSON(), URL_SOURCES.FACEBOOK)).not.toBeNull();
+    });
+  });
+
+  describe('#modifyHeaders', function() {
+    beforeEach(function() {
+      headersRule = new HeadersRuleModel();
+
+      var pair = headersRule.getPairs()[0];
+      pair['header'] = 'User-Agent';
+      pair['value'] = 'Mozilla/5.0';
+      headersRule.setPair(0, pair);
+    });
+
+    afterEach(function() {
+      headersRule = null;
+      StorageService.records = [];
+    });
+
+    it('should return null when no header is modified', function() {
+      StorageService.records.push(headersRule.toJSON());
+
+      // Different Headers Target (Rule contains Request Headers)
+      expect(BG.Methods.modifyHeaders([], RQ.HEADERS_TARGET.RESPONSE, { url: URL_SOURCES.FACEBOOK })).toBeNull();
+    });
+
+    it('should return null when there are no Active Rules', function() {
+      headersRule.setStatus(RQ.RULE_STATUS.INACTIVE);
+
+      StorageService.records.push(headersRule.toJSON());
+      expect(BG.Methods.modifyHeaders([], RQ.HEADERS_TARGET.REQUEST, { url: URL_SOURCES.FACEBOOK })).toBeNull();
+    });
+
+    it('should return modified Headers Array when header is added', function() {
+      StorageService.records.push(headersRule.toJSON());
+
+      var modifiedheaders = BG.Methods.modifyHeaders([], RQ.HEADERS_TARGET.REQUEST, { url: URL_SOURCES.FACEBOOK });
+      expect(modifiedheaders.length).toEqual(1);
+    });
+
+    it('should return modified Headers Array when header is removed', function() {
+      var originalHeaders = [
+        { name: 'Accept-Language', value: 'en-us'},
+        { name: 'Host', value: 'example.com'},
+        { name: 'User-Agent', value: 'Chrome'}
+      ];
+
+      var pair = headersRule.getPairs()[0];
+      pair['type'] = RQ.MODIFICATION_TYPES.REMOVE;
+      headersRule.setPair(0, pair);
+
+      StorageService.records.push(headersRule.toJSON());
+      var modifiedHeaders = BG.Methods.modifyHeaders(originalHeaders, RQ.HEADERS_TARGET.REQUEST, { url: URL_SOURCES.FACEBOOK });
+      expect(modifiedHeaders.length).toEqual(2);
     });
   });
 });
