@@ -20,12 +20,28 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
   }),
 
   alsoValidate: function() {
-    return true;
-    /*
-    var source = this.model.getSource(),
-      destinationField = this.model.getDestination();
+    var pairs = this.model.getPairs(),
+      pairIndex,
+      inValidPairIndex = -1,
+      pair,
+      source,
+      isValid,
+      destinationField;
 
-    return this.validateSourceField(source.operator, source.values[0]) &&
-        this.validateDestinationField(source.operator, destinationField);      */
+    for (pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
+      pair = pairs[ pairIndex ];
+      source = pair['source'];
+      destinationField = pair['destination'];
+
+      isValid = this.validateSourceField(source.operator, source.value) &&
+                this.validateDestinationField(source.operator, destinationField);
+
+      if (!isValid) {
+        inValidPairIndex = pairIndex;
+        return false;
+      }
+    }
+
+    return true;
   }
 });
