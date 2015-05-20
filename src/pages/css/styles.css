@@ -23,6 +23,10 @@ select {
   cursor: pointer;
 }
 
+table {
+  width: 100%;
+}
+
 .glyphicon {
   cursor: pointer;
 }

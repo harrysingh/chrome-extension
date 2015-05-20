@@ -3,20 +3,26 @@
 </nav>
 
 <section class="rule-body">
-  <div class="input-group name-container">
-    <span class="input-group-addon">Rule Name</span>
-    <input type="text" class="form-control rule-name-input" placeholder="" value="{{name}}">
-  </div>
+  <table><tr>
+    <td>
+      <div class="input-group name-container">
+        <span class="input-group-addon">Rule Name</span>
+        <input type="text" class="form-control rule-name-input" placeholder="" value="{{name}}">
+      </div>
+    </td>
 
-  <div class="rule-status-container">
-    <span class="title">Status</span>
-      <span class="dropdown-container">
-        <select class="rule-status-select">
-          <option value="{{RULE_STATUS.ACTIVE}}" {{#equals status RULE_STATUS.ACTIVE}}selected{{/equals}}>Active</option>
-          <option value="{{RULE_STATUS.INACTIVE}}" {{#equals status RULE_STATUS.INACTIVE}}selected{{/equals}}>Inactive</option>
-        </select>
-      </span>
-  </div>
+    <td>
+      <div class="rule-status-container">
+        <span class="title">Status</span>
+        <span class="dropdown-container">
+          <select class="rule-status-select">
+            <option value="{{RULE_STATUS.ACTIVE}}" {{#equals status RULE_STATUS.ACTIVE}}selected{{/equals}}>Active</option>
+            <option value="{{RULE_STATUS.INACTIVE}}" {{#equals status RULE_STATUS.INACTIVE}}selected{{/equals}}>Inactive</option>
+          </select>
+        </span>
+      </div>
+    </td>
+  </tr></table>
 
   <div class="description-container">
     <div class="title">Rule Description (Optional)</div>
@@ -24,43 +30,39 @@
       placeholder="e.g. Redirecting app.js on qa environment to dev environment">{{description}}</textarea>
   </div>
 
+  <div class="title">
+    <span class="left">Source Destination Pairs</span>
+    <button class="right btn add-pair">
+      <span class="glyphicon glyphicon-plus-sign action-icon"></span>
+      <span>New</span>
+    </button>
+  </div>
+
   <div class="pairs-container">
-    <div class="title">
-      <span class="left">Source Destination Pairs</span>
-      <button class="right btn add-pair">
-        <span class="glyphicon glyphicon-plus-sign action-icon"></span>
-        <span>New</span>
-      </button>
-    </div>
-
-    <div class="well well-sm">
-      {{#each pairs}}
-        <div class="pair-container" data-index="{{@index}}">
-          <div class="source-container">
-            <span class="title">Url</span>
-
-            <div class="dropdown-container">
-              <select class="source-operator-select" data-key="source.operator">
-                <option value="{{RULE_OPERATORS.EQUALS}}" {{#equals source.operator RULE_OPERATORS.EQUALS}}selected{{/equals}}>Equals</option>
-                <option value="{{RULE_OPERATORS.CONTAINS}}" {{#equals source.operator RULE_OPERATORS.CONTAINS}}selected{{/equals}}>Contains</option>
-                <option value="{{RULE_OPERATORS.MATCHES}}" {{#equals source.operator RULE_OPERATORS.MATCHES}}selected{{/equals}}>Matches</option>
-              </select>
-            </div>
-
-            <input type="text" class="form-control source-value-input" data-key="source.value"
-               value="{{source.value}}" placeholder="{{sourcePlaceholder}}" />
-
-            <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
+    {{#each pairs}}
+      <div class="well well-sm pair-container" data-index="{{@index}}">
+        <div class="source-container">
+          <div class="dropdown-container">
+            <select class="source-operator-select" data-key="source.operator">
+              <option value="{{../RULE_OPERATORS.EQUALS}}" {{#equals source.operator ../RULE_OPERATORS.EQUALS}}selected{{/equals}}>Url Equals</option>
+              <option value="{{../RULE_OPERATORS.CONTAINS}}" {{#equals source.operator ../RULE_OPERATORS.CONTAINS}}selected{{/equals}}>Url Contains</option>
+              <option value="{{../RULE_OPERATORS.MATCHES}}" {{#equals source.operator ../RULE_OPERATORS.MATCHES}}selected{{/equals}}>Url Matches</option>
+            </select>
           </div>
 
-          <div class="input-group destination-container">
-            <span class="input-group-addon">Destination</span>
-            <input type="url" class="form-control destination-url-input" data-key="destination"
-               placeholder="{{destinationPlaceholder}}" value="{{destination}}">
-          </div>
+          <input type="text" class="form-control source-value-input" data-key="source.value"
+             value="{{source.value}}" placeholder="{{sourcePlaceholder}}" />
+
+          <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
+        </div>
+
+        <div class="input-group destination-container">
+          <span class="input-group-addon">Destination</span>
+          <input type="url" class="form-control destination-url-input" data-key="destination"
+             placeholder="{{destinationPlaceholder}}" value="{{destination}}">
         </div>
       </div>
-      {{/each}}
+    {{/each}}
     </div>
   </div>
 

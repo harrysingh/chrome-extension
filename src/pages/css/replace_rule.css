@@ -13,14 +13,8 @@
   width: 370px;
 }
 
-#replace-rule-editor .pair-container:first-child:last-child .delete-pair {
-  display: none;
-}
-
 #replace-rule-editor .pair-container .input-group {
   width: 350px;
-  display: inline-table;
-  padding: 10px 5px;
 }
 
 .replace-rule-editor .delete-pair {
