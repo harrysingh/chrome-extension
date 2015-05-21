@@ -9,10 +9,6 @@ describe('Base Rule Model', function() {
     expect(baseRuleModel.getStatus()).toBe(RQ.RULE_STATUS.ACTIVE);
   });
 
-  it('should have placeholders', function() {
-    expect(baseRuleModel.placeholders).toBeTruthy();
-  });
-
   it('should have empty id by default', function() {
     expect(baseRuleModel.getId()).toBeFalsy();
   });

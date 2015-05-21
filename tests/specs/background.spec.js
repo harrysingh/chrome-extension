@@ -1,8 +1,7 @@
 describe('Requestly Background Service', function() {
   var redirectRule,
     cancelRule,
-    headersRule,
-    replaceRule;
+    headersRule;
 
   var URL_SOURCES = {
     GOOGLE: 'http://www.google.com',
@@ -26,13 +25,18 @@ describe('Requestly Background Service', function() {
     beforeEach(function() {
       redirectRule = new RedirectRuleModel({
         name: 'Redirect Test Rule',
-        source: {
-          key: RQ.RULE_KEYS.URL,
-          operator: RQ.RULE_OPERATORS.EQUALS,
-          values: [ URL_SOURCES.GOOGLE ]
-        },
-        destination: URL_SOURCES.YAHOO
+        pairs: [
+          {
+            source: {
+              key: RQ.RULE_KEYS.URL,
+              operator: RQ.RULE_OPERATORS.EQUALS,
+              value: URL_SOURCES.GOOGLE
+            },
+            destination: URL_SOURCES.YAHOO
+          }
+        ]
       });
+
       cancelRule = new CancelRuleModel({
         name: 'Cancel Rule',
         source: {
@@ -49,32 +53,45 @@ describe('Requestly Background Service', function() {
     });
 
     it('should match Redirect Rule Source', function() {
-      // Equals Operator
-      redirectRule.setDestination(URL_SOURCES.YAHOO);
-      expect(BG.Methods.matchUrlWithRule(redirectRule.toJSON(), URL_SOURCES.GOOGLE)).toBe(URL_SOURCES.YAHOO);
+      var pair = redirectRule.getPairs()[0],
+        ruleType = redirectRule.getRuleType();
 
-      redirectRule.setDestination(URL_SOURCES.FACEBOOK);
-      expect(BG.Methods.matchUrlWithRule(redirectRule.toJSON(), URL_SOURCES.GOOGLE)).toBe(URL_SOURCES.FACEBOOK);
+      // Equals Operator
+      pair['destination'] = URL_SOURCES.YAHOO;
+      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination, ruleType, URL_SOURCES.GOOGLE))
+        .toBe(URL_SOURCES.YAHOO);
+
+      pair['destination'] = URL_SOURCES.FACEBOOK;
+      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination, ruleType, URL_SOURCES.GOOGLE))
+        .toBe(URL_SOURCES.FACEBOOK);
 
       // Contains Operator
-      redirectRule.setSourceOperator(RQ.RULE_OPERATORS.CONTAINS);
-      redirectRule.setSourceValue(KEYWORDS.GOOGLE);
-      expect(BG.Methods.matchUrlWithRule(redirectRule.toJSON(), URL_SOURCES.GOOGLE)).toBe(redirectRule.getDestination());
+      pair['source']['operator'] = RQ.RULE_OPERATORS.CONTAINS;
+      pair['source']['value'] = KEYWORDS.GOOGLE;
+      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination, ruleType, URL_SOURCES.GOOGLE))
+        .toBe(pair['destination']);
 
       // Matches Operator
-      redirectRule.setSourceOperator(RQ.RULE_OPERATORS.MATCHES);
-      redirectRule.setSourceValue('/TGT-([0-9]+)/gi');
-      redirectRule.setDestination(URL_SOURCES.REQUESTLY + '?query=TGT-$1');
+      pair['source']['operator'] = RQ.RULE_OPERATORS.MATCHES;
+      pair['source']['value'] = '/TGT-([0-9]+)/gi';
+      pair['destination'] = URL_SOURCES.REQUESTLY + '?query=TGT-$1';
 
-      expect(BG.Methods.matchUrlWithRule(redirectRule.toJSON(), URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-491'))
-        .toBe(URL_SOURCES.REQUESTLY + '?query=TGT-491');
-      expect(BG.Methods.matchUrlWithRule(redirectRule.toJSON(), URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-10419'))
-        .toBe(URL_SOURCES.REQUESTLY + '?query=TGT-10419');
+      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination,
+        ruleType, URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-491')).toBe(URL_SOURCES.REQUESTLY + '?query=TGT-491');
+
+      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination,
+        ruleType, URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-10419')).toBe(URL_SOURCES.REQUESTLY + '?query=TGT-10419');
     });
 
     it('should return null when Cancel Rule Source does not match with Url', function() {
-      expect(BG.Methods.matchUrlWithRule(cancelRule.toJSON(), URL_SOURCES.GOOGLE)).toBeNull();
-      expect(BG.Methods.matchUrlWithRule(cancelRule.toJSON(), URL_SOURCES.FACEBOOK)).not.toBeNull();
+      var source = cancelRule.getSource(),
+        ruleType = cancelRule.getRuleType(),
+        destination = null;
+
+      source.value = source.values[0];
+
+      expect(BG.Methods.matchUrlWithRule(source, destination, ruleType, URL_SOURCES.GOOGLE)).toBeNull();
+      expect(BG.Methods.matchUrlWithRule(source, destination, ruleType, URL_SOURCES.FACEBOOK)).not.toBeNull();
     });
   });
 
