@@ -45,7 +45,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-zipup');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
 
-  // grunt.registerTask('build', ['zipup']);
+  grunt.registerTask('build', ['handlebars', 'zipup']);
   grunt.registerTask('precompile-handlebars', ['handlebars']);
 };
 
