@@ -145,6 +145,11 @@ var BaseRuleEditorView = Backbone.View.extend({
     return this.alsoValidate();
   },
 
+  /**
+   * @Overridden To be Over-ridden by inherited editor to remove any additional fields added in model
+   */
+  removeAdditionalFields: function() { },
+
   saveRule: function() {
     var ts = this.model.getTimestamp(),
       ruleName = this.model.getName();
@@ -158,17 +163,21 @@ var BaseRuleEditorView = Backbone.View.extend({
       return false;
     }
 
-    this.model.save({ callback: function() {
-      RQ.router.navigate('', { trigger: true });
-      Backbone.trigger('notification', {
-        className: 'rq-success',
-        message: ruleName + ' has been saved successfully!!'
-      });
+    this.removeAdditionalFields();
 
-      // #34: User needs to refresh the page whenever rule status is changed
-      setTimeout(function() {
-        window.location.reload();
-      }, 2000 );
-    }});
+    this.model.save({
+      callback: function() {
+        RQ.router.navigate('', { trigger: true });
+        Backbone.trigger('notification', {
+          className: 'rq-success',
+          message: ruleName + ' has been saved successfully!!'
+        });
+
+        // #34: User needs to refresh the page whenever rule status is changed
+        setTimeout(function() {
+          window.location.reload();
+        }, 2000 );
+      }
+    });
   }
 });

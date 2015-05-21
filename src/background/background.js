@@ -6,55 +6,6 @@ BG.Methods.setupRules = function() {
   BG.Methods.registerListeners();
 };
 
-BG.Methods.matchUrlWithRule = function(rule, url) {
-  var source = rule.source,
-    operator = source.operator,
-    destinationUrl = rule.destination || '', // Destination Url is not present in all rule types
-    value = source.value;
-
-  /* In Redirect/Cancel Rules, source.values is an array.
-    Later point of time we want to have multiple sources instead of adding multiple values
-    So this needs to be changed.
-   */
-  if (rule.ruleType === RQ.RULE_TYPES.REDIRECT || rule.ruleType === RQ.RULE_TYPES.CANCEL) {
-    value = source.values[0];
-  }
-
-  switch (operator) {
-    case RQ.RULE_OPERATORS.EQUALS: if (value === url) { return destinationUrl; }
-      break;
-
-    case RQ.RULE_OPERATORS.CONTAINS: if (url.indexOf(value) !== -1) { return destinationUrl; }
-      break;
-
-    case RQ.RULE_OPERATORS.MATCHES: {
-      var regex = RQ.Utils.toRegex(value),
-        matches;
-
-      // Do not match when regex is invalid or regex does not match with Url
-      if (!regex || url.search(regex) === -1) {
-        return null;
-      }
-
-      matches = regex.exec(url) || [];
-
-      matches.forEach(function (matchValue, index) {
-        // First match is the full string followed by parentheses/group values
-        if (index === 0 || !matchValue) {
-          return;
-        }
-
-        // Replace all $index values in destinationUrl with the matched groups
-        destinationUrl = destinationUrl.replace(new RegExp('[\$]' + index, 'g'), matchValue);
-      });
-
-      return destinationUrl;
-    }
-  }
-
-  return null;
-};
-
 BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
   var pairs = rule.pairs,
     pair = null,
@@ -155,8 +106,59 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
   return isRuleApplied ? originalHeaders : null;
 };
 
+/**
+ * Checks if intercepted HTTP Request Url matches with any Rule
+ *
+ * @param sourceObject Object e.g. { key: 'Url', operator: 'Contains', value: 'google' }
+ * @param destination String e.g. 'http://www.google.com'
+ * @param ruleType
+ * @param url Url for which HTTP Request is intercepted.
+ *
+ * @returns String destinationUrl if Rule should be applied to intercepted Url else returns {code}null{/code}
+ */
+BG.Methods.matchUrlWithRule = function(sourceObject, destination, ruleType, url) {
+  var operator = sourceObject.operator,
+    destinationUrl = destination || '', // Destination Url is not present in all rule types
+    value = sourceObject.value;
+
+  switch (operator) {
+    case RQ.RULE_OPERATORS.EQUALS: if (value === url) { return destinationUrl; }
+      break;
+
+    case RQ.RULE_OPERATORS.CONTAINS: if (url.indexOf(value) !== -1) { return destinationUrl; }
+      break;
+
+    case RQ.RULE_OPERATORS.MATCHES: {
+      var regex = RQ.Utils.toRegex(value),
+        matches;
+
+      // Do not match when regex is invalid or regex does not match with Url
+      if (!regex || url.search(regex) === -1) {
+        return null;
+      }
+
+      matches = regex.exec(url) || [];
+
+      matches.forEach(function (matchValue, index) {
+        // First match is the full string followed by parentheses/group values
+        if (index === 0 || !matchValue) {
+          return;
+        }
+
+        // Replace all $index values in destinationUrl with the matched groups
+        destinationUrl = destinationUrl.replace(new RegExp('[\$]' + index, 'g'), matchValue);
+      });
+
+      return destinationUrl;
+    }
+  }
+
+  return null;
+};
+
 BG.Methods.modifyUrl = function(details) {
-  var resultingUrl;
+  var resultingUrl,
+    pairIndex;
 
   for (var i = 0; i < StorageService.records.length; i++) {
     var rule = StorageService.records[i];
@@ -167,9 +169,23 @@ BG.Methods.modifyUrl = function(details) {
 
     switch(rule.ruleType) {
       case RQ.RULE_TYPES.REDIRECT:
-        resultingUrl = BG.Methods.matchUrlWithRule(rule, details.url);
-        if (resultingUrl !== null) {
-          return { redirectUrl: resultingUrl };
+        // Introduce Pairs: Transform the Redirect Rule Model to new Model to support multiple entries (pairs)
+        if (typeof rule.source !== 'undefined' && typeof rule.destination !== 'undefined') {
+          rule.pairs = [{
+            source: { key: RQ.RULE_KEYS.URL, operator: rule.source.operator, value: rule.source.values[0] },
+            destination: rule.destination
+          }];
+
+          delete rule.source;
+          delete rule.destination;
+        }
+
+        for (pairIndex = 0; pairIndex < rule.pairs.length; pairIndex++) {
+          var pair = rule.pairs[pairIndex];
+          resultingUrl = BG.Methods.matchUrlWithRule(pair.source, pair.destination, rule.ruleType, details.url);
+          if (resultingUrl !== null) {
+            return { redirectUrl: resultingUrl };
+          }
         }
         break;
 
@@ -177,7 +193,9 @@ BG.Methods.modifyUrl = function(details) {
       * In case of Cancel Request, destination url is 'javascript:'
       */
       case RQ.RULE_TYPES.CANCEL:
-        resultingUrl = BG.Methods.matchUrlWithRule(rule, details.url);
+        // This should be fixed when Multiple Entries will be introduced in Cancel Rule
+        rule.source.value = rule.source.values[0];
+        resultingUrl = BG.Methods.matchUrlWithRule(rule.source, rule.destination, rule.ruleType, details.url);
         if (resultingUrl !== null) {
           return { redirectUrl: 'javascript:' };
         }

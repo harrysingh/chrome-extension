@@ -43,5 +43,14 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
     }
 
     return true;
+  },
+
+  removeAdditionalFields: function() {
+    var pairs = this.model.getPairs();
+
+    _.each(pairs, function(pair) {
+      delete pair['sourcePlaceholder'];
+      delete pair['destinationPlaceholder'];
+    });
   }
 });
