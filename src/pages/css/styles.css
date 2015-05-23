@@ -76,7 +76,7 @@ table {
   font-size: 16px;
   color: #fff;
   background: green;
-  padding: 5px 3px 5px 8px;
+  padding: 5px 0px 5px 8px;
   margin-right: 5px;
   border-radius: 2px;
 }
@@ -92,7 +92,16 @@ table {
 #forkme_banner {
   background: url('/resources/images/blacktocat.png') #0090ff no-repeat 95% 50%;
   border-radius: 2px;
-  padding: 10px 50px 10px 10px;
+  padding: -1px 50px 10px 0px;
+  position: fixed;
+  right:0px;
+}
+
+#Chrome_banner{
+ background: url('/resources/images/chrome_icon.png') green no-repeat 95% 50%;
+  border-radius: 2px;
+  padding: 7px 50px 7px 10px;
+  background-size:30px;
 }
 
 #chromestore_banner {
