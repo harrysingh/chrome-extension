@@ -78,7 +78,8 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
       }
 
       /* If Source Value does not exist or does not match, proceed with next pair */
-      if (modification.source.value && BG.Methods.matchUrlWithRule(modification, url) === null) {
+      if (modification.source.value
+        && BG.Methods.matchUrlWithRule(modification.source, null, RQ.RULE_TYPES.REDIRECT, url) === null) {
         continue;
       }
 
