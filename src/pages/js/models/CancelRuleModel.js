@@ -1,28 +1,14 @@
-var CancelRuleModel = BaseRuleModel.extend({
+/**
+ * Cancel Rule is a special type of Redirect Rule where destination is falsy (null | undefined | notset | '')
+ */
+var CancelRuleModel = RedirectRuleModel.extend({
   defaults: function() {
-    return _.extend(BaseRuleModel.prototype.defaults(), {
-      source: {
-        key: RQ.RULE_KEYS.URL,
-        operator: RQ.RULE_OPERATORS.EQUALS,
-        values: ['']
-      },
+    return _.extend(RedirectRuleModel.prototype.defaults(), {
       ruleType: RQ.RULE_TYPES.CANCEL
     });
   },
 
-  getSource: function() {
-    return this.get('source');
-  },
-
-  setSourceOperator: function(operator) {
-    var sourceObject = this.getSource();
-    sourceObject.operator = operator;
-    this.set('source', sourceObject);
-  },
-
-  setSourceValue: function(value, index) {
-    var sourceObject = this.getSource();
-    sourceObject.values[index] = value;
-    this.set('source', sourceObject);
+  isDeprecatedFormat: function() {
+    return typeof this.get('source') !== 'undefined';
   }
 });

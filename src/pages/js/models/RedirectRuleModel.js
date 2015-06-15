@@ -19,6 +19,13 @@ var RedirectRuleModel = BaseRuleModel.extend({
     }
   },
 
+  isDeprecatedFormat: function() {
+    var sourceObject = this.get('source'),
+      destination = this.get('destination');
+
+    return (typeof sourceObject !== 'undefined' && typeof destination !== 'undefined');
+  },
+
   introducePairs: function () {
     var pairs = this.getPairs(),
       defaultPair,
@@ -26,7 +33,7 @@ var RedirectRuleModel = BaseRuleModel.extend({
       destination = this.get('destination');
 
     // Add Pair if Redirect Rule contains Source and Destination instead of pair
-    if (typeof sourceObject !== 'undefined' && typeof destination !== 'undefined') {
+    if (this.isDeprecatedFormat()) {
       defaultPair = this.getDefaultPair();
       defaultPair['source']['value'] = sourceObject['values'][0];
       defaultPair['source']['operator'] = sourceObject['operator'];
