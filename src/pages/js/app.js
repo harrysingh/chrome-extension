@@ -6,7 +6,6 @@ RQ.Mixins = RQ.Mixins || {};
 RQ.Templates = {
   RULE_INDEX_TEMPLATE: $('#rule-index-template').html(),
   RULE_CARDS_TEMPLATE: $('#rule-cards-template').html(),
-  CANCEL_RULE_EDITOR_TEMPLATE: $('#cancel-rule-editor-template').html(),
   REPLACE_RULE_EDITOR_TEMPLATE: $('#replace-rule-editor-template').html(),
   HEADERS_EDITOR_TEMPLATE: $('#headers-editor-template').html()
 };
