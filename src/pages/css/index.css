@@ -58,6 +58,10 @@ table tr:hover td {
 }
 
 /* RuleType Row specific properties */
+.rule-item-row td:first-child {
+  vertical-align: top;
+}
+
 .rule-item-row .rule-type {
   border-radius: 3px;
   vertical-align: top;

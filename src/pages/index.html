@@ -29,6 +29,7 @@
         <table class="table table-striped">
           <thead>
             <tr>
+              <th><input type="checkbox" class="select-all-rules" title="Select All"/></th>
               <th>Name & Description</th>
               <th>Status</th>
               <th>Created on</th>
@@ -46,6 +47,9 @@
             date = date[1] + ' ' + date[2] + ', ' + date[3];
           %>
           <tr class="rule-item-row <%=ruleType.toLowerCase()%>" data-id="<%=id%>">
+            <td>
+              <input type="checkbox" class="select-rule"/>
+            </td>
             <td>
               <a class="ruleName"><%= RQ.htmlEncode(rule.getName()) %></a>
               <span class="rule-type badge"><%= RQ.htmlEncode(ruleType) %></span>
