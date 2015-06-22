@@ -10,8 +10,8 @@ var RuleIndexView = Backbone.View.extend({
     'click .delete-rule-icon': 'deleteRule',
     'click .select-all-rules': 'selectAllRules',
     'click .select-rule': 'selectRule',
-    'click .btn-export': 'exportAllRules',
-    'click .btn-import': 'importAllRules'
+    'click .btn-export': 'exportRules',
+    'click .btn-import': 'importRules'
   },
 
   initialize: function() {
@@ -135,13 +135,15 @@ var RuleIndexView = Backbone.View.extend({
 
     return this.rulesCollection.get(id);
   },
+  exportRules: function() {
+    var selectedRules = this.getSelectedRules(),
+      rules = selectedRules.length ? selectedRules : this.rulesCollection.models;
 
-  exportAllRules: function() {
-    var rules = _.pluck(this.getSelectedRules(), 'attributes');
-    Backbone.trigger('file:save', JSON.stringify(rules), 'requestly_rules');
+    var rulesAttributes = _.pluck(rules, 'attributes');
+    Backbone.trigger('file:save', JSON.stringify(rulesAttributes), 'requestly_rules');
   },
 
-  importAllRules: function() {
+  importRules: function() {
     var that = this;
 
     Backbone.trigger('file:load', function(data) {
