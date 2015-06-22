@@ -8,8 +8,8 @@ var RuleIndexView = Backbone.View.extend({
     'click .ruleName': 'showRuleEditor',
     'click .toggle-status-icon': 'toggleStatus',
     'click .delete-rule-icon': 'deleteRule',
-    'click .select-all-rules': 'selectAllRules',
-    'click .select-rule': 'selectRule',
+    'click .select-all-rules-checkbox': 'selectAllRules',
+    'click .select-rule-checkbox': 'selectRule',
     'click .btn-export': 'exportRules',
     'click .btn-import': 'importRules'
   },
@@ -108,18 +108,18 @@ var RuleIndexView = Backbone.View.extend({
 
   selectAllRules: function(event) {
     var isChecked = $(event.currentTarget).is(':checked');
-    $('.select-rule').prop('checked', isChecked);
+    $('.select-rule-checkbox').prop('checked', isChecked);
   },
 
   selectRule: function(event) {
     var isChecked = $(event.currentTarget).is(':checked');
     if (!isChecked) {
-      $('.select-all-rules').prop('checked', false);
+      $('.select-all-rules-checkbox').prop('checked', false);
     }
   },
 
   getSelectedRules: function() {
-    var $selectedRows = $('.select-rule:checked').closest('.rule-item-row'),
+    var $selectedRows = $('.select-rule-checkbox:checked').closest('.rule-item-row'),
       rules = [];
 
     _.each($selectedRows, function(row) {
@@ -131,10 +131,11 @@ var RuleIndexView = Backbone.View.extend({
 
   getRuleFromRow: function(row) {
     var $row = $(row),
-      id = $row.data('id');
+      ruleId = $row.data('id');
 
-    return this.rulesCollection.get(id);
+    return this.rulesCollection.get(ruleId);
   },
+
   exportRules: function() {
     var selectedRules = this.getSelectedRules(),
       rules = selectedRules.length ? selectedRules : this.rulesCollection.models;

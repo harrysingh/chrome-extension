@@ -58,13 +58,14 @@ table tr:hover td {
 }
 
 /* RuleType Row specific properties */
-.rule-item-row td:first-child {
-  vertical-align: top;
+.rule-selection-cell {
+  vertical-align: top !important;
 }
 
 .rule-item-row .rule-type {
   border-radius: 3px;
   vertical-align: top;
+  line-height: 1.5rem;
 }
 
 .redirect.rule-item-row .rule-type {
