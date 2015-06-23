@@ -179,3 +179,7 @@ table {
 .content .rule-body {
   padding: 16px;
 }
+
+.margin-r-0-5 {
+  margin-right: 0.5rem;
+}

@@ -5,7 +5,7 @@ var RuleCardsView = Backbone.View.extend({
   },
 
   events: {
-    'click .select-icon': 'selectRule'
+    'click .panel': 'selectRule'
   },
 
   render: function(options) {
@@ -18,13 +18,9 @@ var RuleCardsView = Backbone.View.extend({
   },
 
   selectRule: function(event) {
-    var $panel = $(event.target).parents('.panel'),
+    var $panel = $(event.currentTarget),
       ruleEditorRoute = $panel.attr('data-target');
 
-    this.$el.find('.panel').removeClass('selected');
-    $panel.toggleClass('selected');
-
-    this.$el.find('.create-rule-button')
-      .attr({ href: ruleEditorRoute, disabled: false });
+    RQ.router.navigate(ruleEditorRoute, true);
   }
 });

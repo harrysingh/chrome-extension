@@ -16,13 +16,16 @@
     <script type="text/template" id="rule-index-template">
       <nav class="rule-header rq-dimgrey">
         <span>Rules</span>
-        <span>(<%= rules.length %>)</span>
+        <span class="rules-number badge"><%= rules.length %></span>
         <div class="right">
-          <a href="#selectRule" role="button" class="btn-success btn select-rule-button">New Rule</a>
+          <a href="#selectRule" role="button" class="btn-success btn select-rule-button">
+            <span class="glyphicon glyphicon-plus margin-r-0-5" aria-hidden="true"></span>New Rule</a>
           <% if (rules.length > 0) { %>
-            <button class="btn-info btn-export btn export-rules-button">Export Rules</button>
+            <button class="btn-info btn-export btn export-rules-button">
+              <span class="glyphicon glyphicon-export margin-r-0-5" aria-hidden="true"></span>Export</button>
           <% } %>
-          <button class="btn-info btn-import btn import-rules-button">Import Rules</button>
+          <button class="btn-info btn-import btn import-rules-button">
+            <span class="glyphicon glyphicon-import margin-r-0-5" aria-hidden="true"></span>Import</button>
         </div>
       </nav>
       <section class="rule-index">
@@ -50,7 +53,7 @@
           %>
           <tr class="rule-item-row <%=ruleType.toLowerCase()%>" data-id="<%=id%>">
             <td class="rule-selection-cell">
-              <input type="checkbox" class="select-rule-checkbox"/>
+              <input type="checkbox" class="select-rule-checkbox" title="Select Rule"/>
             </td>
             <td>
               <a class="ruleName"><%= RQ.htmlEncode(rule.getName()) %></a>
@@ -64,7 +67,7 @@
             </td>
             <td><%= RQ.htmlEncode(date) %></td>
             <td>
-              <span class="glyphicon glyphicon-trash delete-rule-icon action-icon"></span>
+              <span class="glyphicon glyphicon-trash delete-rule-icon action-icon" title="Delete Rule"></span>
             </td>
           </tr>
           <% }); %>
@@ -76,6 +79,7 @@
     <!-- Cancel Rule Editor -->
     <script type="text/template" id="cancel-rule-editor-template">
       <nav class="rule-header">
+        <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
         <span>Cancel Request Rule</span>
       </nav>
       <section class="rule-body">
@@ -89,7 +93,7 @@
           <span class="title">Status</span>
           <span class="dropdown-container">
             <select class="rule-status-select">
-              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" "<% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %>">
+              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" <% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %> >
               Active
               </option>
               <option value="<%= RQ.RULE_STATUS.INACTIVE %>" <% if(status === RQ.RULE_STATUS.INACTIVE) { %> selected <% } %> >
@@ -111,7 +115,7 @@
           <div class="well well-sm">
             <div class="dropdown-container">
               <select class="rule-operator-select">
-                <option value="<%= RQ.RULE_OPERATORS.EQUALS %>" "<% if(source.operator === RQ.RULE_OPERATORS.EQUALS) { %> selected <% } %>">
+                <option value="<%= RQ.RULE_OPERATORS.EQUALS %>" <% if(source.operator === RQ.RULE_OPERATORS.EQUALS) { %> selected <% } %> >
                 Equals
                 </option>
                 <option value="<%= RQ.RULE_OPERATORS.CONTAINS %>" <% if(source.operator === RQ.RULE_OPERATORS.CONTAINS) { %> selected <% } %> >
@@ -139,6 +143,7 @@
     <!-------------------------------- Replace Rule Editor Template ------------------------------------->
     <script type="text/template" id="replace-rule-editor-template">
       <nav class="rule-header">
+        <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
         <span>Replace Host or some part of URL</span>
       </nav>
       <section class="rule-body">
@@ -152,7 +157,7 @@
           <span class="title">Status</span>
           <span class="dropdown-container">
             <select class="rule-status-select">
-              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" "<% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %>">
+              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" <% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %> >
               Active
               </option>
               <option value="<%= RQ.RULE_STATUS.INACTIVE %>" <% if(status === RQ.RULE_STATUS.INACTIVE) { %> selected <% } %> >
@@ -209,6 +214,7 @@
     <!-------------------------------- Headers Rule Editor Template ------------------------------------->
     <script type="text/template" id="headers-editor-template">
       <nav class="rule-header">
+        <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
         <span>Modify Headers in HTTP Request and Response</span>
       </nav>
       <section class="rule-body">
@@ -229,7 +235,7 @@
           <span class="title">Status</span>
           <span class="dropdown-container">
             <select class="rule-status-select">
-              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" "<% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %>">
+              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" <% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %> >
               Active
               </option>
               <option value="<%= RQ.RULE_STATUS.INACTIVE %>" <% if(status === RQ.RULE_STATUS.INACTIVE) { %> selected <% } %> >
@@ -312,7 +318,7 @@
 
                 <div class="dropdown-container">
                   <select class="source-operator-select" data-key="source.operator">
-                    <option value="<%= RQ.RULE_OPERATORS.EQUALS %>" "<% if (sourceOperator === RQ.RULE_OPERATORS.EQUALS) { %> selected <% } %>">
+                    <option value="<%= RQ.RULE_OPERATORS.EQUALS %>" <% if (sourceOperator === RQ.RULE_OPERATORS.EQUALS) { %> selected <% } %> >
                     Equals
                     </option>
                     <option value="<%= RQ.RULE_OPERATORS.CONTAINS %>" <% if (sourceOperator === RQ.RULE_OPERATORS.CONTAINS) { %> selected <% } %> >
@@ -345,15 +351,14 @@
 
     <script type="text/template" id="rule-cards-template">
       <nav class="rule-header rq-dimgrey">
+        <a href="#" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
         <span>Select Rule</span>
-        <a href="#selectRule" role="button" disabled class="btn-success btn right create-rule-button">Create Rule</a>
       </nav>
       <section class="rule-body">
         <div class="panel panel-redirect-rule" data-target="#new/Redirect">
           <div class="panel-heading">
             <h3 class="panel-title">
               <span>Redirect Request</span>
-              <span class="glyphicon glyphicon-ok select-icon"></span>
             </h3>
           </div>
           <div class="panel-body">
@@ -365,7 +370,6 @@
           <div class="panel-heading">
             <h3 class="panel-title">
               <span>Cancel Request</span>
-              <span class="glyphicon glyphicon-ok select-icon"></span>
             </h3>
           </div>
           <div class="panel-body">
@@ -377,7 +381,6 @@
           <div class="panel-heading">
             <h3 class="panel-title">
               <span>Replace Host</span>
-              <span class="glyphicon glyphicon-ok select-icon"></span>
             </h3>
           </div>
           <div class="panel-body">
@@ -389,7 +392,6 @@
           <div class="panel-heading">
             <h3 class="panel-title">
               <span>Modify Headers</span>
-              <span class="glyphicon glyphicon-ok select-icon"></span>
             </h3>
           </div>
           <div class="panel-body">
