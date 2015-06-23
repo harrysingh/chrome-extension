@@ -1,5 +1,4 @@
 .select-rule-button,
-.create-rule-button,
 .export-rules-button,
 .import-rules-button {
   position: relative;
@@ -62,10 +61,15 @@ table tr:hover td {
   vertical-align: top !important;
 }
 
+.rule-selection-cell input {
+  cursor: pointer;
+}
+
 .rule-item-row .rule-type {
   border-radius: 3px;
   vertical-align: top;
   line-height: 1.5rem;
+  margin-left: 1rem;
 }
 
 .redirect.rule-item-row .rule-type {
@@ -102,4 +106,12 @@ table tr:hover td {
 
 .toggle-status-icon.inactive {
   color: #ccc;
+}
+
+.rule-header > span {
+  font-weight: bold;
+}
+
+.rules-number {
+  background-color: lightseagreen;
 }
