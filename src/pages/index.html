@@ -28,7 +28,15 @@
       <section class="rule-index">
         <table class="table table-striped">
           <thead>
-          <tr><th>Name & Description</th><th>Type</th><th>Status</th><th>Created on</th><th></th></tr>
+            <tr>
+              <th class="rule-selection-cell">
+                <input type="checkbox" class="select-all-rules-checkbox" title="Select All"/>
+              </th>
+              <th>Name & Description</th>
+              <th>Status</th>
+              <th>Created on</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
           <% _.each(rules, function(rule, index) {
@@ -41,11 +49,14 @@
             date = date[1] + ' ' + date[2] + ', ' + date[3];
           %>
           <tr class="rule-item-row <%=ruleType.toLowerCase()%>" data-id="<%=id%>">
+            <td class="rule-selection-cell">
+              <input type="checkbox" class="select-rule-checkbox"/>
+            </td>
             <td>
               <a class="ruleName"><%= RQ.htmlEncode(rule.getName()) %></a>
+              <span class="rule-type badge"><%= RQ.htmlEncode(ruleType) %></span>
               <div class="ruleDescription"><%= RQ.htmlEncode(rule.getDescription()) %></div>
             </td>
-            <td><%= RQ.htmlEncode(ruleType) %></td>
             <td class="status-cell"><%= RQ.htmlEncode(ruleStatus) %>
                 <span class="glyphicon glyphicon-ok-sign <%= ruleStatus %> <%= ruleType %> toggle-status-icon"
                       title="Click to toggle Rule Status">

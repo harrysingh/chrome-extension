@@ -8,8 +8,10 @@ var RuleIndexView = Backbone.View.extend({
     'click .ruleName': 'showRuleEditor',
     'click .toggle-status-icon': 'toggleStatus',
     'click .delete-rule-icon': 'deleteRule',
-    'click .btn-export': 'exportAllRules',
-    'click .btn-import': 'importAllRules'
+    'click .select-all-rules-checkbox': 'selectAllRules',
+    'click .select-rule-checkbox': 'selectRule',
+    'click .btn-export': 'exportRules',
+    'click .btn-import': 'importRules'
   },
 
   initialize: function() {
@@ -43,11 +45,20 @@ var RuleIndexView = Backbone.View.extend({
     RQ.router.navigate('/edit/' + id, { trigger: true });
   },
 
+  reloadPage: function(wait) {
+    wait = wait || 0;
+
+    setTimeout(function() {
+      window.location.reload();
+    }, wait);
+  },
+
   toggleStatus: function(event) {
     var $ruleItemRow = $(event.target).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
-      ruleStatus;
+      ruleStatus,
+      that = this;
 
     if (ruleModel.getStatus() === RQ.RULE_STATUS.ACTIVE) {
       ruleModel.setStatus(RQ.RULE_STATUS.INACTIVE);
@@ -65,9 +76,7 @@ var RuleIndexView = Backbone.View.extend({
         });
 
         // #34: User needs to refresh the page whenever rule status is changed
-        setTimeout(function() {
-          window.location.reload();
-        }, 2000 );
+        that.reloadPage(2000);
       }
     });
     return false;
@@ -89,9 +98,7 @@ var RuleIndexView = Backbone.View.extend({
           });
 
           // #34: User needs to refresh the page whenever rule is changed
-          setTimeout(function() {
-            window.location.reload();
-          }, 2000 );
+          that.reloadPage(2000);
         }
       });
     }
@@ -99,12 +106,45 @@ var RuleIndexView = Backbone.View.extend({
     return false;
   },
 
-  exportAllRules: function() {
-    var rules = _.pluck(this.rulesCollection.models, 'attributes');
-    Backbone.trigger('file:save', JSON.stringify(rules), 'requestly_rules');
+  selectAllRules: function(event) {
+    var isChecked = $(event.currentTarget).is(':checked');
+    $('.select-rule-checkbox').prop('checked', isChecked);
   },
 
-  importAllRules: function() {
+  selectRule: function(event) {
+    var isChecked = $(event.currentTarget).is(':checked');
+    if (!isChecked) {
+      $('.select-all-rules-checkbox').prop('checked', false);
+    }
+  },
+
+  getSelectedRules: function() {
+    var $selectedRows = $('.select-rule-checkbox:checked').closest('.rule-item-row'),
+      rules = [];
+
+    _.each($selectedRows, function(row) {
+      rules.push(this.getRuleFromRow(row));
+    }, this);
+
+    return rules;
+  },
+
+  getRuleFromRow: function(row) {
+    var $row = $(row),
+      ruleId = $row.data('id');
+
+    return this.rulesCollection.get(ruleId);
+  },
+
+  exportRules: function() {
+    var selectedRules = this.getSelectedRules(),
+      rules = selectedRules.length ? selectedRules : this.rulesCollection.models;
+
+    var rulesAttributes = _.pluck(rules, 'attributes');
+    Backbone.trigger('file:save', JSON.stringify(rulesAttributes), 'requestly_rules');
+  },
+
+  importRules: function() {
     var that = this;
 
     Backbone.trigger('file:load', function(data) {
@@ -113,7 +153,7 @@ var RuleIndexView = Backbone.View.extend({
         var ruleModel = new BaseRuleModel(rule);
         ruleModel.save();
       });
-      that.rulesCollection.add(rules, { remove: false });
+      that.reloadPage();
     });
   }
 });
