@@ -109,13 +109,17 @@ var RuleIndexView = Backbone.View.extend({
   selectAllRules: function(event) {
     var isChecked = $(event.currentTarget).is(':checked');
     $('.select-rule-checkbox').prop('checked', isChecked);
+    $('.rule-item-row').toggleClass('selected', isChecked);
   },
 
   selectRule: function(event) {
-    var isChecked = $(event.currentTarget).is(':checked');
+    var $checkbox = $(event.currentTarget),
+      isChecked = $checkbox.is(':checked');
+
     if (!isChecked) {
       $('.select-all-rules-checkbox').prop('checked', false);
     }
+    $checkbox.closest('.rule-item-row').toggleClass('selected', isChecked);
   },
 
   getSelectedRules: function() {
