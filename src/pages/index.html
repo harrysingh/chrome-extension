@@ -2,6 +2,7 @@
   <head>
     <title>Requestly - Play with Network Calls</title>
     <link href="/src/libs/css/bootstrap.css" rel="stylesheet">
+    <link href="/src/libs/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link href="/src/pages/css/styles.css" rel="stylesheet">
     <link href="/src/pages/css/index.css" rel="stylesheet">
     <link href="/src/pages/css/editor.css" rel="stylesheet">
@@ -36,7 +37,7 @@
                 <input type="checkbox" class="select-all-rules-checkbox" title="Select All"/>
               </th>
               <th>Name & Description</th>
-              <th>Status</th>
+              <th class="status-cell">Status</th>
               <th>Created on</th>
               <th></th>
             </tr>
@@ -60,10 +61,12 @@
               <span class="rule-type badge"><%= RQ.htmlEncode(ruleType) %></span>
               <div class="ruleDescription"><%= RQ.htmlEncode(rule.getDescription()) %></div>
             </td>
-            <td class="status-cell"><%= RQ.htmlEncode(ruleStatus) %>
-                <span class="glyphicon glyphicon-ok-sign <%= ruleStatus %> <%= ruleType %> toggle-status-icon"
-                      title="Click to toggle Rule Status">
-                </span>
+            <td class="status-cell">
+              <span title="Click to toggle Rule Status">
+                <input type="checkbox" data-toggle="toggle" class="status-toggle <%= ruleType %>"
+                  data-on="<%= RQ.RULE_STATUS.ACTIVE %>" data-off="<%= RQ.RULE_STATUS.INACTIVE %>"
+                  <% if (ruleStatus === RQ.RULE_STATUS.ACTIVE) {%> checked <%}%> />
+              </span>
             </td>
             <td><%= RQ.htmlEncode(date) %></td>
             <td>
@@ -83,24 +86,21 @@
         <span>Cancel Request Rule</span>
       </nav>
       <section class="rule-body">
-        <div class="input-group name-container">
-          <span class="input-group-addon">Rule Name</span>
-          <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">
-        </div>
+        <div class="name-status-container">
+          <div class="input-group name-container">
+            <span class="input-group-addon">Rule Name</span>
+            <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">
+          </div>
 
-        <% var status = rule.getStatus() %>
-        <div class="rule-status-container">
-          <span class="title">Status</span>
-          <span class="dropdown-container">
-            <select class="rule-status-select">
-              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" <% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %> >
-              Active
-              </option>
-              <option value="<%= RQ.RULE_STATUS.INACTIVE %>" <% if(status === RQ.RULE_STATUS.INACTIVE) { %> selected <% } %> >
-              Inactive
-              </option>
-            </select>
-          </span>
+          <% var status = rule.getStatus() %>
+          <div class="rule-status-container">
+            <span class="title margin-r-0-5">Status</span>
+            <span title="Click to toggle Rule Status">
+              <input type="checkbox" data-toggle="toggle" class="status-toggle cancel"
+                data-on="<%= RQ.RULE_STATUS.ACTIVE %>" data-off="<%= RQ.RULE_STATUS.INACTIVE %>"
+                <% if (status === RQ.RULE_STATUS.ACTIVE) {%> checked <%}%> />
+            </span>
+          </div>
         </div>
 
         <div class="description-container">
@@ -147,24 +147,21 @@
         <span>Replace Host or some part of URL</span>
       </nav>
       <section class="rule-body">
-        <div class="input-group name-container">
-          <span class="input-group-addon">Rule Name</span>
-          <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">
-        </div>
+        <div class="name-status-container">
+          <div class="input-group name-container">
+            <span class="input-group-addon">Rule Name</span>
+            <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">
+          </div>
 
-        <% var status = rule.getStatus() %>
-        <div class="rule-status-container">
-          <span class="title">Status</span>
-          <span class="dropdown-container">
-            <select class="rule-status-select">
-              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" <% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %> >
-              Active
-              </option>
-              <option value="<%= RQ.RULE_STATUS.INACTIVE %>" <% if(status === RQ.RULE_STATUS.INACTIVE) { %> selected <% } %> >
-              Inactive
-              </option>
-            </select>
-          </span>
+          <% var status = rule.getStatus() %>
+          <div class="rule-status-container">
+            <span class="title margin-r-0-5">Status</span>
+            <span title="Click to toggle Rule Status">
+              <input type="checkbox" data-toggle="toggle" class="status-toggle replace"
+                data-on="<%= RQ.RULE_STATUS.ACTIVE %>" data-off="<%= RQ.RULE_STATUS.INACTIVE %>"
+                <% if (status === RQ.RULE_STATUS.ACTIVE) {%> checked <%}%> />
+            </span>
+          </div>
         </div>
 
         <div class="description-container">
@@ -225,24 +222,21 @@
           </p>
         </div>
 
-        <div class="input-group name-container">
-          <span class="input-group-addon">Rule Name</span>
-          <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">
-        </div>
+        <div class="name-status-container">
+          <div class="input-group name-container">
+            <span class="input-group-addon">Rule Name</span>
+            <input type="text" class="form-control rule-name-input" placeholder="" value="<%=rule.getName()%>">
+          </div>
 
-        <% var status = rule.getStatus() %>
-        <div class="rule-status-container">
-          <span class="title">Status</span>
-          <span class="dropdown-container">
-            <select class="rule-status-select">
-              <option value="<%= RQ.RULE_STATUS.ACTIVE %>" <% if(status === RQ.RULE_STATUS.ACTIVE) { %> selected <% } %> >
-              Active
-              </option>
-              <option value="<%= RQ.RULE_STATUS.INACTIVE %>" <% if(status === RQ.RULE_STATUS.INACTIVE) { %> selected <% } %> >
-              Inactive
-              </option>
-            </select>
-          </span>
+          <% var status = rule.getStatus() %>
+          <div class="rule-status-container">
+            <span class="title margin-r-0-5">Status</span>
+            <span title="Click to toggle Rule Status">
+              <input type="checkbox" data-toggle="toggle" class="status-toggle headers"
+                data-on="<%= RQ.RULE_STATUS.ACTIVE %>" data-off="<%= RQ.RULE_STATUS.INACTIVE %>"
+                <% if (status === RQ.RULE_STATUS.ACTIVE) {%> checked <%}%> />
+            </span>
+          </div>
         </div>
 
         <div class="description-container">
@@ -430,6 +424,7 @@
     <script type="text/javascript" src="/src/libs/underscore-1.6.0.js"></script>
     <script type="text/javascript" src="/src/libs/backbone-1.1.2.js"></script>
     <script type="text/javascript" src="/src/libs/handlebars.runtime-v3.0.3.js"></script>
+    <script type="text/javascript" src="/src/libs/bootstrap-toggle.min.js"></script>
 
     <script type="text/javascript" src="/src/Shared/shared.js"></script>
     <script type="text/javascript" src="/src/Shared/utils.js"></script>

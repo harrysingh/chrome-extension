@@ -2,7 +2,7 @@ var BaseRuleEditorView = Backbone.View.extend({
 
   events: {
     'keyup .rule-name-input': 'updateRuleName',
-    'change .rule-status-select': 'updateRuleStatus',
+    'change .status-toggle': 'updateRuleStatus',
     'keyup .rule-description': 'updateRuleDescription',
     'click .add-pair': 'addPair',
     'click .delete-pair': 'deletePair',
@@ -53,8 +53,11 @@ var BaseRuleEditorView = Backbone.View.extend({
     every editor view has to provide its own template by getTemplate method */
     this.template = options.template || this.getTemplate();
 
-    var markup = this.getMarkup(this.template);
-    $(this.el).html(markup);
+    var markup = this.getMarkup(this.template),
+      $el = $(this.el);
+
+    $el.html(markup);
+    $el.find('.status-toggle').bootstrapToggle();
   },
 
   updateRuleName: function(event) {
@@ -62,7 +65,8 @@ var BaseRuleEditorView = Backbone.View.extend({
   },
 
   updateRuleStatus: function(event) {
-    this.model.setStatus(event.target.selectedOptions[0].value);
+    var status = $(event.currentTarget).is(':checked') ? RQ.RULE_STATUS.ACTIVE : RQ.RULE_STATUS.INACTIVE;
+    this.model.setStatus(status);
   },
 
   updateRuleDescription: function(event) {

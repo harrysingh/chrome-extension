@@ -45,6 +45,7 @@
 
 .status-cell {
   width: 110px;
+  text-align: center;
 }
 
 table tr:hover td {
