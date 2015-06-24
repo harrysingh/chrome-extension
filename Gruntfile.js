@@ -13,7 +13,7 @@ module.exports = function (grunt) {
         appName: 'Requestly',
         version: '3.3.6',
         files: [
-          { cwd: 'src', src: '**', expand: true, dest: 'src' },
+          { cwd: 'src', src: ['**', '!pages/**/*.hbs'], expand: true, dest: 'src' },
           { cwd: 'resources', src: '**', expand: true, dest: 'resources' },
           { src: 'manifest.json'}
         ],
@@ -36,7 +36,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'src/pages/templates.js': 'src/pages/templates/RedirectRuleEditor.hbs'
+          'src/pages/templates.hbs.js': 'src/pages/templates/*.hbs'
         }
       }
     }
@@ -46,6 +46,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-handlebars');
 
   grunt.registerTask('build', ['handlebars', 'zipup']);
-  grunt.registerTask('precompile-handlebars', ['handlebars']);
+  grunt.registerTask('templates', ['handlebars']);
 };
-
