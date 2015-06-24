@@ -1,5 +1,4 @@
 .select-rule-button,
-.create-rule-button,
 .export-rules-button,
 .import-rules-button {
   position: relative;
@@ -46,6 +45,7 @@
 
 .status-cell {
   width: 110px;
+  text-align: center;
 }
 
 table tr:hover td {
@@ -62,10 +62,15 @@ table tr:hover td {
   vertical-align: top !important;
 }
 
+.rule-selection-cell input {
+  cursor: pointer;
+}
+
 .rule-item-row .rule-type {
   border-radius: 3px;
   vertical-align: top;
   line-height: 1.5rem;
+  margin-left: 1rem;
 }
 
 .redirect.rule-item-row .rule-type {
@@ -84,22 +89,10 @@ table tr:hover td {
   background-color: #dd9d12;
 }
 
-.redirect .toggle-status-icon.redirect.active {
-  color: #5B9027;
+.rule-header > span {
+  font-weight: bold;
 }
 
-.cancel .toggle-status-icon.cancel.active {
-  color: #d32a0e;
-}
-
-.replace .toggle-status-icon.replace.active {
-  color: #2A95E7;
-}
-
-.headers .toggle-status-icon.headers.active {
-  color: #dd9d12;
-}
-
-.toggle-status-icon.inactive {
-  color: #ccc;
+.rules-number {
+  background-color: lightseagreen;
 }

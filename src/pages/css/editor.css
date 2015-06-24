@@ -1,3 +1,7 @@
+.name-status-container {
+  height: 6rem;
+}
+
 .name-container {
   width: 590px;
   float: left;

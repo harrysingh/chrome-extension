@@ -179,3 +179,46 @@ table {
 .content .rule-body {
   padding: 16px;
 }
+
+.margin-r-0-5 {
+  margin-right: 0.5rem;
+}
+
+/* customization of bootstrap toggle component */
+.toggle {
+  min-height: 1rem !important;
+  min-width: 1rem !important;
+  width: 80px !important;
+  height: 25px !important;
+  background-color: #adadad !important;
+  border-color: #adadad !important;
+}
+
+.toggle-group label {
+  padding-top: 1px;
+  padding-bottom: 0;
+}
+
+.toggle-group .toggle-off.btn {
+  padding-left: 20px;
+}
+
+.toggle-group .toggle-on.btn {
+  padding-right: 20px;
+}
+
+.status-toggle.redirect + .toggle-group .toggle-on.btn {
+  background-color: #5B9027;
+}
+
+.status-toggle.cancel + .toggle-group .toggle-on.btn {
+  background-color: #d32a0e;
+}
+
+.status-toggle.replace + .toggle-group .toggle-on.btn {
+  background-color: #2A95E7;
+}
+
+.status-toggle.headers + .toggle-group .toggle-on.btn {
+  background-color: #dd9d12;
+}
