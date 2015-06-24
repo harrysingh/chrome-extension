@@ -14,12 +14,11 @@
 
     <td>
       <div class="rule-status-container">
-        <span class="title">Status</span>
-        <span class="dropdown-container">
-          <select class="rule-status-select">
-            <option value="{{RULE_STATUS.ACTIVE}}" {{#equals status RULE_STATUS.ACTIVE}}selected{{/equals}}>Active</option>
-            <option value="{{RULE_STATUS.INACTIVE}}" {{#equals status RULE_STATUS.INACTIVE}}selected{{/equals}}>Inactive</option>
-          </select>
+        <span class="title margin-r-0-5">Status</span>
+        <span title="Click to toggle Rule Status">
+          <input type="checkbox" data-toggle="toggle" class="status-toggle redirect"
+            data-on="{{RULE_STATUS.ACTIVE}}" data-off="{{RULE_STATUS.INACTIVE}}"
+            {{#equals status RULE_STATUS.ACTIVE}}checked{{/equals}} />
         </span>
       </div>
     </td>

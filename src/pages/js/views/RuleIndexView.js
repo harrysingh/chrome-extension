@@ -6,7 +6,7 @@ var RuleIndexView = Backbone.View.extend({
 
   events: {
     'click .ruleName': 'showRuleEditor',
-    'click .toggle-status-icon': 'toggleStatus',
+    'change .status-toggle': 'toggleStatus',
     'click .delete-rule-icon': 'deleteRule',
     'click .select-all-rules-checkbox': 'selectAllRules',
     'click .select-rule-checkbox': 'selectRule',
@@ -36,6 +36,7 @@ var RuleIndexView = Backbone.View.extend({
       var markup = _.template(this.Template(), { rules: this.rulesCollection.models });
       this.$el.html(markup);
     }
+    $('.status-toggle').bootstrapToggle();
   },
 
   showRuleEditor: function(event) {
@@ -54,7 +55,7 @@ var RuleIndexView = Backbone.View.extend({
   },
 
   toggleStatus: function(event) {
-    var $ruleItemRow = $(event.target).parents('.rule-item-row'),
+    var $ruleItemRow = $(event.currentTarget).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
       ruleStatus,
