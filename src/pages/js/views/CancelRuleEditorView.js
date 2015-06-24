@@ -2,18 +2,17 @@ var CancelRuleEditorView = RedirectRuleEditorView.extend({
 
   Model: CancelRuleModel,
 
-  Mixins: [ RQ.Mixins.InputValidation ],
-
   id: 'cancel-rule-editor',
 
   getTemplate: function() {
     return RQ.Templates.CancelRuleEditor;
   },
 
-  events: _.extend(BaseRuleEditorView.prototype.events, {
-    'keyup .pair-container input': 'updateRulePair',
-    'change .pair-container select': 'updateRulePair'
-  }),
+  isValidPair: function(pair) {
+    var source = pair['source'];
+
+    return this.validateSourceField(source.operator, source.value);
+  },
 
   removeAdditionalFields: function() {
     var pairs = this.model.getPairs();

@@ -19,22 +19,22 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
     'change .pair-container select': 'updateRulePair'
   }),
 
+  isValidPair: function(pair) {
+    var source = pair['source'],
+      destinationField = pair['destination'];
+
+    return this.validateSourceField(source.operator, source.value)
+      && this.validateDestinationField(source.operator, destinationField);
+  },
+
   alsoValidate: function() {
     var pairs = this.model.getPairs(),
       pairIndex,
       inValidPairIndex = -1,
-      pair,
-      source,
-      isValid,
-      destinationField;
+      isValid;
 
     for (pairIndex = 0; pairIndex < pairs.length; pairIndex++) {
-      pair = pairs[ pairIndex ];
-      source = pair['source'];
-      destinationField = pair['destination'];
-
-      isValid = this.validateSourceField(source.operator, source.value) &&
-                this.validateDestinationField(source.operator, destinationField);
+      isValid = this.isValidPair(pairs[pairIndex]);
 
       if (!isValid) {
         inValidPairIndex = pairIndex;
