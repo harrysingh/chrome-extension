@@ -3,6 +3,7 @@
  * [0] http://gruntjs.com/getting-started to install grunt-cli
  * [1]: https://github.com/01org/grunt-zipup
  * [2]: https://github.com/gruntjs/grunt-contrib-handlebars
+ * [3]: http://gruntjs.com/configuring-tasks#files
  **/
 
 module.exports = function (grunt) {
@@ -13,7 +14,7 @@ module.exports = function (grunt) {
         appName: 'Requestly',
         version: '3.3.6',
         files: [
-          { cwd: 'src', src: '**', expand: true, dest: 'src' },
+          { cwd: 'src', src: ['**', '!pages/**/*.hbs'], expand: true, dest: 'src' },
           { cwd: 'resources', src: '**', expand: true, dest: 'resources' },
           { src: 'manifest.json'}
         ],
@@ -36,7 +37,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'src/pages/templates.js': 'src/pages/templates/*.hbs'
+          'src/pages/templates.hbs.js': 'src/pages/templates/*.hbs'
         }
       }
     }
@@ -46,6 +47,5 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-handlebars');
 
   grunt.registerTask('build', ['handlebars', 'zipup']);
-  grunt.registerTask('templates   ', ['handlebars']);
+  grunt.registerTask('templates', ['handlebars']);
 };
-
