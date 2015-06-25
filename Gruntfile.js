@@ -22,7 +22,7 @@ module.exports = function (grunt) {
     },
 
     /**
-     * Task handlebars: Pre-Compile template files, concat them and save output to templates.js
+     * Task handlebars: Pre-Compile template files, concat them and save output to templates.hbs.js
      */
     handlebars: {
       compile: {
