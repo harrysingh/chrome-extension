@@ -83,7 +83,7 @@ var BaseRuleModel = Backbone.Model.extend({
   },
 
   setStatus: function(status) {
-    this.set('status', status);
+    this.set('status', status, { silent: true });
   },
 
   getPairs: function() {
