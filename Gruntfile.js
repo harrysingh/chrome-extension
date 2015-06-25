@@ -37,7 +37,7 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'src/pages/templates.hbs.js': 'src/pages/templates/*.hbs'
+          'src/pages/templates.hbs.js': 'src/pages/templates/**/*.hbs'
         }
       }
     }

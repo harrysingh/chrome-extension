@@ -4,31 +4,7 @@
 </nav>
 
 <section class="rule-body">
-  <table><tr>
-    <td>
-      <div class="input-group name-container">
-        <span class="input-group-addon">Rule Name</span>
-        <input type="text" class="form-control rule-name-input" placeholder="" value="{{name}}">
-      </div>
-    </td>
-
-    <td>
-      <div class="rule-status-container">
-        <span class="title margin-r-0-5">Status</span>
-        <span title="Click to toggle Rule Status">
-          <input type="checkbox" data-toggle="toggle" class="status-toggle redirect"
-            data-on="{{RULE_STATUS.ACTIVE}}" data-off="{{RULE_STATUS.INACTIVE}}"
-            {{#equals status RULE_STATUS.ACTIVE}}checked{{/equals}} />
-        </span>
-      </div>
-    </td>
-  </tr></table>
-
-  <div class="description-container">
-    <div class="title">Rule Description (Optional)</div>
-    <textarea class="rule-description"
-      placeholder="e.g. Redirecting app.js on qa environment to dev environment">{{description}}</textarea>
-  </div>
+  {{> RuleProperties}}
 
   <div class="title">
     <span class="left">Source Destination Pairs</span>

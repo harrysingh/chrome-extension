@@ -207,11 +207,13 @@ table {
   padding-right: 20px;
 }
 
-.status-toggle.redirect + .toggle-group .toggle-on.btn {
+#redirect-rule-editor .toggle-on.btn,
+.redirect .status-cell .toggle-on.btn {
   background-color: #5B9027;
 }
 
-.status-toggle.cancel + .toggle-group .toggle-on.btn {
+#cancel-rule-editor .toggle-on.btn,
+.cancel .status-cell .toggle-on.btn {
   background-color: #d32a0e;
 }
 

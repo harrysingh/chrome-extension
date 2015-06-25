@@ -1,0 +1,20 @@
+<table><tr>
+  <td>
+    <div class="input-group name-container">
+      <span class="input-group-addon">Rule Name</span>
+      <input type="text" class="form-control rule-name-input" value="{{name}}">
+    </div>
+  </td>
+
+  <td>
+    <div class="rule-status-container">
+      <span class="title margin-r-0-5">Status</span>
+      {{> StatusToggle}}
+    </div>
+  </td>
+</tr></table>
+
+<div class="description-container">
+  <div class="title">Rule Description (Optional)</div>
+  <textarea class="rule-description">{{description}}</textarea>
+</div>
