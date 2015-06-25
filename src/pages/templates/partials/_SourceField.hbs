@@ -1,0 +1,14 @@
+<div class="source-container">
+  <div class="dropdown-container">
+    <select class="source-operator-select" data-key="source.operator">
+      <option value="{{../RULE_OPERATORS.EQUALS}}" {{#equals source.operator ../RULE_OPERATORS.EQUALS}}selected{{/equals}}>Url Equals</option>
+      <option value="{{../RULE_OPERATORS.CONTAINS}}" {{#equals source.operator ../RULE_OPERATORS.CONTAINS}}selected{{/equals}}>Url Contains</option>
+      <option value="{{../RULE_OPERATORS.MATCHES}}" {{#equals source.operator ../RULE_OPERATORS.MATCHES}}selected{{/equals}}>Url Matches</option>
+    </select>
+  </div>
+
+  <input type="text" class="form-control source-value-input" data-key="source.value"
+     value="{{source.value}}" placeholder="{{sourcePlaceholder}}" />
+
+  <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
+</div>
