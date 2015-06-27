@@ -1,13 +1,12 @@
 RQ.HandlebarHelpers.DebugHelper = function(optionalValue) {
-  console.log('Current Context');
-  console.log('====================');
+  console.group('DebugHelper');
   console.log(this);
 
   if (optionalValue) {
-    console.log('Value');
-    console.log('====================');
     console.log(optionalValue);
   }
+
+  console.groupEnd('DebugHelper');
 };
 
 RQ.HandlebarHelpers.EqualsHelper = function(a, b, options) {
