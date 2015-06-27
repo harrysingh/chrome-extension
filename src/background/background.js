@@ -77,9 +77,8 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
         continue;
       }
 
-      /* If Source Value does not exist or does not match, proceed with next pair */
-      if (modification.source.value
-        && BG.Methods.matchUrlWithRule(modification.source, null, RQ.RULE_TYPES.REDIRECT, url) === null) {
+      // If Source Value exists and does not match, proceed with next pair
+      if (modification.source.value && BG.Methods.matchUrlWithRuleSource(modification.source, null, url) === null) {
         continue;
       }
 
@@ -112,12 +111,11 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
  *
  * @param sourceObject Object e.g. { key: 'Url', operator: 'Contains', value: 'google' }
  * @param destination String e.g. 'http://www.google.com'
- * @param ruleType
  * @param url Url for which HTTP Request is intercepted.
  *
  * @returns String destinationUrl if Rule should be applied to intercepted Url else returns {code}null{/code}
  */
-BG.Methods.matchUrlWithRule = function(sourceObject, destination, ruleType, url) {
+BG.Methods.matchUrlWithRuleSource = function(sourceObject, destination, url) {
   var operator = sourceObject.operator,
     destinationUrl = destination || '', // Destination Url is not present in all rule types
     value = sourceObject.value;
@@ -159,6 +157,7 @@ BG.Methods.matchUrlWithRule = function(sourceObject, destination, ruleType, url)
 
 BG.Methods.modifyUrl = function(details) {
   var resultingUrl,
+    pair,
     pairIndex;
 
   for (var i = 0; i < StorageService.records.length; i++) {
@@ -182,23 +181,31 @@ BG.Methods.modifyUrl = function(details) {
         }
 
         for (pairIndex = 0; pairIndex < rule.pairs.length; pairIndex++) {
-          var pair = rule.pairs[pairIndex];
-          resultingUrl = BG.Methods.matchUrlWithRule(pair.source, pair.destination, rule.ruleType, details.url);
+          pair = rule.pairs[pairIndex];
+          resultingUrl = BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination, details.url);
           if (resultingUrl !== null) {
             return { redirectUrl: resultingUrl };
           }
         }
         break;
 
-      /**
-      * In case of Cancel Request, destination url is 'javascript:'
-      */
+      // In case of Cancel Request, destination url is 'javascript:'
       case RQ.RULE_TYPES.CANCEL:
-        // This should be fixed when Multiple Entries will be introduced in Cancel Rule
-        rule.source.value = rule.source.values[0];
-        resultingUrl = BG.Methods.matchUrlWithRule(rule.source, rule.destination, rule.ruleType, details.url);
-        if (resultingUrl !== null) {
-          return { redirectUrl: 'javascript:' };
+        // Introduce Pairs: Transform the Cancel Rule Model to new Model to support multiple entries (pairs)
+        if (typeof rule.source !== 'undefined') {
+          rule.pairs = [{
+            source: { key: RQ.RULE_KEYS.URL, operator: rule.source.operator, value: rule.source.values[0] }
+          }];
+
+          delete rule.source;
+        }
+
+        for (pairIndex = 0; pairIndex < rule.pairs.length; pairIndex++) {
+          pair = rule.pairs[pairIndex];
+          resultingUrl = BG.Methods.matchUrlWithRuleSource(pair.source, null, details.url);
+          if (resultingUrl !== null) {
+            return { redirectUrl: 'javascript:' };
+          }
         }
         break;
 

@@ -58,17 +58,17 @@ describe('Requestly Background Service', function() {
 
       // Equals Operator
       pair['destination'] = URL_SOURCES.YAHOO;
-      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination, ruleType, URL_SOURCES.GOOGLE))
+      expect(BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination, URL_SOURCES.GOOGLE))
         .toBe(URL_SOURCES.YAHOO);
 
       pair['destination'] = URL_SOURCES.FACEBOOK;
-      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination, ruleType, URL_SOURCES.GOOGLE))
+      expect(BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination, URL_SOURCES.GOOGLE))
         .toBe(URL_SOURCES.FACEBOOK);
 
       // Contains Operator
       pair['source']['operator'] = RQ.RULE_OPERATORS.CONTAINS;
       pair['source']['value'] = KEYWORDS.GOOGLE;
-      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination, ruleType, URL_SOURCES.GOOGLE))
+      expect(BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination, URL_SOURCES.GOOGLE))
         .toBe(pair['destination']);
 
       // Matches Operator
@@ -76,11 +76,11 @@ describe('Requestly Background Service', function() {
       pair['source']['value'] = '/TGT-([0-9]+)/gi';
       pair['destination'] = URL_SOURCES.REQUESTLY + '?query=TGT-$1';
 
-      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination,
-        ruleType, URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-491')).toBe(URL_SOURCES.REQUESTLY + '?query=TGT-491');
+      expect(BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination,
+        URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-491')).toBe(URL_SOURCES.REQUESTLY + '?query=TGT-491');
 
-      expect(BG.Methods.matchUrlWithRule(pair.source, pair.destination,
-        ruleType, URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-10419')).toBe(URL_SOURCES.REQUESTLY + '?query=TGT-10419');
+      expect(BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination,
+        URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-10419')).toBe(URL_SOURCES.REQUESTLY + '?query=TGT-10419');
     });
 
     it('should return null when Cancel Rule Source does not match with Url', function() {
@@ -90,8 +90,8 @@ describe('Requestly Background Service', function() {
 
       source.value = source.values[0];
 
-      expect(BG.Methods.matchUrlWithRule(source, destination, ruleType, URL_SOURCES.GOOGLE)).toBeNull();
-      expect(BG.Methods.matchUrlWithRule(source, destination, ruleType, URL_SOURCES.FACEBOOK)).not.toBeNull();
+      expect(BG.Methods.matchUrlWithRuleSource(source, destination, URL_SOURCES.GOOGLE)).toBeNull();
+      expect(BG.Methods.matchUrlWithRuleSource(source, destination, URL_SOURCES.FACEBOOK)).not.toBeNull();
     });
   });
 
