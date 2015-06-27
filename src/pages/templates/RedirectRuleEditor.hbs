@@ -16,7 +16,7 @@
 
   <div class="pairs-container">
     {{#each pairs}}
-      {{> SourceField}}
+      {{> SourceField RULE_OPERATORS=../RULE_OPERATORS}}
 
       <div class="well well-sm pair-container" data-index="{{@index}}">
         <div class="input-group destination-container">
