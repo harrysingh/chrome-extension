@@ -1,9 +1,14 @@
 module.exports = function(config) {
   config.set({
 
-    basePath: '',
+    basePath: './',
 
     frameworks: ['jasmine'],
+
+    plugins : [
+      'karma-jasmine',
+      'karma-phantomjs-launcher',
+    ],
 
     files: [
       /* Libraries and Helper files */
@@ -37,7 +42,7 @@ module.exports = function(config) {
 
     reporters: ['progress'],
 
-    port: 4001,
+    port: 9876,
 
     colors: true,
 
@@ -45,7 +50,7 @@ module.exports = function(config) {
 
     autoWatch: true,
 
-    browsers: ['Chrome'],
+    browsers: ['PhantomJS'],
 
     singleRun: false
   });

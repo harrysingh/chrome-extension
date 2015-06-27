@@ -40,12 +40,20 @@ module.exports = function (grunt) {
           'src/pages/templates.hbs.js': 'src/pages/templates/**/*.hbs'
         }
       }
+    },
+
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-zipup');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('build', ['handlebars', 'zipup']);
   grunt.registerTask('templates', ['handlebars']);
+  grunt.registerTask('dev', ['karma:unit']);
+  grunt.registerTask('build', ['handlebars', 'zipup']);
 };

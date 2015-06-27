@@ -1,13 +1,10 @@
 {
-  "name": "Requestly",
+  "name": "requestly",
   "version": "3.3.6",
   "description": "Chrome extension to modify HTTP requests and modify request and response headers",
   "main": "app.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo 'Error: no test specified' && exit 1"
   },
   "repository": {
     "type": "git",
@@ -29,13 +26,26 @@
     "url": "https://github.com/blunderboy/requestly/issues"
   },
   "homepage": "https://github.com/blunderboy/requestly",
+
+  "private": true,
   "devDependencies": {
-    "grunt": "~0.4.2",
+    "grunt": "~0.4.5",
+    "grunt-cli": "~0.1.13",
     "grunt-zipup": "~0.1.6",
-    "grunt-contrib-handlebars": "~0.10.2",
-    "jasmine-core": "^2.2.0",
-    "karma": "^0.12.31",
-    "karma-chrome-launcher": "^0.1.7",
-    "karma-jasmine": "^0.3.5"
-  }
+    "grunt-contrib-handlebars": "0.7.0",
+    "grunt-contrib-jshint": "~0.11.2",
+    "grunt-karma": "^0.11.1",
+    "karma": "^0.12.37",
+    "karma-coverage": "^0.4.2",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-handlebars-preprocessor": "^0.1.2",
+    "karma-jasmine": "^0.1.5",
+    "karma-junit-reporter": "^0.2.2",
+    "karma-phantomjs-launcher": "^0.2.0"
+  },
+  "engines": {
+    "node": ">=0.12.4",
+    "npm": ">=2.10.1"
+  },
+  "engine-strict": true
 }

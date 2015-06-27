@@ -39,11 +39,20 @@ describe('Requestly Background Service', function() {
 
       cancelRule = new CancelRuleModel({
         name: 'Cancel Rule',
-        source: {
-          key: RQ.RULE_KEYS.URL,
-          operator: RQ.RULE_OPERATORS.CONTAINS,
-          values: [ KEYWORDS.FACEBOOK ]
-        }
+        pairs: [{
+          source: {
+            key: RQ.RULE_KEYS.URL,
+            operator: RQ.RULE_OPERATORS.CONTAINS,
+            value: KEYWORDS.FACEBOOK
+          }
+        },
+        {
+          source: {
+            key: RQ.RULE_KEYS.URL,
+            operator: RQ.RULE_OPERATORS.EQUALS,
+            value: URL_SOURCES.FACEBOOK
+          }
+        }]
       });
     });
 
@@ -84,14 +93,10 @@ describe('Requestly Background Service', function() {
     });
 
     it('should return null when Cancel Rule Source does not match with Url', function() {
-      var source = cancelRule.getSource(),
-        ruleType = cancelRule.getRuleType(),
-        destination = null;
+      var pairs = cancelRule.getPairs();
 
-      source.value = source.values[0];
-
-      expect(BG.Methods.matchUrlWithRuleSource(source, destination, URL_SOURCES.GOOGLE)).toBeNull();
-      expect(BG.Methods.matchUrlWithRuleSource(source, destination, URL_SOURCES.FACEBOOK)).not.toBeNull();
+      expect(BG.Methods.matchUrlWithRuleSource(pairs[0].source, null, URL_SOURCES.GOOGLE)).toBeNull();
+      expect(BG.Methods.matchUrlWithRuleSource(pairs[1].source, null, URL_SOURCES.FACEBOOK)).not.toBeNull();
     });
   });
 
