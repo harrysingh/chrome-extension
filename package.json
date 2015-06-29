@@ -42,10 +42,5 @@
     "karma-jasmine": "^0.1.5",
     "karma-junit-reporter": "^0.2.2",
     "karma-phantomjs-launcher": "^0.2.0"
-  },
-  "engines": {
-    "node": ">=0.12.4",
-    "npm": ">=2.10.1"
-  },
-  "engine-strict": true
+  }
 }
