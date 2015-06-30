@@ -16,9 +16,8 @@
 
   <div class="pairs-container">
     {{#each pairs}}
-      {{> SourceField RULE_OPERATORS=../RULE_OPERATORS}}
-
       <div class="well well-sm pair-container" data-index="{{@index}}">
+        {{> SourceField RULE_OPERATORS=../RULE_OPERATORS}}
         <div class="input-group destination-container">
           <span class="input-group-addon">Destination</span>
           <input type="url" class="form-control destination-url-input" data-key="destination"
