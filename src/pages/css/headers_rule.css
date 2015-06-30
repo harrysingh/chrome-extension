@@ -5,7 +5,8 @@
 
 .headers-rule-editor hr {
   border-top: 1px solid #ddd;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .headers-rule-editor .save-button {
