@@ -3,7 +3,7 @@
  * 1. Redirect Rule: #73a839
 */
 body {
-  background: #bbb;
+  background: #ededeb;
 }
 
 a:hover {
@@ -32,7 +32,7 @@ table {
 }
 
 .header {
-  background: #4c66a4;
+  background: #2F416E;
   height: 35px;
   line-height: 35px;
   font-size: 14px;
