@@ -1,6 +1,6 @@
 var RQ = RQ || {};
 
-RQ.VERSION = '3.3.7';
+RQ.VERSION = '3.3.8';
 
 RQ.RULE_TYPES = {
   REDIRECT: 'Redirect',

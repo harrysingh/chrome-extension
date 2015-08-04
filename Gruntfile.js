@@ -12,7 +12,7 @@ module.exports = function (grunt) {
     zipup: {
       package: {
         appName: 'Requestly',
-        version: '3.3.7',
+        version: '3.3.8',
         files: [
           { cwd: 'src', src: ['**', '!pages/**/*.hbs'], expand: true, dest: 'src' },
           { cwd: 'resources', src: '**', expand: true, dest: 'resources' },
