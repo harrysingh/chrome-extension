@@ -68,11 +68,17 @@
   cursor: pointer;
 }
 
+.rule-name-cell {
+  padding-left: 0 !important;
+}
+
 .rule-item-row .rule-type {
-  border-radius: 3px;
+  border-radius: 50%;
   vertical-align: top;
   line-height: 1.5rem;
-  margin-left: 1rem;
+  margin-right: 0.5rem;
+  width: 2.1rem;
+  height: 2rem;
 }
 
 .redirect.rule-item-row .rule-type {

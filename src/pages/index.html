@@ -56,9 +56,9 @@
             <td class="rule-selection-cell">
               <input type="checkbox" class="select-rule-checkbox" title="Select Rule"/>
             </td>
-            <td>
+            <td class="rule-name-cell">
+              <span class="rule-type badge"><%= RQ.htmlEncode(ruleType.charAt(0)) %></span>
               <a class="ruleName"><%= RQ.htmlEncode(rule.getName()) %></a>
-              <span class="rule-type badge"><%= RQ.htmlEncode(ruleType) %></span>
               <div class="ruleDescription"><%= RQ.htmlEncode(rule.getDescription()) %></div>
             </td>
             <td class="status-cell">
