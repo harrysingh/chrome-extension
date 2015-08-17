@@ -219,28 +219,42 @@ BG.Methods.modifyUrl = function(details) {
   }
 };
 
+BG.Methods.modifyRequestHeadersListener = function(details) {
+  var modifiedHeaders = BG.Methods.modifyHeaders(details.requestHeaders, RQ.HEADERS_TARGET.REQUEST, details);
+
+  if (modifiedHeaders !== null) {
+    return { requestHeaders: modifiedHeaders };
+  }
+};
+
+BG.Methods.modifyResponseHeadersListener = function(details) {
+  var modifiedHeaders = BG.Methods.modifyHeaders(details.responseHeaders, RQ.HEADERS_TARGET.RESPONSE, details);
+
+  if (modifiedHeaders !== null) {
+    return { responseHeaders: modifiedHeaders };
+  }
+};
+
 BG.Methods.registerListeners = function() {
   chrome.webRequest.onBeforeRequest.addListener(
     BG.Methods.modifyUrl, { urls: ['<all_urls>'] }, ['blocking']
   );
 
-  chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
-    var modifiedHeaders = BG.Methods.modifyHeaders(details.requestHeaders, RQ.HEADERS_TARGET.REQUEST, details);
-    if (modifiedHeaders !== null) {
-      return { requestHeaders: modifiedHeaders };
-    }
-  },
-  { urls: ['<all_urls>'] },
-  ['blocking', 'requestHeaders']);
+  chrome.webRequest.onBeforeSendHeaders.addListener(
+    BG.Methods.modifyRequestHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'requestHeaders']
+  );
 
-  chrome.webRequest.onHeadersReceived.addListener(function(details) {
-    var modifiedHeaders = BG.Methods.modifyHeaders(details.responseHeaders, RQ.HEADERS_TARGET.RESPONSE, details);
-    if (modifiedHeaders !== null) {
-      return { responseHeaders: modifiedHeaders };
-    }
-  },
-  { urls: ['<all_urls>'] },
-  ['blocking', 'responseHeaders']);
+  chrome.webRequest.onHeadersReceived.addListener(
+    BG.Methods.modifyResponseHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'responseHeaders']
+  );
+};
+
+// http://stackoverflow.com/questions/23001428/chrome-webrequest-onbeforerequest-removelistener-how-to-stop-a-chrome-web
+// Documentation: https://developer.chrome.com/extensions/events
+BG.Methods.unregisterListeners = function() {
+  chrome.webRequest.onBeforeRequest.removeListener(BG.Methods.modifyUrl);
+  chrome.webRequest.onBeforeSendHeaders.removeListener(BG.Methods.modifyRequestHeadersListener);
+  chrome.webRequest.onHeadersReceived.removeListener(BG.Methods.modifyResponseHeadersListener);
 };
 
 chrome.browserAction.onClicked.addListener(function () {
