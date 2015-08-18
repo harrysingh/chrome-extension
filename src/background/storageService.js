@@ -97,7 +97,7 @@ StorageService.updateRecords = function(changes, namespace) {
       }
 
       changedObject = changes[changedObjectKey];
-      changedObjectIndex = this.getCachedRecordIndex(changedObjectKey);
+      changedObjectIndex = StorageService.getCachedRecordIndex(changedObjectKey);
       objectExists = (changedObjectIndex !== -1);
 
       // Add/Edit Rule operation
