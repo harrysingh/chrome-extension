@@ -1,16 +1,24 @@
 <nav class="rule-header rq-dimgrey">
   <span>Rules</span>
   <span class="rules-number badge">{{ rules.length }}</span>
-  <div class="right">
+  <div class="right right-corner-icongroup">
     <a href="#selectRule" role="button" class="btn-success btn select-rule-button">
       <span class="glyphicon glyphicon-plus margin-r-0-5" aria-hidden="true"></span>
       <span>New Rule</span>
     </a>
     {{#gt rules.length 0}}
       <button class="btn-info btn-export btn export-rules-button">
-      <span class="glyphicon glyphicon-export margin-r-0-5" aria-hidden="true"></span>Export</button>
+        <span class="glyphicon glyphicon-export margin-r-0-5" aria-hidden="true"></span>
+        <span>Export</span>
+      </button>
     {{/gt}}
     <button class="btn-info btn-import btn import-rules-button">
-    <span class="glyphicon glyphicon-import margin-r-0-5" aria-hidden="true"></span>Import</button>
+      <span class="glyphicon glyphicon-import margin-r-0-5" aria-hidden="true"></span>
+      <span>Import</span>
+    </button>
+
+    <a href="#rq-settings" role="button" class="settings-button">
+      <span class="glyphicon glyphicon-cog settings-icon"></span>
+    </a>
   </div>
 </nav>

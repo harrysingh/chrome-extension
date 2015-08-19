@@ -7,6 +7,21 @@
   margin-left: 5px;
 }
 
+.right-corner-icongroup {
+  height: 40px;
+  line-height: 40px;
+  margin-top: -9px;
+}
+
+.settings-button {
+  padding-left: 0.5rem;
+}
+
+.settings-icon {
+  font-size: 1.75rem;
+  color: #ccc;
+}
+
 .rule-index > .table {
   font-size: 14px;
 }
