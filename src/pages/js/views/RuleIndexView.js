@@ -28,15 +28,31 @@ var RuleIndexView = Backbone.View.extend({
     this.rulesCollection.fetchRules();
   },
 
+  getTemplate: function() {
+    return RQ.Templates.RuleIndex;
+  },
+
+  getMarkup: function(template) {
+    return template({ rules: this.rulesCollection.toJSON() });
+  },
+
   render: function(options) {
+    var markup,
+      $el = $(this.el);
+
+    options = options || {};
+
     if (options && options.update) {
       // updateCollection will trigger 'loaded' event which will render the view
       this.updateCollection();
     } else {
-      var markup = _.template(this.Template(), { rules: this.rulesCollection.models });
-      this.$el.html(markup);
+      this.template = this.getTemplate();
+
+      markup = this.getMarkup(this.template);
+      $el.html(markup);
     }
-    $('.status-toggle').bootstrapToggle();
+
+    $el.find('.status-toggle').bootstrapToggle();
   },
 
   showRuleEditor: function(event) {
