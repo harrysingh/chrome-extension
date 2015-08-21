@@ -2,10 +2,6 @@ var BG = {
   Methods: {}
 };
 
-BG.Methods.setupRules = function() {
-  BG.Methods.registerListeners();
-};
-
 BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
   var pairs = rule.pairs,
     pair = null,
@@ -236,17 +232,23 @@ BG.Methods.modifyResponseHeadersListener = function(details) {
 };
 
 BG.Methods.registerListeners = function() {
-  chrome.webRequest.onBeforeRequest.addListener(
-    BG.Methods.modifyUrl, { urls: ['<all_urls>'] }, ['blocking']
-  );
+  if (!chrome.webRequest.onBeforeRequest.hasListener(BG.Methods.modifyUrl)) {
+    chrome.webRequest.onBeforeRequest.addListener(
+      BG.Methods.modifyUrl, { urls: ['<all_urls>'] }, ['blocking']
+    );
+  }
 
-  chrome.webRequest.onBeforeSendHeaders.addListener(
-    BG.Methods.modifyRequestHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'requestHeaders']
-  );
+  if (!chrome.webRequest.onBeforeSendHeaders.hasListener(BG.Methods.modifyRequestHeadersListener)) {
+    chrome.webRequest.onBeforeSendHeaders.addListener(
+      BG.Methods.modifyRequestHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'requestHeaders']
+    );
+  }
 
-  chrome.webRequest.onHeadersReceived.addListener(
-    BG.Methods.modifyResponseHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'responseHeaders']
-  );
+  if (!chrome.webRequest.onHeadersReceived.hasListener(BG.Methods.modifyResponseHeadersListener)) {
+    chrome.webRequest.onHeadersReceived.addListener(
+      BG.Methods.modifyResponseHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'responseHeaders']
+    );
+  }
 };
 
 // http://stackoverflow.com/questions/23001428/chrome-webrequest-onbeforerequest-removelistener-how-to-stop-a-chrome-web
@@ -257,10 +259,26 @@ BG.Methods.unregisterListeners = function() {
   chrome.webRequest.onHeadersReceived.removeListener(BG.Methods.modifyResponseHeadersListener);
 };
 
+BG.Methods.disableExtension = function() {
+  BG.Methods.unregisterListeners();
+};
+
+BG.Methods.enableExtension = function() {
+  BG.Methods.registerListeners();
+};
+
+BG.Methods.readExtensionStatus = function() {
+  StorageService.getRecord(RQ.STORAGE_KEYS.REQUESTLY_SETTINGS, function(response) {
+    var settings = response[RQ.STORAGE_KEYS.REQUESTLY_SETTINGS];
+
+    settings['isExtensionEnabled'] ? BG.Methods.enableExtension() : BG.Methods.disableExtension();
+  });
+};
+
 chrome.browserAction.onClicked.addListener(function () {
   chrome.tabs.create({'url': chrome.extension.getURL('src/pages/index.html')}, function(tab) {
     // Tab opened.
   });
 });
 
-StorageService.getRecords({ callback: BG.Methods.setupRules });
+StorageService.getRecords({ callback: BG.Methods.readExtensionStatus });

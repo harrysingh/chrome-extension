@@ -1,9 +1,5 @@
 var RuleIndexView = Backbone.View.extend({
 
-  Template: function() {
-    return RQ.Templates.RULE_INDEX_TEMPLATE;
-  },
-
   events: {
     'click .ruleName': 'showRuleEditor',
     'change .status-toggle': 'toggleStatus',

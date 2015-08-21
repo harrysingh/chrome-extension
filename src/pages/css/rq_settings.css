@@ -1,0 +1,18 @@
+#requestly-settings-editor .content-header {
+  background: #3c3c3c;
+  opacity: 0.8;
+}
+
+#requestly-settings-editor .toggle-extension-setting {
+  text-align: center;
+  padding: 2rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-left: -18rem;
+  margin-top: -3rem;
+}
+
+#requestly-settings-editor .setting-description {
+  margin-top: 1rem;
+}

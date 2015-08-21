@@ -1,4 +1,4 @@
-var BaseRuleEditorView = Backbone.View.extend({
+var BaseRuleEditorView = BaseView.extend({
 
   events: {
     'keyup .rule-name-input': 'updateRuleName',
@@ -9,55 +9,12 @@ var BaseRuleEditorView = Backbone.View.extend({
     'click .save-rule': 'saveRule'
   },
 
-  Mixins: [],
-
-  /**
-   * loadModel: loads model and binds to the view
-   * @param model Backbone Model instance or just a backbone model
-   */
-  loadModel: function(model) {
-    if (model) {
-      this.model = (model instanceof Backbone.Model) ? model : new model;
-    } else {
-      this.model = new this.Model;
-    }
-  },
-
-  loadMixin: function(mixin) {
-    _.extend(this, mixin);
-  },
-
-  loadMixins: function(mixins) {
-    _.each(mixins, this.loadMixin, this);
-  },
-
-  initialize: function(options) {
-    options = options || {};
-    this.loadModel(options.model);
-    this.loadMixins(this.Mixins);
-  },
-
   getMarkup: function(template) {
     return _.template(template, { rule: this.model });
   },
 
-  render: function(options) {
-    options = options || {};
-
-    // Load the passed model and use it to render the view
-    if (options.model) {
-      this.loadModel(options.model);
-    }
-
-    /* If template is not passed as option,
-    every editor view has to provide its own template by getTemplate method */
-    this.template = options.template || this.getTemplate();
-
-    var markup = this.getMarkup(this.template),
-      $el = $(this.el);
-
-    $el.html(markup);
-    $el.find('.status-toggle').bootstrapToggle();
+  initWidgets: function() {
+    this.$el.find('.status-toggle').bootstrapToggle();
   },
 
   updateRuleName: function(event) {
@@ -130,10 +87,6 @@ var BaseRuleEditorView = Backbone.View.extend({
     }
   },
 
-  // No-Op
-  // To be over-ridden by inherited editor to support any additional validation
-  alsoValidate: function() { return true; },
-
   validateRule: function() {
     var ruleName = this.model.getName();
 
@@ -148,11 +101,6 @@ var BaseRuleEditorView = Backbone.View.extend({
 
     return this.alsoValidate();
   },
-
-  /**
-   * @Overridden To be Over-ridden by inherited editor to remove any additional fields added in model
-   */
-  removeAdditionalFields: function() { },
 
   saveRule: function() {
     var ts = this.model.getTimestamp(),

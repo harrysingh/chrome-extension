@@ -1,5 +1,6 @@
 var RQ = RQ || {},
-  BG = chrome.extension.getBackgroundPage();
+  BG = chrome.extension.getBackgroundPage(),
+  backgroundObject = BG['BG'];
 
 RQ.Mixins = RQ.Mixins || {};
 

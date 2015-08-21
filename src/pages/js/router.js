@@ -3,7 +3,8 @@ RQ.Router = Backbone.Router.extend({
     '': 'showRulesList',
     'selectRule': 'showRuleCardsView',
     'new/:type': 'showRuleCreator',
-    'edit/:id': 'showRuleEditor'
+    'edit/:id': 'showRuleEditor',
+    'settings/requestly': 'showRequestlySettings'
   },
 
   ruleModelMap: {
@@ -49,6 +50,17 @@ RQ.Router = Backbone.Router.extend({
       model = new that.ruleModelMap[ruleTypeUpperCase](ruleModelJSON);
 
       RQ.showView(editorView, { model: model });
+    });
+  },
+
+  showRequestlySettings: function() {
+    var requestlySettingsView = new RequestlySettingsView();
+
+    BG.StorageService.getRecord(RQ.STORAGE_KEYS.REQUESTLY_SETTINGS, function(responseJson) {
+      var rqSettings = responseJson[RQ.STORAGE_KEYS.REQUESTLY_SETTINGS],
+        rqSettingsModel = new RequestlySettingsModel(rqSettings);
+
+      RQ.showView(requestlySettingsView, { model: rqSettingsModel });
     });
   }
 });

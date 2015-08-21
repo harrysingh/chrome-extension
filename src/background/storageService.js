@@ -49,7 +49,7 @@ StorageService.getRecords = function(options) {
 };
 
 StorageService.saveRecord = function(object, callback) {
-  callback = callback || function() {};
+  callback = callback || function() { chrome.runtime.lastError && console.log(chrome.runtime.lastError); };
   this.DB.set(object, callback);
 };
 

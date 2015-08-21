@@ -64,14 +64,17 @@ chrome = {
   webRequest: {
     onBeforeRequest: {
       addListener: function() {},
+      hasListener: function() {},
       removeListener: function() {}
     },
     onBeforeSendHeaders: {
       addListener: function() {},
+      hasListener: function() {},
       removeListener: function() {}
     },
     onHeadersReceived: {
       addListener: function() {},
+      hasListener: function() {},
       removeListener: function() {}
     }
   }

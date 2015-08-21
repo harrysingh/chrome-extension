@@ -40,6 +40,10 @@ RQ.RESPONSE_CODES = {
   NOT_FOUND: 404
 };
 
+RQ.STORAGE_KEYS = {
+  REQUESTLY_SETTINGS: 'rq_settings'
+};
+
 RQ.MESSAGES = {
   DELETE_RULE: 'Are you sure you want to delete the rule ?'
 };
