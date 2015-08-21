@@ -5,19 +5,5 @@ var RequestlySettingsView = BaseView.extend({
 
   getTemplate: function() {
     return RQ.Templates.RequestlySettings
-  },
-
-  events: {
-    'change .extension-toggle': 'toggleExtension'
-  },
-
-  toggleExtension: function(event) {
-    var isEnabled = $(event.currentTarget).is(':checked');
-    isEnabled ? this.model.enableExtension() : this.model.disableExtension();
-  },
-
-  initWidgets: function() {
-    this.$el.find('.extension-toggle').bootstrapToggle();
   }
-
 });

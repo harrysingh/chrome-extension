@@ -49,7 +49,7 @@ StorageService.getRecords = function(options) {
 };
 
 StorageService.saveRecord = function(object, callback) {
-  callback = callback || function() { chrome.runtime.lastError && console.log(chrome.runtime.lastError); };
+  callback = callback || function() { console.log('Default Handler: Saving Object ', object) };
   this.DB.set(object, callback);
 };
 

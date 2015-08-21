@@ -1,4 +1,10 @@
 chrome = {
+  contextMenus: {
+    create: function() {},
+    update: function() {},
+    removeAll: function() {}
+  },
+
   extension: {
     getBackgroundPage: function() {
 
