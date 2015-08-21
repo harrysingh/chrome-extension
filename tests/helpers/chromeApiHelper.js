@@ -14,7 +14,8 @@ chrome = {
   browserAction: {
     onClicked: {
       addListener: function(listener) {}
-    }
+    },
+    setIcon: function() {}
   },
 
   /**

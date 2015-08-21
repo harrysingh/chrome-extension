@@ -22,9 +22,8 @@
   },
 
   "icons": {
-    "16": "resources/images/256x256.png",
-    "48": "resources/images/256x256.png",
-    "128": "resources/images/256x256.png"
+    "16": "resources/images/19x19.png",
+    "128": "resources/images/128x128.png"
   },
   
   "permissions": [

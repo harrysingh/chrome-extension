@@ -48,6 +48,11 @@ RQ.MESSAGES = {
   DELETE_RULE: 'Are you sure you want to delete the rule ?'
 };
 
+RQ.RESOURCES = {
+  EXTENSION_ICON: '/resources/images/38x38.png',
+  EXTENSION_ICON_GREYSCALE: '/resources/images/38x38_greyscale.png'
+};
+
 RQ.htmlEncode = function(value){
   return $('<div/>').text(value).html();
 };

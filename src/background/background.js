@@ -281,6 +281,7 @@ BG.Methods.handleExtensionDisabled = function() {
     title: 'Enable Requestly',
     onclick: BG.Methods.enableExtension
   });
+  chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON_GREYSCALE });
   console.log('Requestly disabled');
 };
 
@@ -290,6 +291,7 @@ BG.Methods.handleExtensionEnabled = function() {
     title: 'Disable Requestly',
     onclick: BG.Methods.disableExtension
   });
+  chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON });
   console.log('Requestly enabled');
 };
 
