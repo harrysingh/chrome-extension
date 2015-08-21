@@ -31,6 +31,7 @@ module.exports = function(config) {
       'src/pages/js/models/ReplaceRuleModel.js',
       'src/pages/js/models/HeadersRuleModel.js',
       'src/pages/js/mixins/InputValidation.js',
+      'src/pages/js/views/BaseView.js',
       'src/pages/js/views/BaseRuleEditorView.js',
 
       /* Spec files */

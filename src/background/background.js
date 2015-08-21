@@ -295,6 +295,7 @@ BG.Methods.handleExtensionEnabled = function() {
 
 BG.Methods.readExtensionStatus = function() {
   StorageService.getRecord(RQ.STORAGE_KEYS.REQUESTLY_SETTINGS, function(response) {
+    response = response || {};
     var settings = response[RQ.STORAGE_KEYS.REQUESTLY_SETTINGS] || BG.statusSettings;
 
     settings['isExtensionEnabled'] ? BG.Methods.handleExtensionEnabled() : BG.Methods.handleExtensionDisabled();
