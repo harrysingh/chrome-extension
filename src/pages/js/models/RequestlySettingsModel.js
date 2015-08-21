@@ -1,3 +1,0 @@
-var RequestlySettingsModel = BaseModel.extend({
-
-});

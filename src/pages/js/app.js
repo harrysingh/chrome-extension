@@ -1,6 +1,5 @@
 var RQ = RQ || {},
-  BG = chrome.extension.getBackgroundPage(),
-  backgroundObject = BG['BG'];
+  BG = chrome.extension.getBackgroundPage();
 
 RQ.Mixins = RQ.Mixins || {};
 
@@ -13,7 +12,7 @@ RQ.Templates = {
 RQ.TemplateHelpers = RQ.TemplateHelpers || {};
 RQ.HandlebarHelpers = RQ.HandlebarHelpers || {};
 
-RQ.init = function(options) {
+RQ.init = function() {
   this.Models = {};
 
   this.Collections = {};
