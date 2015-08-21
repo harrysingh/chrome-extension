@@ -278,7 +278,7 @@ BG.Methods.enableExtension = function() {
 BG.Methods.handleExtensionDisabled = function() {
   BG.Methods.unregisterListeners();
   chrome.contextMenus.update(BG.extensionStatusContextMenuId, {
-    title: 'Enable Requestly',
+    title: 'Activate Requestly',
     onclick: BG.Methods.enableExtension
   });
   chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON_GREYSCALE });
@@ -288,7 +288,7 @@ BG.Methods.handleExtensionDisabled = function() {
 BG.Methods.handleExtensionEnabled = function() {
   BG.Methods.registerListeners();
   chrome.contextMenus.update(BG.extensionStatusContextMenuId, {
-    title: 'Disable Requestly',
+    title: 'Deactivate Requestly',
     onclick: BG.Methods.disableExtension
   });
   chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON });
@@ -313,7 +313,7 @@ chrome.browserAction.onClicked.addListener(function () {
 // Create contextMenu Action to Enable/Disable Requestly (Default Options)
 chrome.contextMenus.removeAll();
 BG.extensionStatusContextMenuId = chrome.contextMenus.create({
-  title: 'Disable Requestly',
+  title: 'Deactivate Requestly',
   type: 'normal',
   contexts: ['browser_action', 'all'],
   onclick: function() { console.log('Requestly Default handler executed'); }
