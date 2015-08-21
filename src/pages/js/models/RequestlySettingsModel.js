@@ -14,21 +14,15 @@ var RequestlySettingsModel = BaseModel.extend({
     this.save(callback);
   },
 
-  _disableExtensionInBackground: function() {
-    backgroundObject.Methods.disableExtension();
-  },
-
   disableExtension: function() {
-    var that = this;
-
     this.setExtensionEnabled(false, function() {
-      that._disableExtensionInBackground();
+      backgroundObject.Methods.disableExtension();
     });
   },
 
   enableExtension: function() {
     this.setExtensionEnabled(true, function() {
-      // backgroundObject.Methods.enableExtension();
+      backgroundObject.Methods.enableExtension();
     });
   },
 
@@ -44,7 +38,5 @@ var RequestlySettingsModel = BaseModel.extend({
     };
 
     storageService.saveRecord(storageObject, callback);
-
-    // callback();
   }
 });
