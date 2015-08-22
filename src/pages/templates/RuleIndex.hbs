@@ -1,0 +1,22 @@
+{{> Toolbar}}
+
+<section class="rule-index">
+  <table class="table">
+    <thead>
+    <tr>
+      <th class="rule-selection-cell">
+        <input type="checkbox" class="select-all-rules-checkbox" title="Select All"/>
+      </th>
+      <th>Name & Description</th>
+      <th class="status-cell">Status</th>
+      <th>Created on</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each rules}}
+      {{> RuleItemRow }}
+    {{/each}}
+    </tbody>
+  </table>
+</section>

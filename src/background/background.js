@@ -1,9 +1,11 @@
 var BG = {
-  Methods: {}
-};
-
-BG.Methods.setupRules = function() {
-  BG.Methods.registerListeners();
+  Methods: {},
+  statusSettings: {
+    id: RQ.STORAGE_KEYS.REQUESTLY_SETTINGS,
+    avoidCache: true,
+    isExtensionEnabled: true
+  },
+  extensionStatusContextMenuId: -1
 };
 
 BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
@@ -219,28 +221,89 @@ BG.Methods.modifyUrl = function(details) {
   }
 };
 
+BG.Methods.modifyRequestHeadersListener = function(details) {
+  var modifiedHeaders = BG.Methods.modifyHeaders(details.requestHeaders, RQ.HEADERS_TARGET.REQUEST, details);
+
+  if (modifiedHeaders !== null) {
+    return { requestHeaders: modifiedHeaders };
+  }
+};
+
+BG.Methods.modifyResponseHeadersListener = function(details) {
+  var modifiedHeaders = BG.Methods.modifyHeaders(details.responseHeaders, RQ.HEADERS_TARGET.RESPONSE, details);
+
+  if (modifiedHeaders !== null) {
+    return { responseHeaders: modifiedHeaders };
+  }
+};
+
 BG.Methods.registerListeners = function() {
-  chrome.webRequest.onBeforeRequest.addListener(
-    BG.Methods.modifyUrl, { urls: ['<all_urls>'] }, ['blocking']
-  );
+  if (!chrome.webRequest.onBeforeRequest.hasListener(BG.Methods.modifyUrl)) {
+    chrome.webRequest.onBeforeRequest.addListener(
+      BG.Methods.modifyUrl, { urls: ['<all_urls>'] }, ['blocking']
+    );
+  }
 
-  chrome.webRequest.onBeforeSendHeaders.addListener(function(details) {
-    var modifiedHeaders = BG.Methods.modifyHeaders(details.requestHeaders, RQ.HEADERS_TARGET.REQUEST, details);
-    if (modifiedHeaders !== null) {
-      return { requestHeaders: modifiedHeaders };
-    }
-  },
-  { urls: ['<all_urls>'] },
-  ['blocking', 'requestHeaders']);
+  if (!chrome.webRequest.onBeforeSendHeaders.hasListener(BG.Methods.modifyRequestHeadersListener)) {
+    chrome.webRequest.onBeforeSendHeaders.addListener(
+      BG.Methods.modifyRequestHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'requestHeaders']
+    );
+  }
 
-  chrome.webRequest.onHeadersReceived.addListener(function(details) {
-    var modifiedHeaders = BG.Methods.modifyHeaders(details.responseHeaders, RQ.HEADERS_TARGET.RESPONSE, details);
-    if (modifiedHeaders !== null) {
-      return { responseHeaders: modifiedHeaders };
-    }
-  },
-  { urls: ['<all_urls>'] },
-  ['blocking', 'responseHeaders']);
+  if (!chrome.webRequest.onHeadersReceived.hasListener(BG.Methods.modifyResponseHeadersListener)) {
+    chrome.webRequest.onHeadersReceived.addListener(
+      BG.Methods.modifyResponseHeadersListener, { urls: ['<all_urls>'] }, ['blocking', 'responseHeaders']
+    );
+  }
+};
+
+// http://stackoverflow.com/questions/23001428/chrome-webrequest-onbeforerequest-removelistener-how-to-stop-a-chrome-web
+// Documentation: https://developer.chrome.com/extensions/events
+BG.Methods.unregisterListeners = function() {
+  chrome.webRequest.onBeforeRequest.removeListener(BG.Methods.modifyUrl);
+  chrome.webRequest.onBeforeSendHeaders.removeListener(BG.Methods.modifyRequestHeadersListener);
+  chrome.webRequest.onHeadersReceived.removeListener(BG.Methods.modifyResponseHeadersListener);
+};
+
+BG.Methods.disableExtension = function() {
+  BG.statusSettings['isExtensionEnabled'] = false;
+  StorageService.saveRecord({ rq_settings: BG.statusSettings }, BG.Methods.handleExtensionDisabled);
+};
+
+BG.Methods.enableExtension = function() {
+  BG.statusSettings['isExtensionEnabled'] = true;
+  StorageService.saveRecord({ rq_settings: BG.statusSettings }, BG.Methods.handleExtensionEnabled);
+};
+
+BG.Methods.handleExtensionDisabled = function() {
+  BG.Methods.unregisterListeners();
+  chrome.contextMenus.update(BG.extensionStatusContextMenuId, {
+    title: 'Activate Requestly',
+    onclick: BG.Methods.enableExtension
+  });
+  chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON_GREYSCALE });
+  BG.Methods.sendMessage({ isExtensionEnabled: false });
+  console.log('Requestly disabled');
+};
+
+BG.Methods.handleExtensionEnabled = function() {
+  BG.Methods.registerListeners();
+  chrome.contextMenus.update(BG.extensionStatusContextMenuId, {
+    title: 'Deactivate Requestly',
+    onclick: BG.Methods.disableExtension
+  });
+  chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON });
+  BG.Methods.sendMessage({ isExtensionEnabled: true });
+  console.log('Requestly enabled');
+};
+
+BG.Methods.readExtensionStatus = function() {
+  StorageService.getRecord(RQ.STORAGE_KEYS.REQUESTLY_SETTINGS, function(response) {
+    response = response || {};
+    var settings = response[RQ.STORAGE_KEYS.REQUESTLY_SETTINGS] || BG.statusSettings;
+
+    settings['isExtensionEnabled'] ? BG.Methods.handleExtensionEnabled() : BG.Methods.handleExtensionDisabled();
+  });
 };
 
 chrome.browserAction.onClicked.addListener(function () {
@@ -249,4 +312,19 @@ chrome.browserAction.onClicked.addListener(function () {
   });
 });
 
-StorageService.getRecords({ callback: BG.Methods.setupRules });
+// Create contextMenu Action to Enable/Disable Requestly (Default Options)
+chrome.contextMenus.removeAll();
+BG.extensionStatusContextMenuId = chrome.contextMenus.create({
+  title: 'Deactivate Requestly',
+  type: 'normal',
+  contexts: ['browser_action', 'all'],
+  onclick: function() { console.log('Requestly Default handler executed'); }
+});
+
+BG.Methods.sendMessage = function(messageObject, callback) {
+  callback = callback || function() { console.log('DefaultHandler: Sending Message to Runtime: ', messageObject); };
+  chrome.runtime.sendMessage(messageObject, callback);
+};
+
+StorageService.getRecords({ callback: BG.Methods.readExtensionStatus });
+

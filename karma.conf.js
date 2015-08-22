@@ -24,12 +24,14 @@ module.exports = function(config) {
       'src/Shared/shared.js',
       'src/background/storageService.js',
       'src/background/background.js',
+      'src/pages/js/models/BaseModel.js',
       'src/pages/js/models/BaseRuleModel.js',
       'src/pages/js/models/RedirectRuleModel.js',
       'src/pages/js/models/CancelRuleModel.js',
       'src/pages/js/models/ReplaceRuleModel.js',
       'src/pages/js/models/HeadersRuleModel.js',
       'src/pages/js/mixins/InputValidation.js',
+      'src/pages/js/views/BaseView.js',
       'src/pages/js/views/BaseRuleEditorView.js',
 
       /* Spec files */

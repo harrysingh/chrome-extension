@@ -7,6 +7,23 @@
   margin-left: 5px;
 }
 
+.right-corner-icongroup {
+  height: 40px;
+  line-height: 40px;
+  margin-top: -9px;
+}
+
+.settings-button {
+  padding-left: 0.5rem;
+  /* Hide Settings Icon for now */
+  display: none;
+}
+
+.settings-icon {
+  font-size: 1.75rem;
+  color: #ccc;
+}
+
 .rule-index > .table {
   font-size: 14px;
 }
@@ -97,7 +114,7 @@
   background-color: #dd9d12;
 }
 
-.rule-header > span {
+.content-header > span {
   font-weight: bold;
 }
 

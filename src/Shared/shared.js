@@ -40,8 +40,17 @@ RQ.RESPONSE_CODES = {
   NOT_FOUND: 404
 };
 
+RQ.STORAGE_KEYS = {
+  REQUESTLY_SETTINGS: 'rq_settings'
+};
+
 RQ.MESSAGES = {
   DELETE_RULE: 'Are you sure you want to delete the rule ?'
+};
+
+RQ.RESOURCES = {
+  EXTENSION_ICON: '/resources/images/38x38.png',
+  EXTENSION_ICON_GREYSCALE: '/resources/images/38x38_greyscale.png'
 };
 
 RQ.htmlEncode = function(value){

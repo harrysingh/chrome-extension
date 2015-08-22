@@ -4,7 +4,6 @@ var RQ = RQ || {},
 RQ.Mixins = RQ.Mixins || {};
 
 RQ.Templates = {
-  RULE_INDEX_TEMPLATE: $('#rule-index-template').html(),
   RULE_CARDS_TEMPLATE: $('#rule-cards-template').html(),
   REPLACE_RULE_EDITOR_TEMPLATE: $('#replace-rule-editor-template').html(),
   HEADERS_EDITOR_TEMPLATE: $('#headers-editor-template').html()
@@ -13,7 +12,7 @@ RQ.Templates = {
 RQ.TemplateHelpers = RQ.TemplateHelpers || {};
 RQ.HandlebarHelpers = RQ.HandlebarHelpers || {};
 
-RQ.init = function(options) {
+RQ.init = function() {
   this.Models = {};
 
   this.Collections = {};
@@ -31,7 +30,45 @@ RQ.init = function(options) {
 
   this.router = new RQ.Router();
 
+  this.fetchSettings();
+
+  this.addListenerForBackgroundMessages();
+
   Backbone.history.start();
+};
+
+RQ.fetchSettings = function() {
+  BG.StorageService.getRecord(RQ.STORAGE_KEYS.REQUESTLY_SETTINGS, function(response) {
+    response = response || {};
+
+    var settings = response[ RQ.STORAGE_KEYS.REQUESTLY_SETTINGS ] || { isExtensionEnabled: true };
+
+    if (!settings['isExtensionEnabled']) {
+      RQ.showBackdrop();
+    }
+  });
+};
+
+RQ.showBackdrop = function() {
+  $('#extension-disable-backdrop').show();
+  $('#extension-disable-backdrop-message').show();
+};
+
+RQ.hideBackdrop = function() {
+  $('#extension-disable-backdrop').hide();
+  $('#extension-disable-backdrop-message').hide();
+};
+
+RQ.addListenerForBackgroundMessages = function() {
+  chrome.runtime.onMessage.addListener(function(request) {
+    if (request.isExtensionEnabled === true) {
+      RQ.hideBackdrop();
+    }
+
+    if (request.isExtensionEnabled === false) {
+      RQ.showBackdrop();
+    }
+  });
 };
 
 Backbone.View.prototype.close = function() {

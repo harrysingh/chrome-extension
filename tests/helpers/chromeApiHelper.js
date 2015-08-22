@@ -1,4 +1,16 @@
 chrome = {
+  runtime: {
+    sendMessage: function() {},
+    onMessage: {
+      addListener: function() {}
+    }
+  },
+  contextMenus: {
+    create: function() {},
+    update: function() {},
+    removeAll: function() {}
+  },
+
   extension: {
     getBackgroundPage: function() {
 
@@ -8,7 +20,8 @@ chrome = {
   browserAction: {
     onClicked: {
       addListener: function(listener) {}
-    }
+    },
+    setIcon: function() {}
   },
 
   /**
@@ -63,13 +76,19 @@ chrome = {
 
   webRequest: {
     onBeforeRequest: {
-      addListener: function() {}
+      addListener: function() {},
+      hasListener: function() {},
+      removeListener: function() {}
     },
     onBeforeSendHeaders: {
-      addListener: function() {}
+      addListener: function() {},
+      hasListener: function() {},
+      removeListener: function() {}
     },
     onHeadersReceived: {
-      addListener: function() {}
+      addListener: function() {},
+      hasListener: function() {},
+      removeListener: function() {}
     }
   }
 };

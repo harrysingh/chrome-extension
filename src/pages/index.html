@@ -13,75 +13,9 @@
     <link href="/src/pages/css/rule_cards.css" rel="stylesheet">
   </head>
   <body>
-    <!-- All templates go here -->
-    <script type="text/template" id="rule-index-template">
-      <nav class="rule-header rq-dimgrey">
-        <span>Rules</span>
-        <span class="rules-number badge"><%= rules.length %></span>
-        <div class="right">
-          <a href="#selectRule" role="button" class="btn-success btn select-rule-button">
-            <span class="glyphicon glyphicon-plus margin-r-0-5" aria-hidden="true"></span>New Rule</a>
-          <% if (rules.length > 0) { %>
-            <button class="btn-info btn-export btn export-rules-button">
-              <span class="glyphicon glyphicon-export margin-r-0-5" aria-hidden="true"></span>Export</button>
-          <% } %>
-          <button class="btn-info btn-import btn import-rules-button">
-            <span class="glyphicon glyphicon-import margin-r-0-5" aria-hidden="true"></span>Import</button>
-        </div>
-      </nav>
-      <section class="rule-index">
-        <table class="table">
-          <thead>
-            <tr>
-              <th class="rule-selection-cell">
-                <input type="checkbox" class="select-all-rules-checkbox" title="Select All"/>
-              </th>
-              <th>Name & Description</th>
-              <th class="status-cell">Status</th>
-              <th>Created on</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-          <% _.each(rules, function(rule, index) {
-            var id = rule.getId(),
-              date = new Date(Number(rule.getCreationDate())),
-              ruleType = rule.getRuleType(),
-              ruleStatus = rule.getStatus();
-
-            date = date.toUTCString().split(' ');
-            date = date[1] + ' ' + date[2] + ', ' + date[3];
-          %>
-          <tr class="rule-item-row <%=ruleType.toLowerCase()%>" data-id="<%=id%>">
-            <td class="rule-selection-cell">
-              <input type="checkbox" class="select-rule-checkbox" title="Select Rule"/>
-            </td>
-            <td class="rule-name-cell">
-              <span class="rule-type badge"><%= RQ.htmlEncode(ruleType.charAt(0)) %></span>
-              <a class="ruleName"><%= RQ.htmlEncode(rule.getName()) %></a>
-              <div class="ruleDescription"><%= RQ.htmlEncode(rule.getDescription()) %></div>
-            </td>
-            <td class="status-cell">
-              <span title="Click to toggle Rule Status">
-                <input type="checkbox" data-toggle="toggle" class="status-toggle <%= ruleType %>"
-                  data-on="<%= RQ.RULE_STATUS.ACTIVE %>" data-off="<%= RQ.RULE_STATUS.INACTIVE %>"
-                  <% if (ruleStatus === RQ.RULE_STATUS.ACTIVE) {%> checked <%}%> />
-              </span>
-            </td>
-            <td><%= RQ.htmlEncode(date) %></td>
-            <td>
-              <span class="glyphicon glyphicon-trash delete-rule-icon action-icon" title="Delete Rule"></span>
-            </td>
-          </tr>
-          <% }); %>
-          </tbody>
-        </table>
-      </section>
-    </script>
-
     <!-------------------------------- Replace Rule Editor Template ------------------------------------->
     <script type="text/template" id="replace-rule-editor-template">
-      <nav class="rule-header">
+      <nav class="content-header">
         <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
         <span>Replace Host or some part of URL</span>
       </nav>
@@ -149,7 +83,7 @@
 
     <!-------------------------------- Headers Rule Editor Template ------------------------------------->
     <script type="text/template" id="headers-editor-template">
-      <nav class="rule-header">
+      <nav class="content-header">
         <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
         <span>Modify Headers in HTTP Request and Response</span>
       </nav>
@@ -283,7 +217,7 @@
     <!----------------------End of Headers Rule Editor Template------------------------------------------------>
 
     <script type="text/template" id="rule-cards-template">
-      <nav class="rule-header rq-dimgrey">
+      <nav class="content-header rq-dimgrey">
         <a href="#" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
         <span>Select Rule</span>
       </nav>
@@ -337,7 +271,7 @@
     <!-- End of templates sections -->
 
     <div class="header">
-      <img src="/resources/images/48x48x32.png" class="icon-requestly">
+      <img src="/resources/images/38x38.png" class="icon-requestly">
       <span class="rq-white">Request</span>
       <span class="rq-blue">ly</span>
       <span class="rq-dash"> - </span>
@@ -356,6 +290,12 @@
     		  <a id="chromestore_banner" class="rq-banner" href="http://bit.ly/chrome-store-reviews" target="_blank">Google Chrome Store</a>
         </span>
       </div>
+    </div>
+
+    <div id="extension-disable-backdrop" class="backdrop modal-backdrop"></div>
+    <div id="extension-disable-backdrop-message" class="backdrop-message alert alert-info">
+      <p>Requestly is deactivated.</p>
+      <p>You can activate it by using Right+Click and hit Activate Requestly</p>
     </div>
 
     <!-- Load all scripts here  -->
@@ -382,6 +322,7 @@
     <script type="text/javascript" src="/src/pages/templates.hbs.js"></script>
 
     <!-- Backbone Models -->
+    <script type="text/javascript" src="/src/pages/js/models/BaseModel.js"></script>
     <script type="text/javascript" src="/src/pages/js/models/BaseRuleModel.js"></script>
     <script type="text/javascript" src="/src/pages/js/models/RedirectRuleModel.js"></script>
     <script type="text/javascript" src="/src/pages/js/models/CancelRuleModel.js"></script>
@@ -395,6 +336,7 @@
     <script type="text/javascript" src="/src/pages/js/mixins/InputValidation.js"></script>
 
     <!-- Backbone Views -->
+    <script type="text/javascript" src="/src/pages/js/views/BaseView.js"></script>
     <script type="text/javascript" src="/src/pages/js/views/BaseRuleEditorView.js"></script>
     <script type="text/javascript" src="/src/pages/js/views/RedirectRuleEditorView.js"></script>
     <script type="text/javascript" src="/src/pages/js/views/CancelRuleEditorView.js"></script>

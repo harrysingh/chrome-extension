@@ -1,4 +1,4 @@
-var BaseRuleModel = Backbone.Model.extend({
+var BaseRuleModel = BaseModel.extend({
   defaults: function() {
     return {
       name: '',
@@ -98,7 +98,7 @@ var BaseRuleModel = Backbone.Model.extend({
   save: function(options) {
     var id = this.getId(),
       storageObject = {},
-      storageService = BG.StorageService;
+      storageService = this.getStorageService();
 
     if (!id) {
       id = this.generateId();
@@ -115,13 +115,14 @@ var BaseRuleModel = Backbone.Model.extend({
   },
 
   remove: function(options) {
-    var id = this.getId();
+    var id = this.getId(),
+      storageService = this.getStorageService();
 
     options = options || {};
     options.callback = options.callback || function() {
       console.log('Object removed');
     };
 
-    BG.StorageService.removeRecord(id, options.callback);
+    storageService.removeRecord(id, options.callback);
   }
 });
