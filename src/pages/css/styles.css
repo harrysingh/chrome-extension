@@ -57,6 +57,25 @@ table {
   overflow: auto;
 }
 
+.backdrop {
+  display: none;
+  background: #ccc;
+  opacity: 0.65;
+  top: 3.5rem;
+  bottom: 3.5rem;
+}
+
+.backdrop-message {
+  display: none;
+  width: 50rem;
+  left: 50%;
+  position: absolute;
+  margin-left: -25rem;
+  top: 40%;
+  z-index: 1050;
+  text-align: center;
+}
+
 .footer {
   width: 800px;
   margin: auto;

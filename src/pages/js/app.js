@@ -30,7 +30,26 @@ RQ.init = function() {
 
   this.router = new RQ.Router();
 
+  this.fetchSettings();
+
   Backbone.history.start();
+};
+
+RQ.fetchSettings = function() {
+  BG.StorageService.getRecord(RQ.STORAGE_KEYS.REQUESTLY_SETTINGS, function(response) {
+    response = response || {};
+
+    var settings = response[ RQ.STORAGE_KEYS.REQUESTLY_SETTINGS ] || { isExtensionEnabled: true };
+
+    if (!settings['isExtensionEnabled']) {
+      RQ.showBackdrop();
+    }
+  });
+};
+
+RQ.showBackdrop = function() {
+  $('#extension-disable-backdrop').show();
+  $('#extension-disable-backdrop-message').show();
 };
 
 Backbone.View.prototype.close = function() {
