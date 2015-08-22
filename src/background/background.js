@@ -282,6 +282,7 @@ BG.Methods.handleExtensionDisabled = function() {
     onclick: BG.Methods.enableExtension
   });
   chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON_GREYSCALE });
+  BG.Methods.sendMessage({ isExtensionEnabled: false });
   console.log('Requestly disabled');
 };
 
@@ -292,6 +293,7 @@ BG.Methods.handleExtensionEnabled = function() {
     onclick: BG.Methods.disableExtension
   });
   chrome.browserAction.setIcon({ path: RQ.RESOURCES.EXTENSION_ICON });
+  BG.Methods.sendMessage({ isExtensionEnabled: true });
   console.log('Requestly enabled');
 };
 
@@ -318,6 +320,11 @@ BG.extensionStatusContextMenuId = chrome.contextMenus.create({
   contexts: ['browser_action', 'all'],
   onclick: function() { console.log('Requestly Default handler executed'); }
 });
+
+BG.Methods.sendMessage = function(messageObject, callback) {
+  callback = callback || function() { console.log('DefaultHandler: Sending Message to Runtime: ', messageObject); };
+  chrome.runtime.sendMessage(messageObject, callback);
+};
 
 StorageService.getRecords({ callback: BG.Methods.readExtensionStatus });
 

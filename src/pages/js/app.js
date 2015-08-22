@@ -32,6 +32,8 @@ RQ.init = function() {
 
   this.fetchSettings();
 
+  this.addListenerForBackgroundMessages();
+
   Backbone.history.start();
 };
 
@@ -50,6 +52,23 @@ RQ.fetchSettings = function() {
 RQ.showBackdrop = function() {
   $('#extension-disable-backdrop').show();
   $('#extension-disable-backdrop-message').show();
+};
+
+RQ.hideBackdrop = function() {
+  $('#extension-disable-backdrop').hide();
+  $('#extension-disable-backdrop-message').hide();
+};
+
+RQ.addListenerForBackgroundMessages = function() {
+  chrome.runtime.onMessage.addListener(function(request) {
+    if (request.isExtensionEnabled === true) {
+      RQ.hideBackdrop();
+    }
+
+    if (request.isExtensionEnabled === false) {
+      RQ.showBackdrop();
+    }
+  });
 };
 
 Backbone.View.prototype.close = function() {
