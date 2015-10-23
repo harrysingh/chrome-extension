@@ -142,9 +142,13 @@ BG.Methods.matchUrlWithRuleSource = function(sourceObject, destination, url) {
 
       matches.forEach(function (matchValue, index) {
         // First match is the full string followed by parentheses/group values
-        if (index === 0 || !matchValue) {
+        if (index === 0) {
           return;
         }
+
+        // Issue: 73 We should not leave $i in the Url otherwise browser will encode that. 
+        // Even if match is not found, just replace that placeholder with empty string 
+        matchValue = matchValue || '';
 
         // Replace all $index values in destinationUrl with the matched groups
         destinationUrl = destinationUrl.replace(new RegExp('[\$]' + index, 'g'), matchValue);
