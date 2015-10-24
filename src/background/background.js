@@ -311,7 +311,7 @@ BG.Methods.readExtensionStatus = function() {
 };
 
 chrome.browserAction.onClicked.addListener(function () {
-  chrome.tabs.create({'url': chrome.extension.getURL('src/pages/index.html')}, function(tab) {
+  chrome.tabs.create({'url': 'http://web.requestly.in'}, function(tab) {
     // Tab opened.
   });
 });

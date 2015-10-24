@@ -5,7 +5,7 @@ var RulesCollection = Backbone.Collection.extend({
     var that = this;
     options = options || {};
 
-    BG.StorageService.getRecords({
+    RQ.StorageService.getRecords({
       forceFetch: true,
       callback: function(rules) {
         that.models.length = 0;

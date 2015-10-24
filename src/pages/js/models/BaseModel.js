@@ -1,5 +1,5 @@
 var BaseModel = Backbone.Model.extend({
   getStorageService: function() {
-    return BG.StorageService;
+    return RQ.StorageService;
   }
 });
