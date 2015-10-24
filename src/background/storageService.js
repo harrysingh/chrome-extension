@@ -109,7 +109,7 @@ StorageService.updateRecords = function(changes, namespace) {
 
         objectExists
           ? StorageService.records[changedObjectIndex] = changedObject.newValue    /* Update existing object (Edit) */
-          :  StorageService.records.push(changedObject.newValue);                  /* Create New Object */
+          : StorageService.records.push(changedObject.newValue);                   /* Create New Object */
       }
 
       // Delete Rule Operation

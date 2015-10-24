@@ -311,7 +311,7 @@ BG.Methods.readExtensionStatus = function() {
 };
 
 chrome.browserAction.onClicked.addListener(function () {
-  chrome.tabs.create({'url': 'http://web.requestly.in'}, function(tab) {
+  chrome.tabs.create({'url': RQ.WEB_URL }, function(tab) {
     // Tab opened.
   });
 });
@@ -327,8 +327,13 @@ BG.extensionStatusContextMenuId = chrome.contextMenus.create({
 
 BG.Methods.sendMessage = function(messageObject, callback) {
   callback = callback || function() { console.log('DefaultHandler: Sending Message to Runtime: ', messageObject); };
-  chrome.runtime.sendMessage(messageObject, callback);
+  
+  chrome.tabs.query({ url: RQ.WEB_URL_PATTERN }, function(tabs) {
+    // Send message to each opened tab which matches the url
+    for (var tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+      chrome.tabs.sendMessage(tabs[tabIndex].id, messageObject, callback);
+    }
+  });
 };
 
 StorageService.getRecords({ callback: BG.Methods.readExtensionStatus });
-
