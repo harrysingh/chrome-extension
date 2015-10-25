@@ -40,7 +40,7 @@ RQ.Router = Backbone.Router.extend({
   showRuleEditor: function(ruleId) {
     var that = this;
 
-    BG.StorageService.getRecord(ruleId, function(modelJSON) {
+    RQ.StorageService.getRecord(ruleId, function(modelJSON) {
       var ruleModelJSON = modelJSON[ruleId],
         ruleTypeUpperCase = ruleModelJSON.ruleType.toUpperCase(),
         editorView = new that.ruleViewMap[ruleTypeUpperCase](),
