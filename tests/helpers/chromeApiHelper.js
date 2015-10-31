@@ -12,9 +12,11 @@ chrome = {
   },
 
   extension: {
-    getBackgroundPage: function() {
+    getBackgroundPage: function() {}
+  },
 
-    }
+  tabs: {
+    query: function() {}
   },
 
   browserAction: {

@@ -19,10 +19,10 @@ module.exports = function(config) {
       'tests/helpers/chromeApiHelper.js',
 
       /* Code files */
+      'src/background/storageService.js',
       'src/pages/js/app.js',
       'src/Shared/utils.js',
       'src/Shared/shared.js',
-      'src/background/storageService.js',
       'src/background/background.js',
       'src/pages/js/models/BaseModel.js',
       'src/pages/js/models/BaseRuleModel.js',

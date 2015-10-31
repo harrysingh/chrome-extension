@@ -98,6 +98,19 @@ describe('Requestly Background Service', function() {
       expect(BG.Methods.matchUrlWithRuleSource(pairs[0].source, null, URL_SOURCES.GOOGLE)).toBeNull();
       expect(BG.Methods.matchUrlWithRuleSource(pairs[1].source, null, URL_SOURCES.FACEBOOK)).not.toBeNull();
     });
+
+    it('should not match url with black list domains', function() {
+      var pairs = redirectRule.getPairs();
+      
+      pairs[0]['source']['operator'] = RQ.RULE_OPERATORS.CONTAINS;
+      pairs[0]['source']['value'] = 'requestly';
+
+      expect(BG.Methods.matchUrlWithRuleSource(pairs[0].source, null, 'http://blog.requestly.in')).toBeNull();
+      expect(BG.Methods.matchUrlWithRuleSource(pairs[0].source, null, 'http://web.requestly.in')).toBeNull();
+      expect(BG.Methods.matchUrlWithRuleSource(
+        pairs[0].source, URL_SOURCES.GOOGLE, 'http://quora.com?search=requestly')
+      ).toBe(URL_SOURCES.GOOGLE);
+    });
   });
 
   describe('#modifyHeaders', function() {
