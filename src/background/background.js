@@ -119,9 +119,16 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
  */
 BG.Methods.matchUrlWithRuleSource = function(sourceObject, destination, url) {
   var operator = sourceObject.operator,
-    destinationUrl = destination || '', // Destination Url is not present in all rule types
-    value = sourceObject.value;
+    destinationUrl = destination || '', // Destination Url is not present in all rule types (Cancel)
+    value = sourceObject.value,
+    blackListedDomains = RQ.BLACK_LIST_DOMAINS || [];
 
+  for (var index = 0; index < blackListedDomains.length; index++) {
+    if (url.indexOf(blackListedDomains[index]) !== -1) {
+      return null;
+    }
+  }  
+    
   switch (operator) {
     case RQ.RULE_OPERATORS.EQUALS: if (value === url) { return destinationUrl; }
       break;
