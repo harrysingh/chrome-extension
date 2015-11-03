@@ -8,7 +8,7 @@ RQ.BLACK_LIST_DOMAINS = [
   'requestly.in'
 ];
 
-RQ.VERSION = '3.5';
+RQ.VERSION = '3.5.1';
 
 RQ.RULE_TYPES = {
   REDIRECT: 'Redirect',
