@@ -1,6 +1,5 @@
-[![Stories in Ready](https://badge.waffle.io/blunderboy/requestly.png?label=ready&title=Ready)](https://waffle.io/blunderboy/requestly)
-Requestly
-==========
+Requestly [![Stories in Ready](https://badge.waffle.io/blunderboy/requestly.png?label=ready&title=Ready)](https://waffle.io/blunderboy/requestly)
+================
 
 Requestly is a chrome extension using which user can redirect an HTTP(S) request.
 Requestly is available in [Chrome Store](https://chrome.google.com/webstore/detail/requestly/mdnleldcmiljblolnjhpnblkcekpdkpa).
