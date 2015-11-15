@@ -70,6 +70,7 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.currentTarget).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
+      ruleType = ruleModel.getRuleType(),
       eventAction,
       ruleStatus,
       that = this;
@@ -91,7 +92,7 @@ var RuleIndexView = Backbone.View.extend({
           message: ruleName + ' is now ' + ruleStatus
         });
 
-        RQ.Utils.submitEvent('rule', eventAction, that.model.getRuleType().toLowerCase() + ' rule ' + eventAction);
+        RQ.Utils.submitEvent('rule', eventAction, ruleType.toLowerCase() + ' rule ' + eventAction);
 
         // #34: User needs to refresh the page whenever rule status is changed
         that.reloadPage(2000);
@@ -104,6 +105,7 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.target).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
+      ruleType = ruleModel.getRuleType(),
       eventAction = RQ.GA_EVENTS.ACTIONS.DELETED,
       that = this;
 
@@ -116,7 +118,7 @@ var RuleIndexView = Backbone.View.extend({
             message: ruleName + ' has been deleted successfully!!'
           });
 
-          RQ.Utils.submitEvent('rule', eventAction, that.model.getRuleType().toLowerCase() + ' rule ' + eventAction);
+          RQ.Utils.submitEvent('rule', eventAction, ruleType.toLowerCase() + ' rule ' + eventAction);
 
           // #34: User needs to refresh the page whenever rule is changed
           that.reloadPage(2000);
