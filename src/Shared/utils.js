@@ -22,3 +22,14 @@ RQ.Utils.toRegex = function(regexStr) {
 RQ.Utils.isValidUrl = function(url) {
   return url.search(/^http:|https:|ftp:|javascript:/) === 0;
 };
+
+RQ.Utils.submitEvent = function(category, action, label) {
+  var eventObserverPlaceholder = document.getElementById('events-observer-placeholder'),
+    $eventEl = $('<span></span>').attr({
+      'data-category': category,
+      'data-action': action,
+      'data-label': label
+    });
+
+  eventObserverPlaceholder.appendChild($eventEl.get(0));
+};

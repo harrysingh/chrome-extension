@@ -70,13 +70,16 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.currentTarget).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
+      eventAction,
       ruleStatus,
       that = this;
 
     if (ruleModel.getStatus() === RQ.RULE_STATUS.ACTIVE) {
       ruleModel.setStatus(RQ.RULE_STATUS.INACTIVE);
+      eventAction = RQ.GA_EVENTS.ACTIONS.DEACTIVATED;
     } else {
       ruleModel.setStatus(RQ.RULE_STATUS.ACTIVE);
+      eventAction = RQ.GA_EVENTS.ACTIONS.ACTIVATED;
     }
 
     ruleStatus = ruleModel.getStatus();
@@ -87,6 +90,8 @@ var RuleIndexView = Backbone.View.extend({
           className: 'rq-info',
           message: ruleName + ' is now ' + ruleStatus
         });
+
+        RQ.Utils.submitEvent('rule', eventAction, that.model.getRuleType().toLowerCase() + ' rule ' + eventAction);
 
         // #34: User needs to refresh the page whenever rule status is changed
         that.reloadPage(2000);
@@ -99,6 +104,7 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.target).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
+      eventAction = RQ.GA_EVENTS.ACTIONS.DELETED,
       that = this;
 
     if (window.confirm(RQ.MESSAGES.DELETE_RULE)) {
@@ -109,6 +115,8 @@ var RuleIndexView = Backbone.View.extend({
             className: 'rq-success',
             message: ruleName + ' has been deleted successfully!!'
           });
+
+          RQ.Utils.submitEvent('rule', eventAction, that.model.getRuleType().toLowerCase() + ' rule ' + eventAction);
 
           // #34: User needs to refresh the page whenever rule is changed
           that.reloadPage(2000);

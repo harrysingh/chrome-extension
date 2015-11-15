@@ -61,6 +61,16 @@ RQ.RESOURCES = {
   EXTENSION_ICON_GREYSCALE: '/resources/images/38x38_greyscale.png'
 };
 
+RQ.GA_EVENTS = {
+  ACTIONS: {
+    MODIFIED: 'modified',
+    CREATED: 'created',
+    DELETED: 'deleted',
+    ACTIVATED: 'activated',
+    DEACTIVATED: 'deactivated'
+  }
+};
+
 RQ.htmlEncode = function(value){
   return $('<div/>').text(value).html();
 };

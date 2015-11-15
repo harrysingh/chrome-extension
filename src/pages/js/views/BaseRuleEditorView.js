@@ -104,10 +104,13 @@ var BaseRuleEditorView = BaseView.extend({
 
   saveRule: function() {
     var ts = this.model.getTimestamp(),
-      ruleName = this.model.getName();
+      ruleName = this.model.getName(),
+      eventAction = RQ.GA_EVENTS.ACTIONS.MODIFIED,
+      that = this;
 
     // Set Creation date if not exists
     if (!this.model.hasCreationDate()) {
+      eventAction = RQ.GA_EVENTS.ACTIONS.CREATED;
       this.model.setCreationDate(ts);
     }
 
@@ -124,6 +127,8 @@ var BaseRuleEditorView = BaseView.extend({
           className: 'rq-success',
           message: ruleName + ' has been saved successfully!!'
         });
+
+        RQ.Utils.submitEvent('rule', eventAction, that.model.getRuleType().toLowerCase() + ' rule ' + eventAction);
 
         // #34: User needs to refresh the page whenever rule status is changed
         setTimeout(function() {
