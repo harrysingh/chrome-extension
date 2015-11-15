@@ -165,14 +165,18 @@ var RuleIndexView = Backbone.View.extend({
 
   exportRules: function() {
     var selectedRules = this.getSelectedRules(),
+      eventAction = RQ.GA_EVENTS.ACTIONS.EXPORTED,
       rules = selectedRules.length ? selectedRules : this.rulesCollection.models;
 
     var rulesAttributes = _.pluck(rules, 'attributes');
     Backbone.trigger('file:save', JSON.stringify(rulesAttributes), 'requestly_rules');
+
+    RQ.Utils.submitEvent('rules', eventAction, 'Rules ' + eventAction);
   },
 
   importRules: function() {
-    var that = this;
+    var that = this,
+      eventAction = RQ.GA_EVENTS.ACTIONS.IMPORTED;
 
     Backbone.trigger('file:load', function(data) {
       var rules = JSON.parse(data);
@@ -180,6 +184,9 @@ var RuleIndexView = Backbone.View.extend({
         var ruleModel = new BaseRuleModel(rule);
         ruleModel.save();
       });
+
+      RQ.Utils.submitEvent('rules', eventAction, 'Rules ' + eventAction);
+
       that.reloadPage();
     });
   }

@@ -67,7 +67,9 @@ RQ.GA_EVENTS = {
     CREATED: 'created',
     DELETED: 'deleted',
     ACTIVATED: 'activated',
-    DEACTIVATED: 'deactivated'
+    DEACTIVATED: 'deactivated',
+    IMPORTED: 'imported',
+    EXPORTED: 'exported'
   }
 };
 
