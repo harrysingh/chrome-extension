@@ -1,5 +1,7 @@
 var RQ = RQ || {};
 
+RQ.VERSION = '3.5.2';
+
 RQ.WEB_URL = 'http://web.requestly.in';
 
 RQ.WEB_URL_PATTERN = '*://web.requestly.in/*';
@@ -7,8 +9,6 @@ RQ.WEB_URL_PATTERN = '*://web.requestly.in/*';
 RQ.BLACK_LIST_DOMAINS = [
   'requestly.in'
 ];
-
-RQ.VERSION = '3.5.1';
 
 RQ.RULE_TYPES = {
   REDIRECT: 'Redirect',
