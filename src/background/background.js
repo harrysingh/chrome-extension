@@ -12,6 +12,7 @@ BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
   var pairs = rule.pairs,
     pair = null,
     from = null,
+    isFromPartRegex,
     resultingUrl = null;
 
   for (var i = 0; i < pairs.length; i++) {
@@ -19,9 +20,14 @@ BG.Methods.matchUrlWithReplaceRulePairs = function(rule, url) {
     pair.from = pair.from || '';
 
     // When string pair.from looks like a RegExp, create a RegExp object from it
-    from = RQ.Utils.toRegex(pair.from) || pair.from;
+    from = RQ.Utils.toRegex(pair.from);
+    isFromPartRegex = (from !== null);
 
-    if (url.match(from)) {
+    from = from || pair.from;
+
+    // Use String.match method when from is Regex otherwise use indexOf
+    // Issue-86: String.match("?a=1") fails with an error
+    if ((isFromPartRegex && url.match(from)) || (url.indexOf(from) !== -1)) {
       resultingUrl = url.replace(from, pair.to);
       break;
     }

@@ -1,6 +1,7 @@
 describe('Requestly Background Service', function() {
   var redirectRule,
     cancelRule,
+    replaceRule,
     headersRule;
 
   var URL_SOURCES = {
@@ -8,7 +9,8 @@ describe('Requestly Background Service', function() {
     YAHOO: 'http://www.yahoo.com',
     FACEBOOK: 'http://www.facebook.com',
     GOOGLE_SEARCH_QUERY: 'https://www.google.co.in/search?q=',
-    REQUESTLY: 'http://www.requestly.in'
+    REQUESTLY: 'http://www.requestly.in',
+    DROPBOX: 'http://www.dropbox.com'
   };
 
   var KEYWORDS = {
@@ -19,6 +21,7 @@ describe('Requestly Background Service', function() {
   afterEach(function() {
     redirectRule = null;
     cancelRule = null;
+    replaceRule = null;
   });
 
   describe('Match Request Url method', function() {
@@ -163,6 +166,32 @@ describe('Requestly Background Service', function() {
       StorageService.records.push(headersRule.toJSON());
       var modifiedHeaders = BG.Methods.modifyHeaders(originalHeaders, RQ.HEADERS_TARGET.REQUEST, { url: URL_SOURCES.FACEBOOK });
       expect(modifiedHeaders.length).toEqual(2);
+    });
+  });
+
+  describe('#BG.Methods.matchUrlWithReplaceRulePairs', function() {
+    beforeEach(function() {
+      replaceRule = new ReplaceRuleModel({
+        name: 'Replace Test Rule',
+        pairs: [
+          { from: '?dl=0', to: '?dl=1' },
+          { from: '/dropbox/ig', to: 'facebook'}
+        ]
+      }).toJSON();
+    });
+
+    it('should replace query paramters with ? in beginning (Issue-86)', function() {
+      expect(BG.Methods.matchUrlWithReplaceRulePairs(replaceRule, URL_SOURCES.DROPBOX + '?dl=0'))
+        .toBe(URL_SOURCES.DROPBOX + '?dl=1');
+    });
+
+    it('should replace when "pair.from" is valid regex', function() {
+      expect(BG.Methods.matchUrlWithReplaceRulePairs(replaceRule, URL_SOURCES.DROPBOX))
+        .toBe(URL_SOURCES.FACEBOOK);
+    });
+
+    afterEach(function() {
+      replaceRule = null;
     });
   });
 });
