@@ -334,7 +334,7 @@ chrome.contextMenus.removeAll();
 BG.extensionStatusContextMenuId = chrome.contextMenus.create({
   title: 'Deactivate Requestly',
   type: 'normal',
-  contexts: ['browser_action', 'all'],
+  contexts: ['browser_action'],
   onclick: function() { console.log('Requestly Default handler executed'); }
 });
 
