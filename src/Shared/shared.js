@@ -1,6 +1,6 @@
 var RQ = RQ || {};
 
-RQ.VERSION = '3.5.3';
+RQ.VERSION = '3.5.4';
 
 RQ.WEB_URL = 'http://web.requestly.in';
 
