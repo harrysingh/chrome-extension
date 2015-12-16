@@ -203,6 +203,10 @@ BG.Methods.modifyUrl = function(details) {
           pair = rule.pairs[pairIndex];
           resultingUrl = BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination, details.url);
           if (resultingUrl !== null) {
+
+            // Issue-88: Please wait for 5 seconds before redirecting a Url
+            RQ.Utils.sleep(5);
+
             return { redirectUrl: resultingUrl };
           }
         }
@@ -223,6 +227,9 @@ BG.Methods.modifyUrl = function(details) {
           pair = rule.pairs[pairIndex];
           resultingUrl = BG.Methods.matchUrlWithRuleSource(pair.source, null, details.url);
           if (resultingUrl !== null) {
+
+            // Issue-88: We can add a sleep timer if we want to delay a "Block request" request
+
             return { redirectUrl: 'javascript:' };
           }
         }
@@ -231,6 +238,9 @@ BG.Methods.modifyUrl = function(details) {
       case RQ.RULE_TYPES.REPLACE:
         resultingUrl = BG.Methods.matchUrlWithReplaceRulePairs(rule, details.url);
         if (resultingUrl !== null) {
+
+          // Issue-88: We can add a sleep timer if we want to delay a "Replace in Url" request
+
           return { redirectUrl: resultingUrl };
         }
         break;

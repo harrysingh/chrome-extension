@@ -33,3 +33,12 @@ RQ.Utils.submitEvent = function(category, action, label) {
 
   eventObserverPlaceholder.appendChild($eventEl.get(0));
 };
+
+RQ.Utils.sleep = function(numSeconds) {
+  var initialTimeStamp = Date.now();
+  while (Date.now() < (initialTimeStamp + numSeconds * 1000)) {
+    // No-Op
+  }
+
+  return 0;
+};
