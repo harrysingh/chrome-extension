@@ -2,23 +2,27 @@
   <span>Rules</span>
   <span class="rules-number badge">{{ rules.length }}</span>
   <div class="right right-corner-icongroup">
-    <a href="#selectRule" role="button" class="btn-success btn select-rule-button">
-      <span class="glyphicon glyphicon-plus margin-r-0-5" aria-hidden="true"></span>
-      <span>New Rule</span>
-    </a>
-    {{#gt rules.length 0}}
-      <button class="btn-info btn-export btn export-rules-button">
-        <span class="glyphicon glyphicon-export margin-r-0-5" aria-hidden="true"></span>
-        <span>Export</span>
-      </button>
-    {{/gt}}
-    <button class="btn-info btn-import btn import-rules-button">
-      <span class="glyphicon glyphicon-import margin-r-0-5" aria-hidden="true"></span>
-      <span>Import</span>
-    </button>
 
+    <a href="#selectRule" class="btn-floating btn-small btn-success waves-effect waves-light select-rule-button">
+      <i class="fa fa-plus"></i>
+    </a>
+
+    {{#gt rules.length 0}}
+      <a class="btn-floating btn-small waves-effect waves-light blue export-rules-button"
+         data-toggle="tooltip" data-placement="bottom" data-original-title="Download">
+        <i class="fa fa-download"></i>
+      </a>
+    {{/gt}}
+
+    <a class="btn-floating btn-small waves-effect waves-light blue import-rules-button"
+       data-toggle="tooltip" data-placement="bottom" data-original-title="Upload">
+      <i class="fa fa-upload"></i>
+    </a>
+
+    <!--
     <a href="#settings/requestly" role="button" class="settings-button">
       <span class="glyphicon glyphicon-cog settings-icon"></span>
     </a>
+    -->
   </div>
 </nav>
