@@ -1,20 +1,17 @@
-<table><tr>
-  <td>
-    <div class="input-group name-container">
-      <span class="input-group-addon">Rule Name</span>
-      <input type="text" class="form-control rule-name-input" value="{{name}}">
-    </div>
-  </td>
+<div class="row">
+  <div class="input-field name-container">
+    <input type="text" class="validate rule-name-input" value="{{name}}">
+    <label class="active">Rule Name</label>
+  </div>
+  <div class="rule-status-container">
+    <span class="title margin-r-0-5">Status</span>
+    {{> StatusToggle}}
+  </div>
+</div>
 
-  <td>
-    <div class="rule-status-container">
-      <span class="title margin-r-0-5">Status</span>
-      {{> StatusToggle}}
-    </div>
-  </td>
-</tr></table>
-
-<div class="description-container">
-  <div class="title">Rule Description (Optional)</div>
-  <textarea class="rule-description">{{description}}</textarea>
+<div class="row">
+  <div class="input-field description-container">
+    <input type="text" class="rule-description" value="{{description}}">
+    <label class="active">Rule Description (Optional)</label>
+  </div>
 </div>

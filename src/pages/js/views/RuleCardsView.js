@@ -1,9 +1,5 @@
 var RuleCardsView = Backbone.View.extend({
 
-  Template: function() {
-    return RQ.Templates.RULE_CARDS_TEMPLATE;
-  },
-
   events: {
     'click .rule-card': 'selectRule'
   },
