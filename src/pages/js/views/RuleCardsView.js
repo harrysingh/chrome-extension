@@ -13,7 +13,7 @@ var RuleCardsView = Backbone.View.extend({
       this.model = options.model;
     }
 
-    var markup = _.template(this.Template(), { rule: this.model });
+    var markup = RQ.Templates.RuleCardsView;
     $(this.el).html(markup);
   },
 
