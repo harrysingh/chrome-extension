@@ -1,14 +1,35 @@
 <div class="source-container">
+  <span class="title">Url</span>
+
   <div class="dropdown-container">
-    <select class="source-operator-select" data-key="source.operator">
-      <option value="{{RULE_OPERATORS.EQUALS}}" {{#equals source.operator RULE_OPERATORS.EQUALS}}selected{{/equals}}>Url Equals</option>
-      <option value="{{RULE_OPERATORS.CONTAINS}}" {{#equals source.operator RULE_OPERATORS.CONTAINS}}selected{{/equals}}>Url Contains</option>
-      <option value="{{RULE_OPERATORS.MATCHES}}" {{#equals source.operator RULE_OPERATORS.MATCHES}}selected{{/equals}}>Url Matches</option>
-    </select>
+    <div class="dropdown" data-key="source.operator">
+
+      <button class="btn dropdown-toggle source-operator-select" type="button" data-toggle="dropdown">
+        <span class="dropdown-value" data-value="">Select</span>
+        <span class="caret"></span>
+      </button>
+
+      <ul class="dropdown-menu">
+        <li>
+          <a class="dropdown-option"
+               data-value="{{readGlobalVar "RQ.RULE_OPERATORS.EQUALS"}}"
+               {{#equalsGlobalVar "RQ.RULE_OPERATORS.EQUALS" source.operator}}selected{{/equalsGlobalVar}}>Equals</a>
+        </li>
+        <li>
+          <a class="dropdown-option"
+               data-value="{{readGlobalVar "RQ.RULE_OPERATORS.CONTAINS"}}"
+               {{#equalsGlobalVar "RQ.RULE_OPERATORS.CONTAINS" source.operator}}selected{{/equalsGlobalVar}}>Contains</a>
+        </li>
+        <li>
+          <a class="dropdown-option"
+               data-value="{{readGlobalVar "RQ.RULE_OPERATORS.MATCHES"}}"
+               {{#equalsGlobalVar "RQ.RULE_OPERATORS.MATCHES" source.operator}}selected{{/equalsGlobalVar}}>Matches</a>
+        </li>
+      </ul>
+    </div>
   </div>
 
-  <input type="text" class="form-control source-value-input" data-key="source.value"
-     value="{{source.value}}" placeholder="{{sourcePlaceholder}}" />
+  <input type="text" class="form-control source-value-input" data-key="source.value" value="{{source.value}}" placeholder="{{sourcePlaceholder}}" />
 
-  <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
+  <span class="fa fa-trash-o delete-pair action-icon"></span>
 </div>

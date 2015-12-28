@@ -6,11 +6,14 @@ var BaseRuleEditorView = BaseView.extend({
     'keyup .rule-description': 'updateRuleDescription',
     'click .add-pair': 'addPair',
     'click .delete-pair': 'deletePair',
-    'click .save-rule': 'saveRule'
+    'click .save-rule': 'saveRule',
+    'click .dropdown .dropdown-option': 'handleDropdownValueChanged'
   },
 
   initWidgets: function() {
     this.$el.find('.status-toggle').bootstrapToggle();
+    this.$el.find('[data-toggle="dropdown"]').dropdown();
+    this.initDropdowns();
   },
 
   updateRuleName: function(event) {
@@ -81,6 +84,35 @@ var BaseRuleEditorView = BaseView.extend({
       this.updateFieldInPair(pairs[index], key, event.target.selectedOptions[0].value);
       this.render();
     }
+  },
+
+  updateDropdownSelectionState: function($dropdown) {
+    $dropdown = $($dropdown);
+
+    var $selectedOption = $dropdown.find('.dropdown-option[selected]'),
+      $displayButton = $dropdown.find('.dropdown-toggle');
+
+    $displayButton.find('.dropdown-value')
+      .html($selectedOption.html())
+      .attr('data-value', $selectedOption.attr('data-value'));
+  },
+
+  initDropdowns: function() {
+    _.each(this.$el.find('.dropdown'), this.updateDropdownSelectionState, this);
+  },
+
+  handleDropdownValueChanged: function(event) {
+    var $target = $(event.target),
+      $dropdown = $target.parents('.dropdown'),
+      index = Number($target.parents('.pair-container').attr('data-index')),
+      key = $dropdown.attr('data-key'),
+      pairs = this.model.getPairs();
+
+    $dropdown.find('.dropdown-option').removeAttr('selected');
+    $target.attr('selected', true);
+
+    this.updateDropdownSelectionState($dropdown);
+    this.updateFieldInPair(pairs[index], key, $target.attr('data-value'));
   },
 
   validateRule: function() {

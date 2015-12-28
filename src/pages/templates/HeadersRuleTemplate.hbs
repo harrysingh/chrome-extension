@@ -69,27 +69,7 @@
             {{/unequalsGlobalVar}}
           </div>
 
-          <div class="source-container">
-            <span class="title">Url</span>
-
-            <div class="dropdown-container">
-              <select class="source-operator-select" data-key="source.operator">
-                <option value="{{readGlobalVar "RQ.RULE_OPERATORS.EQUALS"}}"
-                  {{#equalsGlobalVar "RQ.RULE_OPERATORS.EQUALS" source.operator}}selected{{/equalsGlobalVar}}>Equals</option>
-
-                <option value="{{readGlobalVar "RQ.RULE_OPERATORS.CONTAINS"}}"
-                  {{#equalsGlobalVar "RQ.RULE_OPERATORS.CONTAINS" source.operator}}selected{{/equalsGlobalVar}}>Contains</option>
-
-                <option value="{{readGlobalVar "RQ.RULE_OPERATORS.MATCHES"}}"
-                  {{#equalsGlobalVar "RQ.RULE_OPERATORS.MATCHES" source.operator}}selected{{/equalsGlobalVar}}>Matches</option>
-              </select>
-            </div>
-
-            <input type="text" class="form-control source-value-input" data-key="source.value" value="{{source.value}}"
-                   placeholder="Leave this field Empty to apply above modification to all urls" />
-
-            <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
-          </div>
+          {{> SourceField sourcePlaceholder="Leave this field Empty to apply above modification to all urls" }}
         </div>
 
       {{/each}}
