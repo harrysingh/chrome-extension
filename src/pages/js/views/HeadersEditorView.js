@@ -3,7 +3,7 @@ var HeadersEditorView = BaseRuleEditorView.extend({
   Model: HeadersRuleModel,
 
   getTemplate: function() {
-    return RQ.Templates.HEADERS_EDITOR_TEMPLATE;
+    return RQ.Templates.HeadersRuleTemplate;
   },
 
   className: 'headers-rule-editor',

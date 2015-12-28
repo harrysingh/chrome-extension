@@ -9,10 +9,6 @@ var BaseRuleEditorView = BaseView.extend({
     'click .save-rule': 'saveRule'
   },
 
-  getMarkup: function(template) {
-    return _.template(template, { rule: this.model });
-  },
-
   initWidgets: function() {
     this.$el.find('.status-toggle').bootstrapToggle();
   },

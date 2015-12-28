@@ -10,10 +10,6 @@ var ReplaceRuleEditorView = BaseRuleEditorView.extend({
     return RQ.Templates.ReplaceRuleEditor;
   },
 
-  getMarkup: function(template) {
-    return template(this.model.toJSON());
-  },
-
   events: _.extend(BaseRuleEditorView.prototype.events, {
     'keyup .pair-container input': 'updateRulePair'
   })

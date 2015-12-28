@@ -63,11 +63,31 @@ RQ.HandlebarHelpers.readGlobalVar = function(value) {
 
   value = value.split('.');
 
-  for (var i = 0; i < value.length; i++) {
+  for (var i = 1; i < value.length; i++) {
     result = result[ value[i] ]
   }
 
   return result;
+};
+
+RQ.HandlebarHelpers.equalsGlobalVar = function(globalVarString, operand, options) {
+  var globalVar = RQ.HandlebarHelpers.readGlobalVar(globalVarString);
+
+  if (globalVar === operand) {
+    return options.fn(this);
+  }
+
+  return options.inverse(this);
+};
+
+RQ.HandlebarHelpers.unequalsGlobalVar = function(globalVarString, operand, options) {
+  var globalVar = RQ.HandlebarHelpers.readGlobalVar(globalVarString);
+
+  if (globalVar !== operand) {
+    return options.fn(this);
+  }
+
+  return options.inverse(this);
 };
 
 Handlebars.registerHelper('debug', RQ.HandlebarHelpers.DebugHelper);
@@ -77,3 +97,5 @@ Handlebars.registerHelper('toLowerCase', RQ.HandlebarHelpers.toLowerCaseHelper);
 Handlebars.registerHelper('formatDate', RQ.HandlebarHelpers.formatDate);
 Handlebars.registerHelper('charAt', RQ.HandlebarHelpers.charAtHelper);
 Handlebars.registerHelper('readGlobalVar', RQ.HandlebarHelpers.readGlobalVar);
+Handlebars.registerHelper('equalsGlobalVar', RQ.HandlebarHelpers.equalsGlobalVar);
+Handlebars.registerHelper('unequalsGlobalVar', RQ.HandlebarHelpers.unequalsGlobalVar);

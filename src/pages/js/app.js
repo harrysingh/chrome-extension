@@ -4,10 +4,6 @@ RQ.StorageService = StorageService;
 
 RQ.Mixins = RQ.Mixins || {};
 
-RQ.Templates = {
-  HEADERS_EDITOR_TEMPLATE: $('#headers-editor-template').html()
-};
-
 RQ.TemplateHelpers = RQ.TemplateHelpers || {};
 RQ.HandlebarHelpers = RQ.HandlebarHelpers || {};
 

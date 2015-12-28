@@ -1,0 +1,103 @@
+<nav class="content-header">
+  <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
+  <span>Modify Headers in HTTP Request and Response</span>
+</nav>
+
+<section class="rule-body">
+  <div class="alert alert-dismissable alert-warning message">
+    <button type="button" class="close hide-message" data-dismiss="alert">x</button>
+    <p>Modifications in Response Headers are not visible in Dev tools.
+      <a href="https://code.google.com/p/chromium/issues/detail?id=258064" class="alert-link" target="_blank">Chromium Bug Link</a>
+    </p>
+  </div>
+
+  {{> RuleProperties}}
+
+  <div class="pairs-container">
+    <div class="title">
+      <span class="left">Headers Modification Rules</span>
+      <button class="right btn add-pair">
+        <span class="glyphicon glyphicon-plus-sign action-icon"></span>
+        <span>New</span>
+      </button>
+    </div>
+    <div class="well well-sm">
+      {{#each pairs}}
+
+        {{#gt @index 0}} <hr /> {{/gt}}
+
+        <div class="pair-container" data-index="{{@index}}">
+          <div>
+            <div class="header-modification-type-container">
+              <span class="dropdown-container">
+                <select class="modification-type-select" data-key="type">
+                  <option value="{{readGlobalVar "RQ.MODIFICATION_TYPES.ADD" }}"
+                    {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.ADD" type }}selected{{/equalsGlobalVar}}>Add</option>
+
+                  <option value="{{readGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" }}"
+                    {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" type }}selected{{/equalsGlobalVar}}>Remove</option>
+
+                  <option value="{{readGlobalVar "RQ.MODIFICATION_TYPES.MODIFY" }}"
+                    {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.MOIFY" type }}selected{{/equalsGlobalVar}}>Modify</option>
+                </select>
+              </span>
+            </div>
+
+            <div class="header-target-container">
+              <span class="dropdown-container">
+                <select class="header-target-select" data-key="target">
+                  <option value="{{readGlobalVar "RQ.HEADERS_TARGET.REQUEST" }}"
+                    {{#equalsGlobalVar "RQ.HEADERS_TARGET.REQUEST" target }}selected{{/equalsGlobalVar}}>Request</option>
+
+                  <option value="{{readGlobalVar "RQ.HEADERS_TARGET.RESPONSE" }}"
+                    {{#equalsGlobalVar "RQ.HEADERS_TARGET.RESPONSE" target }}selected{{/equalsGlobalVar}}>Response</option>
+                </select>
+              </span>
+            </div>
+
+            <div class="input-group">
+              <span class="input-group-addon">Header</span>
+              <input type="text" class="form-control header-input" data-key="header"
+                     placeholder="Header Name" value="{{header}}">
+            </div>
+
+            {{#unequalsGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" type }}
+              <div class="input-group">
+                <span class="input-group-addon">Value</span>
+                <input type="text" class="form-control value-input" data-key="value" placeholder="Header Value" value="{{value}}"/>
+              </div>
+            {{/unequalsGlobalVar}}
+          </div>
+
+          <div class="source-container">
+            <span class="title">Url</span>
+
+            <div class="dropdown-container">
+              <select class="source-operator-select" data-key="source.operator">
+                <option value="{{readGlobalVar "RQ.RULE_OPERATORS.EQUALS"}}"
+                  {{#equalsGlobalVar "RQ.RULE_OPERATORS.EQUALS" source.operator}}selected{{/equalsGlobalVar}}>Equals</option>
+
+                <option value="{{readGlobalVar "RQ.RULE_OPERATORS.CONTAINS"}}"
+                  {{#equalsGlobalVar "RQ.RULE_OPERATORS.CONTAINS" source.operator}}selected{{/equalsGlobalVar}}>Contains</option>
+
+                <option value="{{readGlobalVar "RQ.RULE_OPERATORS.MATCHES"}}"
+                  {{#equalsGlobalVar "RQ.RULE_OPERATORS.MATCHES" source.operator}}selected{{/equalsGlobalVar}}>Matches</option>
+              </select>
+            </div>
+
+            <input type="text" class="form-control source-value-input" data-key="source.value" value="{{source.value}}"
+                   placeholder="Leave this field Empty to apply above modification to all urls" />
+
+            <span class="glyphicon glyphicon-trash delete-pair action-icon"></span>
+          </div>
+        </div>
+
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="buttons-container">
+    <a class="btn save-button save-rule">Save</a>
+    <a href="#" class="btn btn-default">Cancel</a>
+  </div>
+</section>
