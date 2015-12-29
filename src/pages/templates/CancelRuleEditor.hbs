@@ -1,18 +1,9 @@
-<nav class="content-header">
-  <span>Block/Cancel Network Request</span>
-</nav>
+{{> RuleEditorHeader heading="Block/Cancel Network Requests" }}
 
 <section class="rule-body">
   {{> RuleProperties}}
 
-  <div class="title">
-    <span class="left">Enter Keywords or Urls or Domains to be blocked</span>
-    <button class="right btn add-pair">
-      <span class="glyphicon glyphicon-plus-sign action-icon"></span>
-      <span>New</span>
-    </button>
-  </div>
-
+  {{> PairsContainerHeading heading="Enter Keywords or Urls or Domains to be blocked" }}
   <div class="pairs-container">
     {{#each pairs}}
       <div class="well well-sm pair-container" data-index="{{@index}}">
@@ -21,8 +12,5 @@
     {{/each}}
   </div>
 
-  <div class="buttons-container">
-    <a class="btn btn-success save-button save-rule">Save</a>
-    <a href="#" class="btn btn-default">Cancel</a>
-  </div>
+  {{> SaveRuleCTA }}
 </section>

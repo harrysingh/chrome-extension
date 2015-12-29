@@ -4,6 +4,8 @@ var CancelRuleEditorView = RedirectRuleEditorView.extend({
 
   id: 'cancel-rule-editor',
 
+  className: 'rule-editor',
+
   getTemplate: function() {
     return RQ.Templates.CancelRuleEditor;
   },

@@ -6,7 +6,9 @@ var HeadersEditorView = BaseRuleEditorView.extend({
     return RQ.Templates.HeadersRuleTemplate;
   },
 
-  className: 'headers-rule-editor',
+  id: 'headers-rule-editor',
+
+  className: 'rule-editor',
 
   events: _.extend(BaseRuleEditorView.prototype.events, {
     'keyup .pair-container input': 'updateRulePair',

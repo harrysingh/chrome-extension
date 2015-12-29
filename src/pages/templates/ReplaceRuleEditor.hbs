@@ -1,19 +1,11 @@
-<nav class="content-header rq-green">
-  <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
-  <span>Replace Host or some part of URL</span>
-</nav>
+{{> RuleEditorHeader heading="Replace Host or some part of URL" }}
+
 
 <section class="rule-body">
   {{> RuleProperties}}
 
   <div class="pairs-container">
-    <div class="title">
-      <span class="left">Pairs</span>
-      <button class="right btn add-pair">
-        <span class="glyphicon glyphicon-plus-sign action-icon"></span>
-        <span>New</span>
-      </button>
-    </div>
+    {{> PairsContainerHeading heading="Pairs" }}
 
     <div class="well well-sm">
       {{#each pairs}}
@@ -32,8 +24,5 @@
     </div>
   </div>
 
-  <div class="buttons-container">
-    <a class="btn save-button save-rule">Save</a>
-    <a href="#" class="btn btn-default">Cancel</a>
-  </div>
+  {{> SaveRuleCTA }}
 </section>

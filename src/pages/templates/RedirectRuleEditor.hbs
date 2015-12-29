@@ -3,10 +3,7 @@
 <section class="rule-body">
   {{> RuleProperties}}
 
-  <div class="title">
-    <span class="left">Source Destination Pairs</span>
-    {{> AddPairCTA }}
-  </div>
+  {{> PairsContainerHeading heading="Source Destination Pairs" }}
 
   <div class="pairs-container">
     {{#each pairs}}
@@ -20,10 +17,8 @@
                    placeholder="{{destinationPlaceholder}}">
           </div>
         </div>
-
       </div>
     {{/each}}
-    </div>
   </div>
 
   {{> SaveRuleCTA }}

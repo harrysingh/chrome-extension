@@ -1,7 +1,5 @@
-<nav class="content-header">
-  <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
-  <span>Modify Headers in HTTP Request and Response</span>
-</nav>
+{{> RuleEditorHeader heading="Modify Headers in HTTP Request and Response" }}
+
 
 <section class="rule-body">
   <div class="alert alert-dismissable alert-warning message">
@@ -14,13 +12,8 @@
   {{> RuleProperties}}
 
   <div class="pairs-container">
-    <div class="title">
-      <span class="left">Headers Modification Rules</span>
-      <button class="right btn add-pair">
-        <span class="glyphicon glyphicon-plus-sign action-icon"></span>
-        <span>New</span>
-      </button>
-    </div>
+    {{> PairsContainerHeading heading="Headers Modification Rules" }}
+
     <div class="well well-sm">
       {{#each pairs}}
 
@@ -57,8 +50,7 @@
 
             <div class="input-group">
               <span class="input-group-addon">Header</span>
-              <input type="text" class="form-control header-input" data-key="header"
-                     placeholder="Header Name" value="{{header}}">
+              <input type="text" class="form-control header-input" data-key="header" placeholder="Header Name" value="{{header}}">
             </div>
 
             {{#unequalsGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" type }}
@@ -76,8 +68,5 @@
     </div>
   </div>
 
-  <div class="buttons-container">
-    <a class="btn save-button save-rule">Save</a>
-    <a href="#" class="btn btn-default">Cancel</a>
-  </div>
+  {{> SaveRuleCTA }}
 </section>
