@@ -11,9 +11,7 @@ var HeadersEditorView = BaseRuleEditorView.extend({
   className: 'rule-editor',
 
   events: _.extend(BaseRuleEditorView.prototype.events, {
-    'keyup .pair-container input': 'updateRulePair',
-    'change .pair-container select': 'updateRulePair',
-    'click .hide-message': 'hideMessage'
+    'keyup .pair-container input': 'updateRulePair'
   }),
 
   hideMessage: function() {

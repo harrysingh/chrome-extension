@@ -79,11 +79,6 @@ var BaseRuleEditorView = BaseView.extend({
     if (event.target.tagName === 'INPUT') {
       this.updateFieldInPair(pairs[index], key, event.target.value);
     }
-
-    if (event.target.tagName === 'SELECT') {
-      this.updateFieldInPair(pairs[index], key, event.target.selectedOptions[0].value);
-      this.render();
-    }
   },
 
   updateDropdownSelectionState: function($dropdown) {
@@ -113,6 +108,7 @@ var BaseRuleEditorView = BaseView.extend({
 
     this.updateDropdownSelectionState($dropdown);
     this.updateFieldInPair(pairs[index], key, $target.attr('data-value'));
+    this.render();
   },
 
   validateRule: function() {

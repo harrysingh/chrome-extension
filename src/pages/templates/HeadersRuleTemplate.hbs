@@ -2,59 +2,82 @@
 
 
 <section class="rule-body">
+
+  {{!-- Issue #89: TODO: Add this as FAQ
   <div class="alert alert-dismissable alert-warning message">
     <button type="button" class="close hide-message" data-dismiss="alert">x</button>
     <p>Modifications in Response Headers are not visible in Dev tools.
       <a href="https://code.google.com/p/chromium/issues/detail?id=258064" class="alert-link" target="_blank">Chromium Bug Link</a>
     </p>
   </div>
+  --}}
 
   {{> RuleProperties}}
 
+  {{> PairsContainerHeading heading="Headers Modification Rules" }}
+
   <div class="pairs-container">
-    {{> PairsContainerHeading heading="Headers Modification Rules" }}
 
-    <div class="well well-sm">
-      {{#each pairs}}
-
-        {{#gt @index 0}} <hr /> {{/gt}}
-
-        <div class="pair-container" data-index="{{@index}}">
+    {{#each pairs}}
+        <div class="well well-sm pair-container" data-index="{{@index}}">
           <div>
+
             <div class="header-modification-type-container">
-              <span class="dropdown-container">
-                <select class="modification-type-select" data-key="type">
-                  <option value="{{readGlobalVar "RQ.MODIFICATION_TYPES.ADD" }}"
-                    {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.ADD" type }}selected{{/equalsGlobalVar}}>Add</option>
+              <div class="dropdown-container">
+                <div class="dropdown" data-key="type">
 
-                  <option value="{{readGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" }}"
-                    {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" type }}selected{{/equalsGlobalVar}}>Remove</option>
+                  {{> DropdownButton }}
 
-                  <option value="{{readGlobalVar "RQ.MODIFICATION_TYPES.MODIFY" }}"
-                    {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.MOIFY" type }}selected{{/equalsGlobalVar}}>Modify</option>
-                </select>
-              </span>
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-option"
+                         data-value="{{readGlobalVar "RQ.MODIFICATION_TYPES.ADD"}}"
+                         {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.ADD" type }}selected{{/equalsGlobalVar}}>Add</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-option"
+                         data-value="{{readGlobalVar "RQ.MODIFICATION_TYPES.REMOVE"}}"
+                         {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" type }}selected{{/equalsGlobalVar}}>Remove</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-option"
+                         data-value="{{readGlobalVar "RQ.MODIFICATION_TYPES.MODIFY"}}"
+                         {{#equalsGlobalVar "RQ.MODIFICATION_TYPES.MODIFY" type }}selected{{/equalsGlobalVar}}>Modify</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
             <div class="header-target-container">
-              <span class="dropdown-container">
-                <select class="header-target-select" data-key="target">
-                  <option value="{{readGlobalVar "RQ.HEADERS_TARGET.REQUEST" }}"
-                    {{#equalsGlobalVar "RQ.HEADERS_TARGET.REQUEST" target }}selected{{/equalsGlobalVar}}>Request</option>
+              <div class="dropdown-container">
+                <div class="dropdown" data-key="target">
 
-                  <option value="{{readGlobalVar "RQ.HEADERS_TARGET.RESPONSE" }}"
-                    {{#equalsGlobalVar "RQ.HEADERS_TARGET.RESPONSE" target }}selected{{/equalsGlobalVar}}>Response</option>
-                </select>
-              </span>
+                  {{> DropdownButton }}
+
+                  <ul class="dropdown-menu">
+                    <li>
+                      <a class="dropdown-option"
+                         data-value="{{readGlobalVar "RQ.HEADERS_TARGET.REQUEST" }}"
+                         {{#equalsGlobalVar "RQ.HEADERS_TARGET.REQUEST" target }}selected{{/equalsGlobalVar}}>Request</a>
+                    </li>
+                    <li>
+                      <a class="dropdown-option"
+                         data-value="{{readGlobalVar "RQ.HEADERS_TARGET.RESPONSE" }}"
+                         {{#equalsGlobalVar "RQ.HEADERS_TARGET.RESPONSE" target }}selected{{/equalsGlobalVar}}>Response</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
 
-            <div class="input-group">
+            <div class="input-group header-name-input-group">
               <span class="input-group-addon">Header</span>
               <input type="text" class="form-control header-input" data-key="header" placeholder="Header Name" value="{{header}}">
             </div>
 
             {{#unequalsGlobalVar "RQ.MODIFICATION_TYPES.REMOVE" type }}
-              <div class="input-group">
+              <div class="input-group header-value-input-group">
                 <span class="input-group-addon">Value</span>
                 <input type="text" class="form-control value-input" data-key="value" placeholder="Header Value" value="{{value}}"/>
               </div>
@@ -63,9 +86,7 @@
 
           {{> SourceField sourcePlaceholder="Leave this field Empty to apply above modification to all urls" }}
         </div>
-
-      {{/each}}
-    </div>
+    {{/each}}
   </div>
 
   {{> SaveRuleCTA }}
