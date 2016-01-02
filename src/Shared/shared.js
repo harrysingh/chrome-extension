@@ -1,6 +1,6 @@
 var RQ = RQ || {};
 
-RQ.VERSION = '3.5.4';
+RQ.VERSION = '4.0.0';
 
 RQ.WEB_URL = 'http://web.requestly.in/beta/index.html';
 

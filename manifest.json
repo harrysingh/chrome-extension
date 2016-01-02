@@ -1,13 +1,13 @@
 {
   "name": "Requestly",
 
-  "version": "3.5.4",
+  "version": "4.0.0",
   "manifest_version": 2,
   "description": "Chrome Extension to modify HTTP requests (Redirect | Cancel | Replace | Modify Headers)",
 
   "content_scripts": [
     {
-      "matches": [ "*://web.requestly.in/*" ], /* "*://localhost/*index*" */
+      "matches": [ "*://web.requestly.in/*" ],
       "js": [
         "src/background/storageService.js",
 
