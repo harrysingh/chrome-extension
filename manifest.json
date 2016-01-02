@@ -7,7 +7,7 @@
 
   "content_scripts": [
     {
-      "matches": [ "*://web.requestly.in/*", "*://localhost/index*" ],
+      "matches": [ "*://web.requestly.in/*" ], /* "*://localhost/*index*" */
       "js": [
         "src/background/storageService.js",
 
