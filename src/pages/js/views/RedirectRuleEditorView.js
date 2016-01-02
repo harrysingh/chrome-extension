@@ -5,6 +5,8 @@ var RedirectRuleEditorView = BaseRuleEditorView.extend({
 
   id: 'redirect-rule-editor',
 
+  className: 'rule-editor',
+
   getTemplate: function() {
     return RQ.Templates.RedirectRuleEditor;
   },

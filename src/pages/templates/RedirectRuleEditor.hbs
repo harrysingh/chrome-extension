@@ -1,35 +1,25 @@
-<nav class="content-header rq-green">
-  <a href="#selectRule" role="button" class="back-button glyphicon glyphicon-share-alt" aria-hidden="true" title="Go Back"></a>
-  <span>Redirect Request Rule</span>
-</nav>
+{{> RuleEditorHeader heading="Redirect Request Rule" }}
 
 <section class="rule-body">
   {{> RuleProperties}}
 
-  <div class="title">
-    <span class="left">Source Destination Pairs</span>
-    <button class="right btn add-pair">
-      <span class="glyphicon glyphicon-plus-sign action-icon"></span>
-      <span>New</span>
-    </button>
-  </div>
+  {{> PairsContainerHeading heading="Source Destination Pairs" }}
 
   <div class="pairs-container">
     {{#each pairs}}
       <div class="well well-sm pair-container" data-index="{{@index}}">
-        {{> SourceField RULE_OPERATORS=../RULE_OPERATORS}}
-        <div class="input-group destination-container">
-          <span class="input-group-addon">Destination</span>
-          <input type="url" class="form-control destination-url-input" data-key="destination"
-             placeholder="{{destinationPlaceholder}}" value="{{destination}}">
+        {{> SourceField }}
+
+        <div class="row">
+          <div class="destination-container">
+            <label class="active">Destination</label>
+            <input type="url" class="destination-url-input form-control" data-key="destination" value="{{destination}}"
+                   placeholder="{{destinationPlaceholder}}">
+          </div>
         </div>
       </div>
     {{/each}}
-    </div>
   </div>
 
-  <div class="buttons-container">
-    <a class="btn btn-success save-rule">Save</a>
-    <a href="#" class="btn btn-default">Cancel</a>
-  </div>
+  {{> SaveRuleCTA }}
 </section>

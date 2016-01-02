@@ -46,12 +46,20 @@ module.exports = function (grunt) {
       unit: {
         configFile: 'karma.conf.js'
       }
+    },
+
+    watch: {
+      scripts: {
+        files: ['**/*.hbs'],
+        tasks: ['handlebars']
+      }
     }
   });
 
   grunt.loadNpmTasks('grunt-zipup');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
   grunt.loadNpmTasks('grunt-karma');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('templates', ['handlebars']);
   grunt.registerTask('dev', ['karma:unit']);

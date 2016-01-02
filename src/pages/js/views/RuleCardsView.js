@@ -1,11 +1,7 @@
 var RuleCardsView = Backbone.View.extend({
 
-  Template: function() {
-    return RQ.Templates.RULE_CARDS_TEMPLATE;
-  },
-
   events: {
-    'click .panel': 'selectRule'
+    'click .rule-card': 'selectRule'
   },
 
   render: function(options) {
@@ -13,13 +9,13 @@ var RuleCardsView = Backbone.View.extend({
       this.model = options.model;
     }
 
-    var markup = _.template(this.Template(), { rule: this.model });
+    var markup = RQ.Templates.RuleCardsView;
     $(this.el).html(markup);
   },
 
   selectRule: function(event) {
-    var $panel = $(event.currentTarget),
-      ruleEditorRoute = $panel.attr('data-target');
+    var $ruleCard = $(event.currentTarget),
+      ruleEditorRoute = $ruleCard.attr('data-target');
 
     RQ.router.navigate(ruleEditorRoute, true);
   }

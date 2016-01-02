@@ -4,12 +4,6 @@ RQ.StorageService = StorageService;
 
 RQ.Mixins = RQ.Mixins || {};
 
-RQ.Templates = {
-  RULE_CARDS_TEMPLATE: $('#rule-cards-template').html(),
-  REPLACE_RULE_EDITOR_TEMPLATE: $('#replace-rule-editor-template').html(),
-  HEADERS_EDITOR_TEMPLATE: $('#headers-editor-template').html()
-};
-
 RQ.TemplateHelpers = RQ.TemplateHelpers || {};
 RQ.HandlebarHelpers = RQ.HandlebarHelpers || {};
 

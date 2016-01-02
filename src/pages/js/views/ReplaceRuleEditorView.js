@@ -4,11 +4,11 @@ var ReplaceRuleEditorView = BaseRuleEditorView.extend({
 
   id: 'replace-rule-editor',
 
-  getTemplate: function() {
-    return RQ.Templates.REPLACE_RULE_EDITOR_TEMPLATE;
-  },
+  className: 'replace-rule-editor rule-editor',
 
-  className: 'replace-rule-editor',
+  getTemplate: function() {
+    return RQ.Templates.ReplaceRuleEditor;
+  },
 
   events: _.extend(BaseRuleEditorView.prototype.events, {
     'keyup .pair-container input': 'updateRulePair'

@@ -6,8 +6,8 @@ var RuleIndexView = Backbone.View.extend({
     'click .delete-rule-icon': 'deleteRule',
     'click .select-all-rules-checkbox': 'selectAllRules',
     'click .select-rule-checkbox': 'selectRule',
-    'click .btn-export': 'exportRules',
-    'click .btn-import': 'importRules'
+    'click .export-rules-button': 'exportRules',
+    'click .import-rules-button': 'importRules'
   },
 
   initialize: function() {

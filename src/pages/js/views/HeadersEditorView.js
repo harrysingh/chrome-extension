@@ -3,15 +3,15 @@ var HeadersEditorView = BaseRuleEditorView.extend({
   Model: HeadersRuleModel,
 
   getTemplate: function() {
-    return RQ.Templates.HEADERS_EDITOR_TEMPLATE;
+    return RQ.Templates.HeadersRuleTemplate;
   },
 
-  className: 'headers-rule-editor',
+  id: 'headers-rule-editor',
+
+  className: 'rule-editor',
 
   events: _.extend(BaseRuleEditorView.prototype.events, {
-    'keyup .pair-container input': 'updateRulePair',
-    'change .pair-container select': 'updateRulePair',
-    'click .hide-message': 'hideMessage'
+    'keyup .pair-container input': 'updateRulePair'
   }),
 
   hideMessage: function() {

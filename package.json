@@ -26,15 +26,15 @@
     "url": "https://github.com/blunderboy/requestly/issues"
   },
   "homepage": "https://github.com/blunderboy/requestly",
-
   "private": true,
   "devDependencies": {
     "grunt": "~0.4.5",
     "grunt-cli": "~0.1.13",
-    "grunt-zipup": "~0.1.6",
     "grunt-contrib-handlebars": "0.10.0",
     "grunt-contrib-jshint": "~0.11.2",
+    "grunt-contrib-watch": "^0.6.1",
     "grunt-karma": "^0.11.1",
+    "grunt-zipup": "~0.1.6",
     "karma": "^0.12.37",
     "karma-coverage": "^0.4.2",
     "karma-firefox-launcher": "^0.1.6",
