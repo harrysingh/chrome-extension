@@ -70,10 +70,8 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.currentTarget).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
-      ruleType = ruleModel.getRuleType(),
       eventAction,
-      ruleStatus,
-      that = this;
+      ruleStatus;
 
     if (ruleModel.getStatus() === RQ.RULE_STATUS.ACTIVE) {
       ruleModel.setStatus(RQ.RULE_STATUS.INACTIVE);
@@ -92,10 +90,8 @@ var RuleIndexView = Backbone.View.extend({
           message: ruleName + ' is now ' + ruleStatus
         });
 
-        RQ.Utils.submitEvent('rule', eventAction, ruleType.toLowerCase() + ' rule ' + eventAction);
-
-        // #34: User needs to refresh the page whenever rule status is changed
-        that.reloadPage(2000);
+        // Commenting due to #95 Event passing strategy Improvement for analytics tracking
+        //RQ.Utils.submitEvent('rule', eventAction, ruleModel.getRuleType().toLowerCase() + ' rule ' + eventAction);
       }
     });
     return false;
@@ -105,8 +101,6 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.target).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
-      ruleType = ruleModel.getRuleType(),
-      eventAction = RQ.GA_EVENTS.ACTIONS.DELETED,
       that = this;
 
     if (window.confirm(RQ.MESSAGES.DELETE_RULE)) {
@@ -118,10 +112,12 @@ var RuleIndexView = Backbone.View.extend({
             message: ruleName + ' has been deleted successfully!!'
           });
 
-          RQ.Utils.submitEvent('rule', eventAction, ruleType.toLowerCase() + ' rule ' + eventAction);
-
-          // #34: User needs to refresh the page whenever rule is changed
-          that.reloadPage(2000);
+          // Commenting due to #95 Event passing strategy Improvement for analytics tracking
+          //RQ.Utils.submitEvent(
+          // 'rule',
+          // RQ.GA_EVENTS.ACTIONS.DELETED,
+          // ruleModel.getRuleType().toLowerCase() + ' rule ' + RQ.GA_EVENTS.ACTIONS.DELETED
+          // );
         }
       });
     }
@@ -165,29 +161,30 @@ var RuleIndexView = Backbone.View.extend({
 
   exportRules: function() {
     var selectedRules = this.getSelectedRules(),
-      eventAction = RQ.GA_EVENTS.ACTIONS.EXPORTED,
       rules = selectedRules.length ? selectedRules : this.rulesCollection.models;
 
     var rulesAttributes = _.pluck(rules, 'attributes');
     Backbone.trigger('file:save', JSON.stringify(rulesAttributes), 'requestly_rules');
 
-    RQ.Utils.submitEvent('rules', eventAction, 'Rules ' + eventAction);
+    // Commenting due to #95 Event passing strategy Improvement for analytics tracking
+    //RQ.Utils.submitEvent('rules', RQ.GA_EVENTS.ACTIONS.EXPORTED, 'Rules ' + RQ.GA_EVENTS.ACTIONS.EXPORTED);
   },
 
   importRules: function() {
-    var that = this,
-      eventAction = RQ.GA_EVENTS.ACTIONS.IMPORTED;
+    var that = this;
 
     Backbone.trigger('file:load', function(data) {
       var rules = JSON.parse(data);
       _.each(rules, function(rule) {
         var ruleModel = new BaseRuleModel(rule);
+        // Update / add the rule to collection.
+        that.rulesCollection.set(ruleModel, { remove: false, silent: true });
         ruleModel.save();
       });
 
-      RQ.Utils.submitEvent('rules', eventAction, 'Rules ' + eventAction);
-
-      that.reloadPage();
+      that.render();
+      // Commenting due to #95 Event passing strategy Improvement for analytics tracking
+      //RQ.Utils.submitEvent('rules', RQ.GA_EVENTS.ACTIONS.IMPORTED, 'Rules ' + RQ.GA_EVENTS.ACTIONS.IMPORTED);
     });
   }
 });
