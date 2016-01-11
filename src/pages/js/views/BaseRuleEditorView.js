@@ -29,7 +29,7 @@ var BaseRuleEditorView = BaseView.extend({
     this.model.setDescription(event.target.value);
   },
 
-  addPair: function(event) {
+  addPair: function() {
     var newPair = this.model.getDefaultPair(),
       pairs = this.model.getPairs();
 
@@ -153,11 +153,6 @@ var BaseRuleEditorView = BaseView.extend({
         });
 
         RQ.Utils.submitEvent('rule', eventAction, that.model.getRuleType().toLowerCase() + ' rule ' + eventAction);
-
-        // #34: User needs to refresh the page whenever rule status is changed
-        setTimeout(function() {
-          window.location.reload();
-        }, 2000 );
       }
     });
   }
