@@ -2,7 +2,8 @@ var RQ = RQ || {};
 
 RQ.VERSION = '4.0.0';
 
-RQ.WEB_URL = 'http://web.requestly.in/beta/index.html';
+// Url which gets opened when User clicks on browserAction (requestly icon) in toolbar
+RQ.WEB_URL = 'http://web.requestly.in/index.html';
 
 RQ.WEB_URL_PATTERN = '*://web.requestly.in/*';
 
