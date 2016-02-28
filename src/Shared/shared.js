@@ -11,6 +11,10 @@ RQ.BLACK_LIST_DOMAINS = [
   'requestly.in'
 ];
 
+RQ.STRING_CONSTANTS = {
+  SLASH: '/'
+};
+
 RQ.LIMITS = {
   NUMBER_SHARED_LISTS: 10
 };
