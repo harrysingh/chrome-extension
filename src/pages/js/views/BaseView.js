@@ -1,6 +1,8 @@
 var BaseView = Backbone.View.extend({
   Mixins: [],
 
+  Model: Backbone.Model,
+
   /**
    * loadModel: loads model and binds to the view
    * @param modelOrData Backbone Model instance or just a backbone model
@@ -23,6 +25,7 @@ var BaseView = Backbone.View.extend({
 
   initialize: function(options) {
     options = options || {};
+    this.registerBinders();
     this.loadModel(options.model);
     this.loadMixins(this.Mixins);
     this.alsoInitialize();
@@ -50,6 +53,8 @@ var BaseView = Backbone.View.extend({
   getMarkup: function(template) {
     return template(this.model.toJSON());
   },
+
+  registerBinders: function() { /* No Op */ },
 
   // To be overridden by inheriting component
   alsoValidate: function() { return true; },

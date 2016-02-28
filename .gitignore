@@ -2,5 +2,6 @@
 *.idea
 node_modules/
 *.log
-*.hbs.js
 *.sublime-workspace
+*.css.map
+.sass-cache/

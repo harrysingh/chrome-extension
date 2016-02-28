@@ -8,10 +8,6 @@ RQ.TemplateHelpers = RQ.TemplateHelpers || {};
 RQ.HandlebarHelpers = RQ.HandlebarHelpers || {};
 
 RQ.init = function() {
-  this.Models = {};
-
-  this.Collections = {};
-
   this.showView = function(view, options) {
     if (this.currentView) {
       this.currentView.close();
@@ -23,11 +19,31 @@ RQ.init = function() {
     $('#content').html(this.currentView.el);
   };
 
+  this.showModalView = function(modalView, options) {
+    // Do not destruct modal if previously opened modal is same
+    if (this.currentModalView && this.currentModalView !== modalView) {
+      this.currentModalView.close();
+    }
+
+    this.currentModalView = modalView;
+    this.currentModalView.render(options);
+
+    $('#modal-container').html(this.currentModalView.el);
+
+    $(this.currentModalView.el).modal('show');
+  };
+
+  // There should be only one instance of User profile/settings
+  this.currentUser = new UserModel();
+  this.addListenerForAuthenticationChanged();
+
   this.router = new RQ.Router();
 
   this.fetchSettings();
 
   this.addListenerForBackgroundMessages();
+
+  this.addVersionClass();
 
   Backbone.history.start();
 };
@@ -64,6 +80,24 @@ RQ.addListenerForBackgroundMessages = function() {
       RQ.showBackdrop();
     }
   });
+};
+
+RQ.addListenerForAuthenticationChanged = function() {
+  RQ.currentUser.on('change:isLoggedIn', function() {
+    var isAuthorized = RQ.currentUser.getUserLoggedIn();
+
+    $('body')
+      .removeClass(RQ.USER.AUTHORIZED)
+      .removeClass(RQ.USER.UNAUTHORIZED)
+      .addClass(isAuthorized ? RQ.USER.AUTHORIZED : RQ.USER.UNAUTHORIZED);
+  });
+};
+
+RQ.addVersionClass = function() {
+  // We introduced Share Rules (Issue-93) in version 1
+  if (RQ.VERSION >= 1) {
+    $('body').addClass('shared-rules-enabled');
+  }
 };
 
 Backbone.View.prototype.close = function() {

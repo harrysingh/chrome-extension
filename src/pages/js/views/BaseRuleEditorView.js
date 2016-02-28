@@ -6,6 +6,7 @@ var BaseRuleEditorView = BaseView.extend({
     'keyup .rule-description': 'updateRuleDescription',
     'click .add-pair': 'addPair',
     'click .delete-pair': 'deletePair',
+    'click .close-editor': 'closeEditor',
     'click .save-rule': 'saveRule',
     'click .dropdown .dropdown-option': 'handleDropdownValueChanged'
   },
@@ -29,7 +30,7 @@ var BaseRuleEditorView = BaseView.extend({
     this.model.setDescription(event.target.value);
   },
 
-  addPair: function(event) {
+  addPair: function() {
     var newPair = this.model.getDefaultPair(),
       pairs = this.model.getPairs();
 
@@ -112,9 +113,7 @@ var BaseRuleEditorView = BaseView.extend({
   },
 
   validateRule: function() {
-    var ruleName = this.model.getName();
-
-    if (!ruleName) {
+    if (!this.model.isValid()) {
       Backbone.trigger('notification', {
         className: 'rq-error',
         message: 'Error: Rule Name can not be empty'
@@ -153,12 +152,20 @@ var BaseRuleEditorView = BaseView.extend({
         });
 
         RQ.Utils.submitEvent('rule', eventAction, that.model.getRuleType().toLowerCase() + ' rule ' + eventAction);
-
-        // #34: User needs to refresh the page whenever rule status is changed
-        setTimeout(function() {
-          window.location.reload();
-        }, 2000 );
       }
     });
+  },
+
+  closeEditor: function() {
+    // In case of shared Rule Delete last part from current route -> rule Index inside the sharedList
+    var route = this.isSharedRule()
+      ? RQ.Utils.removeLastPart(Backbone.history.fragment, '/')
+      : '';
+
+    RQ.router.navigate(route, { trigger: true });
+  },
+
+  isSharedRule: function() {
+    return this.model.get('isSharedRule');
   }
 });

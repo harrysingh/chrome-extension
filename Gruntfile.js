@@ -12,13 +12,36 @@ module.exports = function (grunt) {
     zipup: {
       package: {
         appName: 'Requestly',
-        version: '4.0.0',
+        version: '4.0.1',
         files: [
-          { cwd: 'src', src: ['**', '!pages/**/*.hbs'], expand: true, dest: 'src' },
+          {
+            cwd: 'src',
+            src: [
+              'pages/libs.js',
+              'pages/main.js',
+              'pages/main.css',
+              'background/*',
+              'Shared/*'
+            ],
+            expand: true,
+            dest: 'src'
+          },
           { cwd: 'resources', src: '**', expand: true, dest: 'resources' },
           { src: 'manifest.json'}
         ],
         outDir: 'build'
+      }
+    },
+
+    concat: {
+      options: {
+        separator: '\n'
+      },
+      dist: {
+        files: {
+          'src/pages/libs.js': require('./src/pages/jsList.json')['libs'],
+          'src/pages/main.js': require('./src/pages/jsList.json')['src']
+        }
       }
     },
 
@@ -42,6 +65,14 @@ module.exports = function (grunt) {
       }
     },
 
+    sass: {
+      dist: {
+        files: {
+          'src/pages/main.css': 'src/pages/css/sass/main.scss'
+        }
+      }
+    },
+
     karma: {
       unit: {
         configFile: 'karma.conf.js'
@@ -49,19 +80,34 @@ module.exports = function (grunt) {
     },
 
     watch: {
-      scripts: {
+      templates: {
         files: ['**/*.hbs'],
         tasks: ['handlebars']
+      },
+      scripts: {
+        files: ['**/*.js'],
+        tasks: ['concat']
+      },
+      styles: {
+        files: ['**/*.scss'],
+        tasks: ['sass']
+      },
+      tests: {
+        files: ['**/*.spec.js'],
+        tasks: ['karma:unit']
       }
     }
   });
 
   grunt.loadNpmTasks('grunt-zipup');
   grunt.loadNpmTasks('grunt-contrib-handlebars');
+  grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('templates', ['handlebars']);
-  grunt.registerTask('dev', ['karma:unit']);
-  grunt.registerTask('build', ['handlebars', 'zipup']);
+  grunt.registerTask('build', ['handlebars', 'sass', 'concat', 'zipup']);
+  grunt.registerTask('test', ['karma:unit']);
+  grunt.registerTask('dev', ['watch']);
 };

@@ -1,14 +1,19 @@
 var RQ = RQ || {};
 
-RQ.VERSION = '4.0.0';
+RQ.VERSION = 1;
 
-RQ.WEB_URL = 'http://web.requestly.in/beta/index.html';
+// Url which gets opened when User clicks on browserAction (requestly icon) in toolbar
+RQ.WEB_URL = 'http://web.requestly.in';
 
 RQ.WEB_URL_PATTERN = '*://web.requestly.in/*';
 
 RQ.BLACK_LIST_DOMAINS = [
   'requestly.in'
 ];
+
+RQ.LIMITS = {
+  NUMBER_SHARED_LISTS: 10
+};
 
 RQ.RULE_TYPES = {
   REDIRECT: 'Redirect',
@@ -53,7 +58,10 @@ RQ.STORAGE_KEYS = {
 };
 
 RQ.MESSAGES = {
-  DELETE_RULE: 'Are you sure you want to delete the rule ?'
+  DELETE_RULE: 'Are you sure you want to delete the rule ?',
+  SIGN_IN_TO_VIEW_SHARED_LISTS: 'Please login with Google to view your Shared Lists.',
+  ERROR_AUTHENTICATION: 'Received some error in authentication. Please try again later!!',
+  SHARED_LISTS_LIMIT_REACHED: 'You can not create more than ' + RQ.LIMITS.NUMBER_SHARED_LISTS + ' shared lists'
 };
 
 RQ.RESOURCES = {
@@ -62,6 +70,11 @@ RQ.RESOURCES = {
 };
 
 RQ.GA_EVENTS = {
+  CATEGORIES: {
+    RULES: 'rules',
+    USER: 'user',
+    SHARED_LIST: 'shared list'
+  },
   ACTIONS: {
     MODIFIED: 'modified',
     CREATED: 'created',
@@ -69,10 +82,37 @@ RQ.GA_EVENTS = {
     ACTIVATED: 'activated',
     DEACTIVATED: 'deactivated',
     IMPORTED: 'imported',
-    EXPORTED: 'exported'
+    EXPORTED: 'exported',
+    LIMIT_REACHED: 'limit reached',
+    AUTHENTICATED: 'authenticated',
+    VIEWED: 'viewed'
   }
+};
+
+RQ.USER = {
+  AUTHORIZED: 'authorized-user',
+  UNAUTHORIZED: 'unauthorized-user'
+};
+
+RQ.FIREBASE_NODES = {
+  USERS: 'users',
+  PUBLIC: 'public',
+  SHARED_LISTS: 'sharedLists'
+};
+
+RQ.getFirebaseRef = function() {
+  if (!RQ.firebaseRef) {
+    RQ.firebaseRef = new Firebase('https://requestly.firebaseio.com');
+  }
+
+  return RQ.firebaseRef;
 };
 
 RQ.htmlEncode = function(value){
   return $('<div/>').text(value).html();
 };
+
+RQ.getSharedURL = function(shareId) {
+  return RQ.WEB_URL + '#sharedList/' + shareId;
+};
+

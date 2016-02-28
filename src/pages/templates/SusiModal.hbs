@@ -1,0 +1,28 @@
+<div class="modal-dialog">
+
+  <!-- Modal content-->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4><i class="fa fa-user"></i>Sign In</h4>
+    </div>
+
+    <div class="modal-body">
+      <p>
+        {{#if content}}
+          {{content}}
+        {{else}}
+          Please login with Google to share your rules with other users.
+        {{/if}}
+      </p>
+    </div>
+
+    <div class="modal-footer text-right">
+      <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+      <a class="btn-sm-full gplus-bg rectangle waves-effect waves-light auth-provider" data-provider="google">
+        <i class="fa fa-google-plus"></i>
+        <span>Sign In</span>
+      </a>
+    </div>
+
+  </div> <!-- /modal-content -->
+</div>

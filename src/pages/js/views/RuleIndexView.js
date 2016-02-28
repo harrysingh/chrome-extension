@@ -1,5 +1,9 @@
 var RuleIndexView = Backbone.View.extend({
 
+  className: 'rule-index',
+
+  Collection: RulesCollection,
+
   events: {
     'click .ruleName': 'showRuleEditor',
     'change .status-toggle': 'toggleStatus',
@@ -7,17 +11,33 @@ var RuleIndexView = Backbone.View.extend({
     'click .select-all-rules-checkbox': 'selectAllRules',
     'click .select-rule-checkbox': 'selectRule',
     'click .export-rules-button': 'exportRules',
-    'click .import-rules-button': 'importRules'
+    'click .import-rules-button': 'importRules',
+    'click .share-rules-button': 'handleShareRulesButtonClicked'
   },
 
   initialize: function() {
-    this.rulesCollection = new RulesCollection();
+    this.rulesCollection = new this.Collection();
+    this.susiModal = new SusiModal();
+    this.shareRulesModal = new ShareRulesModal({});
 
+    this.registerListeners();
+  },
+
+  registerListeners: function() {
     // We don't need to listen on add event because rule is always created from editor
     // And on route change we always fetch the latest rules from DB
     this.listenTo(this.rulesCollection, 'loaded', this.render);
     this.listenTo(this.rulesCollection, 'change', this.render);
     this.listenTo(this.rulesCollection, 'remove', this.render);
+
+    this.shareRulesModal.on('modal:closed', this.saveSharedListName);
+  },
+
+  initWidgets: function() {
+    this.$el = $(this.el);
+
+    this.$el.find('.status-toggle').bootstrapToggle();
+    this.$el.find('[data-toggle="tooltip"]').tooltip();
   },
 
   updateCollection: function() {
@@ -29,7 +49,10 @@ var RuleIndexView = Backbone.View.extend({
   },
 
   getMarkup: function(template) {
-    return template({ rules: this.rulesCollection.toJSON() });
+    return template({
+      rules: this.rulesCollection.toJSON(),
+      user: RQ.currentUser.toJSON()
+    });
   },
 
   render: function(options) {
@@ -40,7 +63,7 @@ var RuleIndexView = Backbone.View.extend({
 
     if (options && options.update) {
       // updateCollection will trigger 'loaded' event which will render the view
-      this.updateCollection();
+      this.updateCollection(options);
     } else {
       this.template = this.getTemplate();
 
@@ -48,7 +71,7 @@ var RuleIndexView = Backbone.View.extend({
       $el.html(markup);
     }
 
-    $el.find('.status-toggle').bootstrapToggle();
+    this.initWidgets();
   },
 
   showRuleEditor: function(event) {
@@ -70,10 +93,8 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.currentTarget).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
-      ruleType = ruleModel.getRuleType(),
       eventAction,
-      ruleStatus,
-      that = this;
+      ruleStatus;
 
     if (ruleModel.getStatus() === RQ.RULE_STATUS.ACTIVE) {
       ruleModel.setStatus(RQ.RULE_STATUS.INACTIVE);
@@ -92,10 +113,7 @@ var RuleIndexView = Backbone.View.extend({
           message: ruleName + ' is now ' + ruleStatus
         });
 
-        RQ.Utils.submitEvent('rule', eventAction, ruleType.toLowerCase() + ' rule ' + eventAction);
-
-        // #34: User needs to refresh the page whenever rule status is changed
-        that.reloadPage(2000);
+        RQ.Utils.submitEvent('rule', eventAction, ruleModel.getRuleType().toLowerCase() + ' rule ' + eventAction);
       }
     });
     return false;
@@ -105,8 +123,6 @@ var RuleIndexView = Backbone.View.extend({
     var $ruleItemRow = $(event.target).parents('.rule-item-row'),
       ruleModel = this.rulesCollection.get($ruleItemRow.data('id')),
       ruleName = ruleModel.getName(),
-      ruleType = ruleModel.getRuleType(),
-      eventAction = RQ.GA_EVENTS.ACTIONS.DELETED,
       that = this;
 
     if (window.confirm(RQ.MESSAGES.DELETE_RULE)) {
@@ -118,10 +134,11 @@ var RuleIndexView = Backbone.View.extend({
             message: ruleName + ' has been deleted successfully!!'
           });
 
-          RQ.Utils.submitEvent('rule', eventAction, ruleType.toLowerCase() + ' rule ' + eventAction);
-
-          // #34: User needs to refresh the page whenever rule is changed
-          that.reloadPage(2000);
+          RQ.Utils.submitEvent(
+            'rule',
+            RQ.GA_EVENTS.ACTIONS.DELETED,
+            ruleModel.getRuleType().toLowerCase() + ' rule ' + RQ.GA_EVENTS.ACTIONS.DELETED)
+          ;
         }
       });
     }
@@ -165,29 +182,116 @@ var RuleIndexView = Backbone.View.extend({
 
   exportRules: function() {
     var selectedRules = this.getSelectedRules(),
-      eventAction = RQ.GA_EVENTS.ACTIONS.EXPORTED,
       rules = selectedRules.length ? selectedRules : this.rulesCollection.models;
 
     var rulesAttributes = _.pluck(rules, 'attributes');
-    Backbone.trigger('file:save', JSON.stringify(rulesAttributes), 'requestly_rules');
+    Backbone.trigger('file:save', JSON.stringify(rulesAttributes, null, 2), 'requestly_rules');
 
-    RQ.Utils.submitEvent('rules', eventAction, 'Rules ' + eventAction);
+    RQ.Utils.submitEvent('rules', RQ.GA_EVENTS.ACTIONS.EXPORTED, 'Rules ' + RQ.GA_EVENTS.ACTIONS.EXPORTED);
   },
 
   importRules: function() {
-    var that = this,
-      eventAction = RQ.GA_EVENTS.ACTIONS.IMPORTED;
-
+    var that = this;
     Backbone.trigger('file:load', function(data) {
-      var rules = JSON.parse(data);
+      var validRulesCount = 0,
+        rules = JSON.parse(data);
       _.each(rules, function(rule) {
         var ruleModel = new BaseRuleModel(rule);
-        ruleModel.save();
+        if(ruleModel.isValid()) {
+          validRulesCount++;
+          // Update / add the rule to collection.
+          that.rulesCollection.set(ruleModel, {remove: false, silent: true});
+          ruleModel.save();
+        }
       });
 
-      RQ.Utils.submitEvent('rules', eventAction, 'Rules ' + eventAction);
+      //trigger notification : depends on the number of rules imported
+      if (rules.length == validRulesCount){
+        Backbone.trigger('notification', {
+          className: 'rq-success',
+          message: 'Success: All Rules Imported Successfully'
+        });
+      } else if(validRulesCount == 0){
+        Backbone.trigger('notification', {
+          className: 'rq-error',
+          message: 'Error: All Imported Rules are invalid'
+        });
+      } else {
+        Backbone.trigger('notification', {
+          className: 'rq-success',
+          message: 'Success: ' + validRulesCount + ' out of ' + rules.length + ' rules imported successfully'
+        });
+      }
 
-      that.reloadPage();
+      that.render();
+      RQ.Utils.submitEvent('rules', RQ.GA_EVENTS.ACTIONS.IMPORTED, 'Rules ' + RQ.GA_EVENTS.ACTIONS.IMPORTED);
     });
+  },
+
+  showLoginModal: function() {
+    this.susiModal.show();
+  },
+
+  handleShareRulesButtonClicked: function() {
+    var that = this,
+      authPromise = RQ.currentUser.checkUserAuthentication(),
+      selectedRules,
+      shareId = RQ.Utils.getId(),
+      sharedUrl;
+
+    authPromise.then(function(authData) {
+      var currentUserSharedListsRef,
+        userSharedListsDeferredObject;
+
+      if (!authData) {
+        that.showLoginModal();
+      } else {
+        selectedRules = _.pluck(that.getSelectedRules(), 'attributes');
+
+        if (selectedRules.length === 0) {
+          alert('Please select one or more rules to share');
+          return;
+        }
+
+        currentUserSharedListsRef = RQ.currentUser.getUserSharedListsRef();
+        userSharedListsDeferredObject = RQ.FirebaseUtils.getDeferredNodeValue(currentUserSharedListsRef, { 'once': true });
+
+        userSharedListsDeferredObject.then(function(sharedLists) {
+          if (_.keys(sharedLists).length >= RQ.LIMITS.NUMBER_SHARED_LISTS) {
+            RQ.showModalView(new Modal(), {
+              model: {
+                heading: 'Limit Exceeded',
+                content: RQ.MESSAGES.SHARED_LISTS_LIMIT_REACHED,
+                cancelButton: true
+              }
+            });
+
+            RQ.Utils.submitEvent(
+              RQ.GA_EVENTS.CATEGORIES.SHARED_LIST,
+              RQ.GA_EVENTS.ACTIONS.LIMIT_REACHED,
+              'Shared List limit reached'
+            );
+
+            return;
+          }
+
+          sharedUrl = RQ.currentUser.createSharedList(shareId, selectedRules);
+          that.saveSharedListName({ shareId: shareId });
+
+          that.shareRulesModal.show({
+            model: { shareId: shareId, sharedUrl: sharedUrl }
+          });
+        });
+      }
+    }).catch(function(error) {
+      alert(RQ.MESSAGES.ERROR_AUTHENTICATION);
+    });
+  },
+
+  saveSharedListName: function(shareData) {
+    var sharedListName = shareData.listName || 'My Shared List',
+      shareId = shareData.shareId;
+
+    RQ.currentUser.setSharedListName(shareId, sharedListName);
   }
 });
