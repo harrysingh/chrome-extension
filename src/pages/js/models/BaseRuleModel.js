@@ -114,6 +114,19 @@ var BaseRuleModel = BaseModel.extend({
     storageService.saveRecord(storageObject, options.callback);
   },
 
+  isValid: function() {
+    var ruleName = this.getName(),
+      ruleType = this.getRuleType(),
+      isRuleValid = true;
+    if (!ruleName) {
+      isRuleValid = false;
+    }
+    if (isRuleValid && !RQ.RULE_TYPES.hasOwnProperty(ruleType.trim().toUpperCase())) {
+      isRuleValid = false;
+    }
+    return isRuleValid;
+  },
+
   remove: function(options) {
     var id = this.getId(),
       storageService = this.getStorageService();

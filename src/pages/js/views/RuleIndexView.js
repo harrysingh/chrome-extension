@@ -195,15 +195,36 @@ var RuleIndexView = Backbone.View.extend({
 
   importRules: function() {
     var that = this;
-
     Backbone.trigger('file:load', function(data) {
-      var rules = JSON.parse(data);
+      var validRulesCount = 0,
+        rules = JSON.parse(data);
       _.each(rules, function(rule) {
         var ruleModel = new BaseRuleModel(rule);
-        // Update / add the rule to collection.
-        that.rulesCollection.set(ruleModel, { remove: false, silent: true });
-        ruleModel.save();
+        if(ruleModel.isValid()) {
+          validRulesCount++;
+          // Update / add the rule to collection.
+          that.rulesCollection.set(ruleModel, {remove: false, silent: true});
+          ruleModel.save();
+        }
       });
+
+      //trigger notification : depends on the number of rules imported
+      if (rules.length == validRulesCount){
+        Backbone.trigger('notification', {
+          className: 'rq-success',
+          message: 'Success: All Rules Imported Successfully'
+        });
+      } else if(validRulesCount == 0){
+        Backbone.trigger('notification', {
+          className: 'rq-error',
+          message: 'Error: All Imported Rules are invalid'
+        });
+      } else {
+        Backbone.trigger('notification', {
+          className: 'rq-success',
+          message: 'Success: ' + validRulesCount + ' out of ' + rules.length + ' rules imported successfully'
+        });
+      }
 
       that.render();
       // Commenting due to #95 Event passing strategy Improvement for analytics tracking

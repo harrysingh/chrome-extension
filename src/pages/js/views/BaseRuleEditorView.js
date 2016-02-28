@@ -113,9 +113,7 @@ var BaseRuleEditorView = BaseView.extend({
   },
 
   validateRule: function() {
-    var ruleName = this.model.getName();
-
-    if (!ruleName) {
+    if (!this.model.isValid()) {
       Backbone.trigger('notification', {
         className: 'rq-error',
         message: 'Error: Rule Name can not be empty'
