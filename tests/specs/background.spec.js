@@ -6,6 +6,7 @@ describe('Requestly Background Service', function() {
 
   var URL_SOURCES = {
     GOOGLE: 'http://www.google.com',
+    GOOGLE_WITH_SLASH: 'http://www.google.com/',
     YAHOO: 'http://www.yahoo.com',
     FACEBOOK: 'http://www.facebook.com',
     GOOGLE_SEARCH_QUERY: 'https://www.google.co.in/search?q=',
@@ -65,8 +66,7 @@ describe('Requestly Background Service', function() {
     });
 
     it('should match Redirect Rule Source', function() {
-      var pair = redirectRule.getPairs()[0],
-        ruleType = redirectRule.getRuleType();
+      var pair = redirectRule.getPairs()[0];
 
       // Equals Operator
       pair['destination'] = URL_SOURCES.YAHOO;
@@ -93,6 +93,13 @@ describe('Requestly Background Service', function() {
 
       expect(BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination,
         URL_SOURCES.GOOGLE_SEARCH_QUERY + 'TGT-10419')).toBe(URL_SOURCES.REQUESTLY + '?query=TGT-10419');
+    });
+
+    it('should match Urls ending with slash for equals operator', function() {
+      var pair = redirectRule.getPairs()[0];
+
+      expect(BG.Methods.matchUrlWithRuleSource(pair.source, pair.destination, URL_SOURCES.GOOGLE_WITH_SLASH))
+        .toBe(URL_SOURCES.YAHOO);
     });
 
     it('should return null when Cancel Rule Source does not match with Url', function() {

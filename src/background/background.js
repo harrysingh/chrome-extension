@@ -125,6 +125,8 @@ BG.Methods.modifyHeaders = function(originalHeaders, headersTarget, details) {
  */
 BG.Methods.matchUrlWithRuleSource = function(sourceObject, destination, url) {
   var operator = sourceObject.operator,
+    urlWithSlash,
+    urlWithoutSlash,
     destinationUrl = destination || '', // Destination Url is not present in all rule types (Cancel)
     value = sourceObject.value,
     blackListedDomains = RQ.BLACK_LIST_DOMAINS || [];
@@ -133,10 +135,19 @@ BG.Methods.matchUrlWithRuleSource = function(sourceObject, destination, url) {
     if (url.indexOf(blackListedDomains[index]) !== -1) {
       return null;
     }
-  }  
-    
+  }
+
+  if (url.charAt(url.length - 1) === RQ.STRING_CONSTANTS.SLASH) {
+    urlWithSlash = url;
+    urlWithoutSlash = url.substring(0, url.length - 1);
+  } else {
+    urlWithoutSlash = url;
+    urlWithSlash = url + RQ.STRING_CONSTANTS.SLASH;
+  }
+
   switch (operator) {
-    case RQ.RULE_OPERATORS.EQUALS: if (value === url) { return destinationUrl; }
+    case RQ.RULE_OPERATORS.EQUALS:
+      if (value === urlWithSlash || value === urlWithoutSlash) { return destinationUrl; }
       break;
 
     case RQ.RULE_OPERATORS.CONTAINS: if (url.indexOf(value) !== -1) { return destinationUrl; }
