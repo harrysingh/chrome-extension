@@ -116,15 +116,17 @@ var BaseRuleModel = BaseModel.extend({
 
   isValid: function() {
     var ruleName = this.getName(),
-      ruleType = this.getRuleType(),
-      isRuleValid = true;
-    if (!ruleName) {
-      isRuleValid = false;
+      ruleType = this.getRuleType();
+
+    if (!ruleName || !ruleType) {
+      return false;
     }
-    if (isRuleValid && !RQ.RULE_TYPES.hasOwnProperty(ruleType.trim().toUpperCase())) {
-      isRuleValid = false;
+
+    if (!RQ.RULE_TYPES.hasOwnProperty(ruleType.toUpperCase())) {
+      return false;
     }
-    return isRuleValid;
+
+    return true;
   },
 
   remove: function(options) {

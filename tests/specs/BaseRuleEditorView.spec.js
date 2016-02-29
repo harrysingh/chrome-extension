@@ -11,6 +11,7 @@ describe('Base Rule Editor View', function() {
     expect(baseRuleEditorView.validateRule()).toBe(false);
 
     baseRuleModel.setName('Test Rule');
+    baseRuleModel.setRuleType('Redirect');
     expect(baseRuleEditorView.validateRule()).toBe(true);
 
     expect(baseRuleEditorView.alsoValidate()).toBe(true);
